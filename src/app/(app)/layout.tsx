@@ -1,3 +1,4 @@
+import Header from "@/components/sections/header";
 import Sidebar from "@/components/sections/sidebar";
 import { SidebarProvider } from "@/contexts/sidebar-context";
 import { createClient } from "@/lib/supabase/server";
@@ -24,7 +25,7 @@ export default async function AppLayout({
         <div className="flex">
           <Sidebar />
           <div className="flex-1">
-            <div></div>
+            <Header />
             <div className="mx-auto w-full px-4 py-24">{children}</div>
           </div>
         </div>
