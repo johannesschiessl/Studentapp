@@ -1,1 +1,6 @@
-{}
+{
+  "home": "Home",
+  "home.greeting.morning": "Good morning",
+  "home.greeting.afternoon": "Good afternoon",
+  "home.greeting.evening": "Good evening"
+}

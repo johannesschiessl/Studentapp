@@ -1,1 +1,6 @@
-{}
+{
+  "home": "Übersicht",
+  "home.greeting.morning": "Guten Morgen",
+  "home.greeting.afternoon": "Guten Tag",
+  "home.greeting.evening": "Guten Abend"
+}
