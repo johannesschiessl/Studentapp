@@ -1,3 +1,5 @@
+import Sidebar from "@/components/sections/sidebar";
+import { SidebarProvider } from "@/contexts/sidebar-context";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 
@@ -18,7 +20,15 @@ export default async function AppLayout({
 
   return (
     <>
-      <div>{children}</div>
+      <SidebarProvider>
+        <div className="flex">
+          <Sidebar />
+          <div className="flex-1">
+            <div></div>
+            <div className="mx-auto w-full px-4 py-24">{children}</div>
+          </div>
+        </div>
+      </SidebarProvider>
     </>
   );
 }
