@@ -2,5 +2,10 @@
   "home": "Home",
   "home.greeting.morning": "Good morning",
   "home.greeting.afternoon": "Good afternoon",
-  "home.greeting.evening": "Good evening"
+  "home.greeting.evening": "Good evening",
+  "calendar": "Calendar",
+  "subjects": "Subjects",
+  "homework": "Homework",
+  "homeworks": "Homework",
+  "sidebar.close": "Close sidebar"
 }
