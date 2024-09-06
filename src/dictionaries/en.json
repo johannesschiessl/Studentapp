@@ -7,5 +7,6 @@
   "subjects": "Subjects",
   "homework": "Homework",
   "homeworks": "Homework",
-  "sidebar.close": "Close sidebar"
+  "sidebar.close": "Close sidebar",
+  "sidebar.open": "Open sidebar"
 }

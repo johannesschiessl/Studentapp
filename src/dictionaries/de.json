@@ -7,5 +7,6 @@
   "subjects": "Fächer",
   "homeworks": "Hausaufgaben",
   "homework": "Hausaufgabe",
-  "sidebar.close": "Seitenleiste schließen"
+  "sidebar.close": "Seitenleiste schließen",
+  "sidebar.open": "Seitenleiste öffnen"
 }
