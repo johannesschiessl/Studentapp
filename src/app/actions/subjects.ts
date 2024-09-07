@@ -32,6 +32,23 @@ export async function getSubjectsForCurrentSchoolYear(): Promise<Subject[]> {
   return data as Subject[];
 }
 
+export async function getSubject(id: number): Promise<Subject> {
+  const supabase = createClient();
+
+  const { data, error } = await supabase
+    .from("subjects")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if (error) {
+    console.error("Error fetching subjects:", error);
+    throw error;
+  } else {
+    return data as Subject;
+  }
+}
+
 function getCurrentSchoolYearId(): number {
   const cookieStore = cookies();
   const currentSchoolYearId = cookieStore.get("currentSchoolYearId");
