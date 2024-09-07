@@ -5,6 +5,8 @@
   "home.greeting.evening": "Guten Abend",
   "calendar": "Kalender",
   "subjects": "Fächer",
+  "subjects.add.notice": "Leider ist es noch nicht möglich, Fächer nachträglich hinzuzufügen, wenn das Schuljahr bereits erstellt wurde.",
+  "subjects.add.notice.2": "Wenn du eines hinzufügen möchtest, wende dich einfach an den Entwickler.",
   "homeworks": "Hausaufgaben",
   "homework": "Hausaufgabe",
   "sidebar.close": "Seitenleiste schließen",

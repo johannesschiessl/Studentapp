@@ -5,6 +5,8 @@
   "home.greeting.evening": "Good evening",
   "calendar": "Calendar",
   "subjects": "Subjects",
+  "subjects.add.notice": "Sorry, it's not yet possible to add new subjects after the school year has already been created.",
+  "subjects.add.notice.2": "If you want to add one, please contact the developer.",
   "homework": "Homework",
   "homeworks": "Homework",
   "sidebar.close": "Close sidebar",
