@@ -3,7 +3,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { cookies } from "next/headers";
 import { Subject } from "@/types/subjects";
-import { revalidatePath } from "next/cache";
 
 export async function getSubjectsForCurrentSchoolYear(): Promise<Subject[]> {
   const supabase = createClient();
@@ -49,19 +48,9 @@ export async function getSubject(id: number): Promise<Subject> {
   }
 }
 
+// This function exists twice (one here and the other in ./school-year.ts) But having it here drastically speeds up the page load time, as there is no await.
 function getCurrentSchoolYearId(): number {
   const cookieStore = cookies();
   const currentSchoolYearId = cookieStore.get("currentSchoolYearId");
   return currentSchoolYearId ? parseInt(currentSchoolYearId.value, 10) : 1;
-}
-
-export async function setCurrentSchoolYearId(id: number) {
-  cookies().set("currentSchoolYearId", id.toString(), {
-    path: "/",
-    maxAge: 31536000,
-    sameSite: "strict",
-    secure: process.env.NODE_ENV === "production",
-  });
-
-  revalidatePath("/");
 }
