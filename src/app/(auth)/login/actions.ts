@@ -3,7 +3,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { toast } from "sonner";
 
 export async function handleGoogleLogin() {
   const supabase = createClient();
@@ -19,7 +18,7 @@ export async function handleGoogleLogin() {
 
   if (error) {
     console.error(error.message);
-    toast.error("An error occured. Please try again later.");
+    throw error;
   } else {
     redirect(data.url);
   }
