@@ -3,6 +3,7 @@
 import { useTranslation } from "@/hooks/use-translation";
 import { createClient } from "@/lib/supabase/client";
 import { useEffect, useState } from "react";
+import { removeHashFromDiscordUsername } from "@/lib/utils";
 
 export default function Greeting() {
   const { t } = useTranslation();
@@ -33,10 +34,12 @@ export default function Greeting() {
     }
   };
 
+  const firstNameConverted = removeHashFromDiscordUsername(firstName);
+
   return (
     <div className="mb-10 text-center">
       <h1 className="text-3xl font-semibold">
-        {getGreetingMessage()}, {firstName}
+        {getGreetingMessage()}, {firstNameConverted}
       </h1>
     </div>
   );

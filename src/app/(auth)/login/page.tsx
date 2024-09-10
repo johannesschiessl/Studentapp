@@ -3,7 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { handleGoogleLogin } from "./actions";
+import { handleGoogleLogin, handleDiscordLogin } from "./actions";
 
 export default async function LoginPage() {
   const supabase = createClient();
@@ -16,7 +16,7 @@ export default async function LoginPage() {
     return redirect("/home");
   }
   return (
-    <main className="flex max-h-screen min-h-screen flex-col items-center justify-center space-y-10 p-24">
+    <main className="flex max-h-screen min-h-screen flex-col items-center justify-center space-y-3 p-24">
       <form action={handleGoogleLogin}>
         <Button type="submit">
           <Image
@@ -27,6 +27,18 @@ export default async function LoginPage() {
             height={20}
           />
           Sign in with Google
+        </Button>
+      </form>
+      <form action={handleDiscordLogin}>
+        <Button type="submit">
+          <Image
+            src="/discord.svg"
+            className="mr-2"
+            alt="Discord Logo"
+            width={20}
+            height={20}
+          />
+          Sign in with Discord
         </Button>
       </form>
 

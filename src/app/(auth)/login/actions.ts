@@ -23,3 +23,23 @@ export async function handleGoogleLogin() {
     redirect(data.url);
   }
 }
+
+export async function handleDiscordLogin() {
+  const supabase = createClient();
+  const orign = headers().get("origin");
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: "discord",
+    options: {
+      redirectTo: `${orign}/auth/callback`,
+    },
+  });
+
+  console.log(data);
+
+  if (error) {
+    console.error(error.message);
+    throw error;
+  } else {
+    redirect(data.url);
+  }
+}
