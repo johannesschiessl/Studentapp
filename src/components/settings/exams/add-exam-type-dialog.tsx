@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ExamType } from "@/types/exams";
+import { useTranslation } from "@/hooks/use-translation";
 
 interface AddExamTypeDialogProps {
   groupId: string;
@@ -34,21 +35,27 @@ export function AddExamTypeDialog({ groupId, onAdd }: AddExamTypeDialogProps) {
     reset();
   };
 
+  const { t } = useTranslation();
+
   return (
     <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
       <AlertDialogTrigger asChild>
-        <Button variant="outline">Add Exam Type</Button>
+        <Button variant="outline">{t("settings.exam_type.add")}</Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Add Exam Type</AlertDialogTitle>
+          <AlertDialogTitle>
+            {t("settings.exam_type.add.label")}
+          </AlertDialogTitle>
         </AlertDialogHeader>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
-            <Label htmlFor="name">Name</Label>
+            <Label htmlFor="name">{t("settings.exam_type.name")}</Label>
             <Input
               id="name"
-              {...register("name", { required: "Name is required" })}
+              {...register("name", {
+                required: t("settings.exam_type.name.required"),
+              })}
               aria-invalid={errors.name ? "true" : "false"}
             />
             {errors.name && (
@@ -58,13 +65,13 @@ export function AddExamTypeDialog({ groupId, onAdd }: AddExamTypeDialogProps) {
             )}
           </div>
           <div>
-            <Label htmlFor="weight">Weight</Label>
+            <Label htmlFor="weight">{t("settings.exam_type.weight")}</Label>
             <Input
               id="weight"
               type="number"
               step="0.01"
               {...register("weight", {
-                required: "Weight is required",
+                required: t("settings.exam_type.weight.required"),
                 valueAsNumber: true,
               })}
               aria-invalid={errors.weight ? "true" : "false"}
@@ -81,9 +88,9 @@ export function AddExamTypeDialog({ groupId, onAdd }: AddExamTypeDialogProps) {
               variant="outline"
               onClick={() => setIsOpen(false)}
             >
-              Cancel
+              {t("common.cancel")}
             </Button>
-            <Button type="submit">Add</Button>
+            <Button type="submit">{t("common.add")}</Button>
           </div>
         </form>
       </AlertDialogContent>
