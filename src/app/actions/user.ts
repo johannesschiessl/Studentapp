@@ -15,3 +15,8 @@ export async function getUser(): Promise<{}> {
 
   return user;
 }
+
+export async function logOutUser() {
+  const supabase = createClient();
+  await supabase.auth.signOut({ scope: "local" });
+}

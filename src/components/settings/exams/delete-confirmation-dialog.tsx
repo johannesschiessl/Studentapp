@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
+import { useTranslation } from "@/hooks/use-translation";
 
 interface DeleteConfirmationDialogProps {
   onDelete: () => void;
@@ -31,6 +32,8 @@ export function DeleteConfirmationDialog({
     setIsOpen(false);
   };
 
+  const { t } = useTranslation();
+
   return (
     <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
       <AlertDialogTrigger asChild>
@@ -40,15 +43,18 @@ export function DeleteConfirmationDialog({
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+          <AlertDialogTitle>{t("common.are_you_sure")}</AlertDialogTitle>
           <AlertDialogDescription>
-            This will permanently delete the {itemName}. This action cannot be
-            undone.
+            {t("settings.exam_type.delete.description.1")} {itemName}
+            {t("settings.exam_type.delete.description.2")}{" "}
+            {t("common.cannot_be_undone")}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={handleDelete}>Delete</AlertDialogAction>
+          <AlertDialogCancel>{t("common.cancel")}</AlertDialogCancel>
+          <AlertDialogAction onClick={handleDelete}>
+            {t("common.delete")}
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

@@ -102,15 +102,9 @@ export function EditExamDialog({
                         {type.name}
                       </SelectItem>
                     ))}
-                    <Link href="/settings/exams">
-                      <Button
-                        variant="outline"
-                        className="mt-2 w-full rounded-[1rem]"
-                      >
-                        <Plus className="mr-2 h-4 w-4" />{" "}
-                        {t("exams.add_exam_type")}
-                      </Button>
-                    </Link>
+                    <p className="py-2 text-center text-muted-foreground">
+                      {t("exams.add_exam_type_in_settings")}
+                    </p>
                   </SelectContent>
                 </Select>
               )}
