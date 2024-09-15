@@ -1,0 +1,233 @@
+"use client";
+
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useLanguage } from "@/contexts/language-context";
+import {
+  ArrowLeftRight,
+  BookCheck,
+  CalendarDays,
+  Languages,
+  Link,
+  LogOut,
+  Moon,
+  Plus,
+  RefreshCcw,
+  Settings,
+  Sun,
+  Trash,
+  UserRound,
+} from "lucide-react";
+import { useTheme } from "next-themes";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useTranslation } from "@/hooks/use-translation";
+import Icon from "../shared/icon";
+import { languages } from "@/config/languages";
+import { Separator } from "../ui/separator";
+import { Button } from "../ui/button";
+import ExamSettingsContent from "./exams/exam-settings-content";
+import {
+  getExamTypeGroupsForCurrentSchoolYear,
+  getExamTypesForCurrentSchoolYear,
+} from "@/app/actions/exams";
+import { useEffect, useState } from "react";
+import { logOutUser } from "@/app/actions/user";
+
+export default function SettingsDialog({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const [initialExamTypeGroups, setInitialExamTypeGroups] = useState<any[]>([]);
+  const [initialExamTypes, setInitialExamTypes] = useState<any[]>([]);
+
+  useEffect(() => {
+    async function getInitialData() {
+      const initialExamTypeGroups =
+        await getExamTypeGroupsForCurrentSchoolYear();
+
+      const initialExamTypes = await getExamTypesForCurrentSchoolYear();
+
+      setInitialExamTypeGroups(initialExamTypeGroups);
+      setInitialExamTypes(initialExamTypes);
+    }
+    getInitialData();
+  }, []);
+
+  const { theme, setTheme } = useTheme();
+  const { language, setLanguage } = useLanguage();
+  const { t } = useTranslation();
+  return (
+    <Dialog>
+      <DialogTrigger asChild>{children}</DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>{t("settings")}</DialogTitle>
+        </DialogHeader>
+        <Tabs defaultValue="general" className="h-[400px] w-full">
+          <TabsList className="w-full">
+            <TabsTrigger className="w-1/3" value="general">
+              <span className="flex items-center">
+                <Settings className="mr-1 h-4 w-4" /> {t("settings.general")}
+              </span>
+            </TabsTrigger>
+            <TabsTrigger className="w-1/3" value="examTypes">
+              <span className="flex items-center">
+                <BookCheck className="mr-1 h-4 w-4" />{" "}
+                {t("settings.exam_types")}
+              </span>
+            </TabsTrigger>
+            <TabsTrigger className="w-1/3" value="account">
+              <span className="flex items-center">
+                <UserRound className="mr-1 h-4 w-4" /> {t("settings.account")}
+              </span>
+            </TabsTrigger>
+          </TabsList>
+          <TabsContent value="general">
+            <div className="mb-2 flex w-full cursor-pointer items-center justify-between rounded-[1rem] py-2 text-neutral-700 transition-all duration-200 ease-in-out dark:text-neutral-300">
+              <div className="flex items-center">
+                <Icon className="mr-2">
+                  <Sun className="h-5 w-5 dark:hidden" />
+                  <Moon className="hidden h-5 w-5 dark:block" />
+                </Icon>
+                {t("settings.theme")}
+              </div>
+              <Select onValueChange={(value) => setTheme(value)} value={theme}>
+                <SelectTrigger className="w-[170px]">
+                  <SelectValue>
+                    {theme.charAt(0).toUpperCase() + theme.slice(1)}
+                  </SelectValue>
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="system">
+                    {t("settings.theme.system")}
+                  </SelectItem>
+                  <SelectItem value="light">
+                    {t("settings.theme.light")}
+                  </SelectItem>
+                  <SelectItem value="dark">
+                    {t("settings.theme.dark")}
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="mb-2 flex w-full cursor-pointer items-center justify-between rounded-[1rem] py-2 text-neutral-700 transition-all duration-200 ease-in-out dark:text-neutral-300">
+              <div className="flex items-center">
+                <Icon className="mr-2">
+                  <Languages className="h-5 w-5" />
+                </Icon>
+                {t("settings.language")}
+              </div>
+              <Select
+                onValueChange={(value) => setLanguage(value)}
+                value={language}
+              >
+                <SelectTrigger className="w-[170px]">
+                  <SelectValue>
+                    {t(`settings.language.${language}`)}
+                  </SelectValue>
+                </SelectTrigger>
+                <SelectContent>
+                  {languages.map((lang) => (
+                    <SelectItem key={lang} value={lang}>
+                      {t(`settings.language.${lang}`)}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </TabsContent>
+          <TabsContent value="examTypes">
+            <ExamSettingsContent
+              initialExamTypeGroups={initialExamTypeGroups}
+              initialExamTypes={initialExamTypes}
+            />
+          </TabsContent>
+          <TabsContent value="account">
+            <SettingsItem>
+              <div className="flex items-center">
+                <Icon className="mr-2">
+                  <LogOut className="h-5 w-5" />
+                </Icon>
+                {t("settings.logout")}
+              </div>
+
+              <Button
+                onClick={() => logOutUser()}
+                variant="outline"
+                className="w-[170px]"
+              >
+                {t("settings.logout")}
+              </Button>
+            </SettingsItem>
+
+            <SettingsItem>
+              <div className="flex items-center">
+                <Icon className="mr-2">
+                  <Trash className="h-5 w-5" />
+                </Icon>
+                {t("settings.account.delete")}
+              </div>
+
+              <AlertDialog>
+                <AlertDialogTrigger disabled>
+                  <Button disabled variant="destructive" className="w-[170px]">
+                    {t("settings.account.delete.button")}
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>
+                      Are you absolutely sure?
+                    </AlertDialogTitle>
+                    <AlertDialogDescription>
+                      This action cannot be undone. This will permanently delete
+                      your account and remove all your data from our servers.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction className="bg-destructive hover:bg-destructive/80">
+                      {t("settings.account.delete.button")}
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            </SettingsItem>
+          </TabsContent>
+        </Tabs>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+function SettingsItem({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="mb-2 flex w-full cursor-pointer items-center justify-between rounded-[1rem] py-2 text-neutral-700 transition-all duration-200 ease-in-out dark:text-neutral-300">
+      {children}
+    </div>
+  );
+}
