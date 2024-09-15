@@ -18,16 +18,18 @@ import {
   deleteExamType,
   deleteExamTypeGroup,
 } from "@/app/actions/exams";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { useTranslation } from "@/hooks/use-translation";
 
-interface ExamSettingsPageProps {
+interface ExamSettingsContentProps {
   initialExamTypeGroups: Omit<ExamTypeGroup, "examTypes">[];
   initialExamTypes: ExamType[];
 }
 
-export default function ExamSettingsPage({
+export default function ExamSettingsContent({
   initialExamTypeGroups,
   initialExamTypes,
-}: ExamSettingsPageProps) {
+}: ExamSettingsContentProps) {
   const [examTypeGroups, setExamTypeGroups] = useState<
     Omit<ExamTypeGroup, "examTypes">[]
   >(initialExamTypeGroups);
@@ -60,69 +62,72 @@ export default function ExamSettingsPage({
     setExamTypes((types) => types.filter((type) => type.id !== examTypeId));
   };
 
+  const { t } = useTranslation();
+
   return (
-    <div className="container mx-auto p-4">
-      <div className="mb-4 flex items-center justify-between">
-        <h1 className="mb-4 text-2xl font-bold">Exam Settings</h1>
-        <AddExamTypeGroupDialog onAdd={handleAddExamTypeGroup} />
-      </div>
-      <Accordion type="single" collapsible className="space-y-4">
-        {examTypeGroups.map((group) => {
-          const groupExamTypes = examTypes.filter(
-            (type) => type.group_id === group.id,
-          );
-          return (
-            <AccordionItem key={group.id} value={group.id}>
-              <Card>
-                <CardHeader>
-                  <div className="flex items-center justify-between">
-                    <AccordionTrigger className="flex-grow">
-                      <CardTitle>
-                        {group.name} (Weight: {group.weight})
-                      </CardTitle>
-                    </AccordionTrigger>
-                    <DeleteConfirmationDialog
-                      onDelete={() => handleDeleteExamTypeGroup(group.id)}
-                      itemName={`exam type group "${group.name}"`}
-                    />
-                  </div>
-                </CardHeader>
-                <AccordionContent>
-                  <CardContent>
-                    <ul className="space-y-2">
-                      {groupExamTypes.map((examType) => (
-                        <li
-                          key={examType.id}
-                          className="flex items-center justify-between"
-                        >
-                          <span>
-                            {examType.name} (Weight: {examType.weight})
-                          </span>
-                          <DeleteConfirmationDialog
-                            onDelete={() => handleDeleteExamType(examType.id)}
-                            itemName={`exam type "${examType.name}"`}
-                          />
-                        </li>
-                      ))}
-                    </ul>
-                    <div className="mt-4">
-                      <AddExamTypeDialog
-                        groupId={group.id}
-                        onAdd={(newExamType) =>
-                          handleAddExamType({
-                            ...newExamType,
-                            group_id: group.id,
-                          })
-                        }
+    <div className="container mx-auto mt-5 space-y-4">
+      <AddExamTypeGroupDialog onAdd={handleAddExamTypeGroup} />
+      <ScrollArea className="h-[300px] w-full">
+        <Accordion type="single" collapsible className="space-y-4">
+          {examTypeGroups.map((group) => {
+            const groupExamTypes = examTypes.filter(
+              (type) => type.group_id === group.id,
+            );
+            return (
+              <AccordionItem key={group.id} value={group.id}>
+                <Card>
+                  <CardHeader>
+                    <div className="flex items-center justify-between">
+                      <AccordionTrigger className="flex-grow">
+                        <CardTitle>
+                          {group.name} ({t("settings.exam_type.weight")}:{" "}
+                          {group.weight})
+                        </CardTitle>
+                      </AccordionTrigger>
+                      <DeleteConfirmationDialog
+                        onDelete={() => handleDeleteExamTypeGroup(group.id)}
+                        itemName={`${t("settings.exam_type_group")} "${group.name}"`}
                       />
                     </div>
-                  </CardContent>
-                </AccordionContent>
-              </Card>
-            </AccordionItem>
-          );
-        })}
-      </Accordion>
+                  </CardHeader>
+                  <AccordionContent>
+                    <CardContent>
+                      <ul className="space-y-2">
+                        {groupExamTypes.map((examType) => (
+                          <li
+                            key={examType.id}
+                            className="flex items-center justify-between"
+                          >
+                            <span>
+                              {examType.name} ({t("settings.exam_type.weight")}{" "}
+                              {examType.weight})
+                            </span>
+                            <DeleteConfirmationDialog
+                              onDelete={() => handleDeleteExamType(examType.id)}
+                              itemName={`${t("settings.exam_type")}	 "${examType.name}"`}
+                            />
+                          </li>
+                        ))}
+                      </ul>
+                      <div className="mt-4">
+                        <AddExamTypeDialog
+                          groupId={group.id}
+                          onAdd={(newExamType) =>
+                            handleAddExamType({
+                              ...newExamType,
+                              group_id: group.id,
+                            })
+                          }
+                        />
+                      </div>
+                    </CardContent>
+                  </AccordionContent>
+                </Card>
+              </AccordionItem>
+            );
+          })}
+        </Accordion>
+      </ScrollArea>
     </div>
   );
 }
