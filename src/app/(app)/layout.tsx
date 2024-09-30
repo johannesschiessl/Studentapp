@@ -1,4 +1,5 @@
 import Header from "@/components/sections/header";
+import BottomBar from "@/components/sections/mobile/bottom-bar";
 import Sidebar from "@/components/sections/sidebar";
 import { SidebarProvider } from "@/contexts/sidebar-context";
 import { createClient } from "@/lib/supabase/server";
@@ -30,6 +31,7 @@ export default async function AppLayout({
           </div>
         </div>
       </SidebarProvider>
+      <BottomBar />
     </>
   );
 }
