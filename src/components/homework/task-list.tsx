@@ -34,19 +34,27 @@ export default function TaskList({
   subjects: Subject[];
   category: "open" | "completed" | "all";
 }) {
-  let groupedTasks = tasks.reduce(
+  const groupedTasks = tasks.reduce(
     (acc, task) => {
-      const date = task.due_date;
-      if (!acc[date]) {
-        acc[date] = [];
+      const dueDate =
+        task.due_date instanceof Date
+          ? task.due_date
+          : parseISO(task.due_date as string);
+      const dateKey = dueDate.toISOString().split("T")[0];
+
+      if (!acc[dateKey]) {
+        acc[dateKey] = [];
       }
-      acc[date].push(task);
+      acc[dateKey].push({
+        ...task,
+        due_date: dueDate,
+      });
       return acc;
     },
     {} as Record<string, Task[]>,
   );
 
-  let sortedDates = Object.keys(groupedTasks).sort(
+  const sortedDates = Object.keys(groupedTasks).sort(
     (a, b) => new Date(a).getTime() - new Date(b).getTime(),
   );
 

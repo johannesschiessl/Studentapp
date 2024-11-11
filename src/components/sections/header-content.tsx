@@ -13,8 +13,13 @@ import {
 import { useTranslation } from "@/hooks/use-translation";
 import SettingsDialog from "../settings/settings-dialog";
 import UserMenu from "./user-menu";
+import type { User } from "@supabase/supabase-js";
 
-export function HeaderContent(user: any) {
+interface HeaderContentProps {
+  user?: User;
+}
+
+export function HeaderContent({ user }: HeaderContentProps) {
   const { isOpen: isSidebarOpen, toggleSidebar } = useSidebar();
   const { t } = useTranslation();
 
@@ -73,9 +78,9 @@ export function HeaderContent(user: any) {
         </TooltipProvider>
         <UserMenu>
           <Avatar>
-            <AvatarImage src={user?.user?.user_metadata.avatar_url} />
+            <AvatarImage src={user?.user_metadata?.avatar_url} />
             <AvatarFallback>
-              {user?.user?.user_metadata.name?.charAt(0)}
+              {user?.user_metadata?.name?.charAt(0)}
             </AvatarFallback>
           </Avatar>
         </UserMenu>

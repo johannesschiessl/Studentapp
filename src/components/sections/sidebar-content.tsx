@@ -24,6 +24,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import type { LucideIcon } from "lucide-react";
+import clsx from "clsx";
 
 export function SidebarContent({ subjects }: { subjects: Subject[] }) {
   const { t } = useTranslation();
@@ -108,13 +110,16 @@ export function SidebarContent({ subjects }: { subjects: Subject[] }) {
   );
 }
 
-function NavItem({
-  item,
-  pathname,
-}: {
-  item: { name: string; icon: any; href: string };
+type NavItemProps = {
+  item: {
+    name: string;
+    icon: LucideIcon;
+    href: string;
+  };
   pathname: string;
-}) {
+};
+
+function NavItem({ item, pathname }: NavItemProps) {
   const Icon = item.icon;
   const isActive = pathname === item.href;
 
@@ -141,8 +146,10 @@ function SubjectListItem({
   subject: Subject;
   pathname: string;
 }) {
-  const SubjectIcon =
-    lucideIcons[subject.icon as keyof typeof lucideIcons] || FolderClosed;
+  const SubjectIcon: LucideIcon =
+    (subject.icon &&
+      (lucideIcons[subject.icon as keyof typeof lucideIcons] as LucideIcon)) ||
+    FolderClosed;
   const isActive = pathname === `/subjects/${subject.id}`;
 
   return (
@@ -153,7 +160,13 @@ function SubjectListItem({
         }`}
       >
         <div
-          className={`mr-2.5 rounded-xl p-2 bg-${subject.color}-100 text-${subject.color}-500 dark:bg-${subject.color}-500 dark:text-${subject.color}-100`}
+          className={clsx(
+            "mr-2.5 rounded-xl p-2",
+            `bg-${subject.color}-100`,
+            `text-${subject.color}-500`,
+            `dark:bg-${subject.color}-500`,
+            `dark:text-${subject.color}-100`,
+          )}
         >
           <SubjectIcon className="h-5 w-5" aria-hidden="true" />
         </div>

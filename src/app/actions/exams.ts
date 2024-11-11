@@ -3,6 +3,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { Exam, ExamType, ExamTypeGroup } from "@/types/exams";
 import { cookies } from "next/headers";
+import { NewExamTypeGroup, NewExamType, NewExam } from "@/types/exams";
 
 export async function getExamsForSubject(id: number): Promise<Exam[]> {
   const supabase = createClient();
@@ -29,15 +30,27 @@ export async function getExamsForSubject(id: number): Promise<Exam[]> {
   return data as Exam[];
 }
 
-export async function addExam(exam: Exam, subject_id: number) {
+export async function addExam(exam: NewExam, subject_id: number) {
   const supabase = createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    throw new Error("User not authenticated");
+  }
+
   const { data, error } = await supabase
     .from("exams")
-    .insert({ ...exam, subject_id: subject_id })
+    .insert({
+      ...exam,
+      subject_id,
+      user_id: user.id,
+    })
     .select("*");
 
   if (error) {
-    console.error(error);
+    console.error("Error adding exam:", error);
     throw error;
   }
 
@@ -128,11 +141,11 @@ export async function getExamTypeGroupsForCurrentSchoolYear(): Promise<
   return data as ExamTypeGroup[];
 }
 
-export async function addExamTypeGroup(examTypeGroup: ExamTypeGroup) {
+export async function addExamTypeGroup(newGroup: NewExamTypeGroup) {
   const supabase = createClient();
   const { data, error } = await supabase
     .from("exam_type_groups")
-    .insert({ ...examTypeGroup, school_year_id: getCurrentSchoolYearId() })
+    .insert({ ...newGroup, school_year_id: getCurrentSchoolYearId() })
     .select("*");
 
   if (error) {
@@ -143,11 +156,11 @@ export async function addExamTypeGroup(examTypeGroup: ExamTypeGroup) {
   return data;
 }
 
-export async function addExamType(examType: ExamType) {
+export async function addExamType(newExamType: NewExamType) {
   const supabase = createClient();
   const { data, error } = await supabase
     .from("exam_types")
-    .insert({ ...examType, school_year_id: getCurrentSchoolYearId() })
+    .insert({ ...newExamType, school_year_id: getCurrentSchoolYearId() })
     .select("*");
 
   if (error) {

@@ -20,15 +20,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { Exam, ExamType } from "@/types/exams";
+import { Exam, ExamType, NewExam } from "@/types/exams";
 import { useTranslation } from "@/hooks/use-translation";
-import Link from "next/link";
-import { Plus } from "lucide-react";
 
 interface AddExamDialogProps {
-  children: React.ReactNode;
-  onAdd: (exam: Omit<Exam, "id" | "subject_id">) => void;
   examTypes: ExamType[];
+  onAdd: (exam: NewExam) => void;
+  children: React.ReactNode;
 }
 
 export function AddExamDialog({
@@ -81,8 +79,8 @@ export function AddExamDialog({
               rules={{ required: t("exams.exam_type.required") }}
               render={({ field }) => (
                 <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
+                  onValueChange={(value) => field.onChange(Number(value))}
+                  defaultValue={field.value?.toString()}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder={t("exams.select_exam_type")} />

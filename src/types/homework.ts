@@ -3,6 +3,6 @@ export interface Task {
   task: string;
   done: boolean;
   due_date: Date;
-  subject_id?: number | null | "null";
+  subject_id: number | null;
   school_year_id: number;
 }

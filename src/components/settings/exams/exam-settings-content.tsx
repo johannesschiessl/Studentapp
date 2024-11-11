@@ -4,7 +4,12 @@ import { useState } from "react";
 import { AddExamTypeGroupDialog } from "./add-exam-type-group-dialog";
 import { AddExamTypeDialog } from "./add-exam-type-dialog";
 import { DeleteConfirmationDialog } from "./delete-confirmation-dialog";
-import { ExamTypeGroup, ExamType } from "@/types/exams";
+import {
+  ExamTypeGroup,
+  ExamType,
+  NewExamType,
+  NewExamTypeGroup,
+} from "@/types/exams";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Accordion,
@@ -35,15 +40,13 @@ export default function ExamSettingsContent({
   >(initialExamTypeGroups);
   const [examTypes, setExamTypes] = useState<ExamType[]>(initialExamTypes);
 
-  const handleAddExamTypeGroup = async (
-    newGroup: Omit<ExamTypeGroup, "id">,
-  ) => {
+  const handleAddExamTypeGroup = async (newGroup: NewExamTypeGroup) => {
     const data = await addExamTypeGroup(newGroup);
     const id = data[0].id.toString();
     setExamTypeGroups([...examTypeGroups, { ...newGroup, id }]);
   };
 
-  const handleAddExamType = async (newExamType: Omit<ExamType, "id">) => {
+  const handleAddExamType = async (newExamType: NewExamType) => {
     const data = await addExamType(newExamType);
     const id = data[0].id.toString();
     setExamTypes([...examTypes, { ...newExamType, id }]);

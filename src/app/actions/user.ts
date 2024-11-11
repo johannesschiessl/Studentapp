@@ -1,8 +1,9 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
+import { User } from "@supabase/supabase-js";
 
-export async function getUser(): Promise<{}> {
+export async function getUser(): Promise<User> {
   const supabase = createClient();
 
   const {

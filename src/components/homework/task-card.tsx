@@ -2,7 +2,7 @@ import { Switch } from "../ui/switch";
 import * as lucideIcons from "lucide-react";
 import { Task } from "@/types/homework";
 import { Subject } from "@/types/subjects";
-import { FolderClosed } from "lucide-react";
+import { FolderClosed, LucideIcon } from "lucide-react";
 import EditTaskDialog from "./edit-task-dialog";
 
 export default function TaskCard({
@@ -18,45 +18,45 @@ export default function TaskCard({
   onDelete: (id: number) => void;
   subjects: Subject[];
 }) {
-  const SubjectIcon =
-    lucideIcons[
-      subjects.find((subject) => subject.id === task.subject_id)
-        ?.icon as keyof typeof lucideIcons
-    ] || lucideIcons["FolderClosed"];
+  const currentSubject = subjects.find(
+    (subject) => subject.id === task.subject_id,
+  );
+
+  const getSubjectIcon = (): LucideIcon => {
+    if (!currentSubject?.icon) return FolderClosed;
+    return (
+      (lucideIcons[
+        currentSubject.icon as keyof typeof lucideIcons
+      ] as LucideIcon) || FolderClosed
+    );
+  };
+
+  const SubjectIcon = getSubjectIcon();
 
   return (
     <EditTaskDialog
       subjects={subjects}
       task={task}
-      onEdit={(task) => onEdit(task)}
-      onDelete={(id) => onDelete(id)}
+      onEdit={onEdit}
+      onDelete={onDelete}
     >
       <div
         key={task.id}
-        className={`flex w-full cursor-pointer flex-col rounded-[1rem] text-left`}
+        className="flex w-full cursor-pointer flex-col rounded-[1rem] text-left"
       >
-        <div
-          className={`flex items-center justify-between rounded-t-[1rem] border-2 bg-neutral-50 p-2 font-medium dark:bg-neutral-900`}
-        >
-          {subjects.find((subject) => subject.id === task.subject_id) ? (
+        <div className="flex items-center justify-between rounded-t-[1rem] border-2 bg-neutral-50 p-2 font-medium dark:bg-neutral-900">
+          {currentSubject ? (
             <div className="flex items-center">
               <div
-                className={`rounded-xl p-2 bg-${subjects.find((subject) => subject.id === task.subject_id)?.color}-100 text-${subjects.find((subject) => subject.id === task.subject_id)?.color}-500 mr-2`}
+                className={`rounded-xl p-2 bg-${currentSubject.color}-100 text-${currentSubject.color}-500 mr-2`}
               >
-                {SubjectIcon ? (
-                  <SubjectIcon className="h-5 w-5" />
-                ) : (
-                  <FolderClosed className="h-5 w-5" />
-                )}
+                <SubjectIcon className="h-5 w-5" />
               </div>
-              <p>
-                {subjects.find((subject) => subject.id === task.subject_id)
-                  ?.name || "Reload to see..."}
-              </p>
+              <p>{currentSubject.name}</p>
             </div>
           ) : (
             <div className="flex items-center">
-              <div className={`mr-2 rounded-xl bg-neutral-100 p-2`}>
+              <div className="mr-2 rounded-xl bg-neutral-100 p-2">
                 <FolderClosed className="h-5 w-5 text-neutral-500" />
               </div>
               <p>General</p>

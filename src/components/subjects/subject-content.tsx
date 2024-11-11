@@ -6,7 +6,7 @@ import SubjectIcon from "@/components/shared/subject-icon";
 import { Button } from "@/components/ui/button";
 import { Subject } from "@/types/subjects";
 import ExamList from "../exams/exam-list";
-import { Exam, ExamType } from "@/types/exams";
+import { Exam, ExamType, NewExam } from "@/types/exams";
 import { AddExamDialog } from "../exams/add-exam-dialog";
 import { useState } from "react";
 import { addExam, deleteExam, editExam } from "@/app/actions/exams";
@@ -25,14 +25,15 @@ export default function SubjectContent({
   const { t } = useTranslation();
   const [exams, setExams] = useState(intialExams);
 
-  async function handleAddExam(exam: Exam) {
-    const data = await addExam(exam, subject.id);
+  async function handleAddExam(newExam: NewExam) {
+    const data = await addExam(newExam, subject.id);
     setExams((prev) => [...prev, ...data]);
   }
 
   async function handleEditExam(exam: Exam) {
     try {
       const data = await editExam(exam);
+      console.log(data);
       setExams((prev) =>
         prev.map((ex) => (ex.id === data[0].id ? data[0] : ex)),
       );
@@ -45,6 +46,7 @@ export default function SubjectContent({
   async function handleDeleteExam(id: number) {
     try {
       const data = await deleteExam(id);
+      console.log(data);
       setExams((prev) => prev.filter((exam) => exam.id !== id));
     } catch (error) {
       console.error(error);

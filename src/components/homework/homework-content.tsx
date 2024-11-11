@@ -17,13 +17,15 @@ import { Button } from "../ui/button";
 import AddHomeworkDialog from "./add-task-dialog";
 
 interface HomeworkContentProps {
-  initalHomework: Task[]; // TODO: ADD HOMEWORK TYPE
+  initalHomework: Task[];
   subjects: Subject[];
+  schoolYearId: number;
 }
 
 export function HomeworkContent({
   initalHomework,
   subjects,
+  schoolYearId,
 }: HomeworkContentProps) {
   const [homework, setHomework] = useState<Task[]>(initalHomework);
 
@@ -47,9 +49,15 @@ export function HomeworkContent({
     });
   }
 
-  function handleAddTask(task: Task) {
-    addTask(task);
-    setHomework((prev) => [...prev, task]);
+  async function handleAddTask(task: Task) {
+    try {
+      const newTask = await addTask(task);
+      if (newTask && "id" in newTask) {
+        setHomework((prev) => [...prev, newTask as unknown as Task]);
+      }
+    } catch (error) {
+      console.error("Failed to add task:", error);
+    }
   }
 
   function handleEditTask(task: Task) {
@@ -68,7 +76,10 @@ export function HomeworkContent({
         <h1 className="text-2xl font-bold">{t("homeworks")}</h1>
         <AddHomeworkDialog
           subjects={subjects}
-          onAdd={(task) => handleAddTask(task)}
+          onAdd={(task: Omit<Task, "id">) =>
+            handleAddTask({ ...task, id: 0 } as Task)
+          }
+          schoolYearId={schoolYearId}
         >
           <Button>{t("homework.add")}</Button>
         </AddHomeworkDialog>

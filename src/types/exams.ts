@@ -21,3 +21,8 @@ export interface ExamTypeGroup {
   name: string;
   weight: number;
 }
+
+export type NewExamType = Omit<ExamType, "id">;
+export type NewExamTypeGroup = Omit<ExamTypeGroup, "id">;
+
+export type NewExam = Omit<Exam, "id" | "subject_id">;

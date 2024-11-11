@@ -18,6 +18,8 @@ import * as lucideIcons from "lucide-react";
 import { Event } from "@/types/calendar";
 import { getSubject } from "@/app/actions/subjects";
 import { getTimeTable } from "@/app/actions/school-year";
+import { TimeTable, TimeTableItem } from "@/types/school-year";
+import { LucideIcon } from "lucide-react";
 
 const hours = Array.from({ length: 14 }, (_, i) => i + 7);
 
@@ -32,12 +34,13 @@ export default function WeekView({ events }: { events: Event[] }) {
   }
 
   const [currentWeekStart, setCurrentWeekStart] = useState(getWeekStartDate());
-  const [timetable, setTimetable] = useState<any>(null);
+  const [timetable, setTimetable] = useState<TimeTable | null>(null);
   const [transformedEvents, setTransformedEvents] = useState<Event[]>([]);
 
   useEffect(() => {
     const fetchTimetable = async () => {
-      const timetable = await getTimeTable();
+      const timetableData = await getTimeTable();
+      const timetable = timetableData as unknown as TimeTable;
       setTimetable(timetable);
     };
     fetchTimetable();
@@ -45,7 +48,7 @@ export default function WeekView({ events }: { events: Event[] }) {
 
   const transformTimetableToEvents = async (
     date: Date,
-    timetable: any,
+    timetable: TimeTable,
   ): Promise<Event[]> => {
     const dayName = date
       .toLocaleDateString("en-US", { weekday: "long" })
@@ -54,8 +57,8 @@ export default function WeekView({ events }: { events: Event[] }) {
 
     const transformedItems = await Promise.all(
       timetableItems
-        .filter((item) => item.start_time && item.end_time)
-        .map(async (item) => {
+        .filter((item: TimeTableItem) => item.start_time && item.end_time)
+        .map(async (item: TimeTableItem) => {
           const [startHour, startMinute] = item.start_time
             .split(":")
             .map(Number);
@@ -66,7 +69,7 @@ export default function WeekView({ events }: { events: Event[] }) {
           const end = new Date(date);
           end.setHours(endHour, endMinute);
 
-          const subject = await getSubject(item.subject_id);
+          const subject = await getSubject(parseInt(item.subject_id));
           return {
             title: `${subject.name || "Unknown"}`,
             description: `Room: ${item.room || subject.room}, Teacher: ${subject.teacher}`,
@@ -241,14 +244,20 @@ export default function WeekView({ events }: { events: Event[] }) {
                 ))}
                 {getEventsForDate(date, false).map((event) => {
                   const { top, height } = getEventPosition(event);
-                  const SubjectIcon =
-                    lucideIcons[event.icon as keyof typeof lucideIcons];
+
+                  const SubjectIcon: LucideIcon | undefined = event.icon
+                    ? (lucideIcons[
+                        event.icon as keyof typeof lucideIcons
+                      ] as LucideIcon)
+                    : undefined;
 
                   if (!SubjectIcon) {
                     console.error(
                       `Icon "${event.icon}" not found in Lucide icons.`,
                     );
+                    return null; // Skip rendering if icon not found
                   }
+
                   return (
                     <TooltipProvider key={event.title}>
                       <Tooltip>
