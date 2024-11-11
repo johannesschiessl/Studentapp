@@ -7,11 +7,12 @@ import { removeHashFromDiscordUsername } from "@/lib/utils";
 
 export default function Greeting() {
   const { t } = useTranslation();
-  const supabase = createClient();
   const [firstName, setFirstName] = useState<string>("");
 
   useEffect(() => {
-    async function getUser() {
+    const supabase = createClient();
+
+    async function fetchUser() {
       const {
         data: { user },
       } = await supabase.auth.getUser();
@@ -19,7 +20,7 @@ export default function Greeting() {
       setFirstName(user?.user_metadata.name.split(" ")[0] || "");
     }
 
-    getUser();
+    fetchUser();
   }, []);
 
   const getGreetingMessage = () => {

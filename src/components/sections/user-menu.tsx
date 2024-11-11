@@ -3,34 +3,14 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 
-import { Button } from "../ui/button";
 import { logOutUser } from "@/app/actions/user";
 import Icon from "../shared/icon";
-import {
-  ArrowLeftRight,
-  Languages,
-  LogOut,
-  Moon,
-  Plus,
-  Sun,
-} from "lucide-react";
+import { ArrowLeftRight, LogOut, Plus } from "lucide-react";
 import { useTranslation } from "@/hooks/use-translation";
-import { useTheme } from "next-themes";
-import { useLanguage } from "@/contexts/language-context";
-import { languages } from "@/config/languages";
 
 export default function UserMenu({ children }: { children: React.ReactNode }) {
   const { t } = useTranslation();
-  const { theme, setTheme } = useTheme();
-  const { language, setLanguage } = useLanguage();
   return (
     <Popover>
       <PopoverTrigger asChild>{children}</PopoverTrigger>

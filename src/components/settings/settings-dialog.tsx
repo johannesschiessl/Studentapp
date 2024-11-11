@@ -10,15 +10,10 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useLanguage } from "@/contexts/language-context";
 import {
-  ArrowLeftRight,
   BookCheck,
-  CalendarDays,
   Languages,
-  Link,
   LogOut,
   Moon,
-  Plus,
-  RefreshCcw,
   Settings,
   Sun,
   Trash,
@@ -46,7 +41,6 @@ import {
 import { useTranslation } from "@/hooks/use-translation";
 import Icon from "../shared/icon";
 import { languages } from "@/config/languages";
-import { Separator } from "../ui/separator";
 import { Button } from "../ui/button";
 import ExamSettingsContent from "./exams/exam-settings-content";
 import {
@@ -55,24 +49,24 @@ import {
 } from "@/app/actions/exams";
 import { useEffect, useState } from "react";
 import { logOutUser } from "@/app/actions/user";
+import { ExamType, ExamTypeGroup } from "@/types/exams";
 
 export default function SettingsDialog({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const [initialExamTypeGroups, setInitialExamTypeGroups] = useState<any[]>([]);
-  const [initialExamTypes, setInitialExamTypes] = useState<any[]>([]);
+  const [initialExamTypeGroups, setInitialExamTypeGroups] = useState<
+    ExamTypeGroup[]
+  >([]);
+  const [initialExamTypes, setInitialExamTypes] = useState<ExamType[]>([]);
 
   useEffect(() => {
     async function getInitialData() {
-      const initialExamTypeGroups =
-        await getExamTypeGroupsForCurrentSchoolYear();
-
-      const initialExamTypes = await getExamTypesForCurrentSchoolYear();
-
-      setInitialExamTypeGroups(initialExamTypeGroups);
-      setInitialExamTypes(initialExamTypes);
+      const examTypeGroups = await getExamTypeGroupsForCurrentSchoolYear();
+      const examTypes = await getExamTypesForCurrentSchoolYear();
+      setInitialExamTypeGroups(examTypeGroups);
+      setInitialExamTypes(examTypes);
     }
     getInitialData();
   }, []);
@@ -118,7 +112,9 @@ export default function SettingsDialog({
               <Select onValueChange={(value) => setTheme(value)} value={theme}>
                 <SelectTrigger className="w-[170px]">
                   <SelectValue>
-                    {theme.charAt(0).toUpperCase() + theme.slice(1)}
+                    {theme
+                      ? theme.charAt(0).toUpperCase() + theme.slice(1)
+                      : ""}
                   </SelectValue>
                 </SelectTrigger>
                 <SelectContent>
@@ -142,7 +138,7 @@ export default function SettingsDialog({
                 {t("settings.language")}
               </div>
               <Select
-                onValueChange={(value) => setLanguage(value)}
+                onValueChange={(value: "en" | "de") => setLanguage(value)}
                 value={language}
               >
                 <SelectTrigger className="w-[170px]">

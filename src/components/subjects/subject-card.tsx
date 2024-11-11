@@ -13,7 +13,11 @@ export default function SubjectCard({ subject }: { subject: Subject }) {
     >
       <div className="mb-5 flex items-center justify-between space-x-2">
         <div className="flex items-center space-x-2">
-          <SubjectIcon icon={subject.icon} color={subject.color} />
+          <SubjectIcon
+            size="default"
+            icon={subject.icon}
+            color={subject.color}
+          />
           <p className={`text-xl font-semibold`}>{subject.name}</p>
         </div>
       </div>

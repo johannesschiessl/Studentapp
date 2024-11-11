@@ -25,8 +25,6 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Exam, ExamType } from "@/types/exams";
 import { useTranslation } from "@/hooks/use-translation";
-import Link from "next/link";
-import { Plus } from "lucide-react";
 
 interface EditExamDialogProps {
   children: React.ReactNode;
@@ -90,7 +88,7 @@ export function EditExamDialog({
               rules={{ required: t("exams.exam_type.required") }}
               render={({ field }) => (
                 <Select
-                  onValueChange={field.onChange}
+                  onValueChange={(value) => field.onChange(Number(value))}
                   defaultValue={exam.exam_type_id.toString()}
                 >
                   <SelectTrigger>
@@ -121,11 +119,11 @@ export function EditExamDialog({
             <Controller
               name="grade"
               control={control}
-              defaultValue={exam.grade?.toString()}
+              defaultValue={exam.grade}
               render={({ field }) => (
                 <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
+                  onValueChange={(value) => field.onChange(Number(value))}
+                  defaultValue={field.value?.toString()}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder={t("exams.select_grade")} />

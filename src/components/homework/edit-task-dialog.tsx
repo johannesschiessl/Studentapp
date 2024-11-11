@@ -34,6 +34,12 @@ interface EditHomeworkDialogProps {
   onDelete: (id: number) => void;
 }
 
+interface FormData {
+  task: string;
+  due_date: string;
+  subject_id: string;
+}
+
 export default function EditTaskDialog({
   children,
   subjects,
@@ -48,16 +54,16 @@ export default function EditTaskDialog({
     control,
     reset,
     formState: { errors },
-  } = useForm<Omit<Task, "done" | "school_year_id">>();
+  } = useForm<FormData>();
 
-  const onSubmit = (data: Omit<Task, "done" | "school_year_id">) => {
+  const onSubmit = (data: FormData) => {
     onEdit({
       ...data,
       id: task.id,
-      done: false,
+      done: task.done,
       due_date: new Date(data.due_date),
-      subject_id:
-        data.subject_id === "null" ? undefined : Number(data.subject_id),
+      subject_id: data.subject_id === "none" ? null : Number(data.subject_id),
+      school_year_id: task.school_year_id,
     });
     setIsOpen(false);
     reset();
@@ -111,20 +117,20 @@ export default function EditTaskDialog({
           </div>
           <div>
             <Label htmlFor="subject_id">{t("homework.subject")}</Label>
-            <Controller
+            <Controller<FormData>
               name="subject_id"
               control={control}
-              defaultValue={task.subject_id?.toString()}
+              defaultValue={task.subject_id?.toString() ?? "none"}
               render={({ field }) => (
                 <Select
                   onValueChange={field.onChange}
-                  defaultValue={task.subject_id?.toString()}
+                  defaultValue={field.value}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select a subject" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value={"null"}>
+                    <SelectItem value="none">
                       <SubjectOption name="General" color="neutral" />
                     </SelectItem>
                     {subjects.map((subject) => (
