@@ -12,7 +12,10 @@ import {
   isAfter,
   isBefore,
   isToday,
+  isTomorrow,
   parseISO,
+  startOfDay,
+  endOfDay,
 } from "date-fns";
 import autoAnimate from "@formkit/auto-animate";
 import { useEffect, useRef } from "react";
@@ -156,9 +159,10 @@ function getDayProps(date: string) {
     };
   }
 
-  const now = new Date();
-  const dueDateParsed = parseISO(date);
+  const now = startOfDay(new Date());
+  const dueDateParsed = startOfDay(new Date(date));
   const isDueToday = isToday(dueDateParsed);
+  const isDueTomorrow = isTomorrow(dueDateParsed);
   const daysUntilDue = differenceInCalendarDays(dueDateParsed, now);
 
   if (isDueToday) {
@@ -171,18 +175,20 @@ function getDayProps(date: string) {
     return {
       color: "red",
       icon: <AlertCircle className="h-5 w-5" />,
-      note: `These tasks are ${-daysUntilDue} ${-daysUntilDue === 1 ? "day" : "days"} overdue!`,
+      note: `These tasks are ${-daysUntilDue} ${
+        -daysUntilDue === 1 ? "day" : "days"
+      } overdue!`,
     };
   } else if (
-    daysUntilDue === 1 &&
-    isAfter(now, new Date().setHours(18, 0, 0))
+    isDueTomorrow &&
+    isAfter(new Date(), endOfDay(now).setHours(18, 0, 0))
   ) {
     return {
       color: "orange",
       icon: <AlertTriangle className="h-5 w-5" />,
       note: "Due tomorrow. Not much time left!",
     };
-  } else if (daysUntilDue === 1) {
+  } else if (isDueTomorrow) {
     return {
       color: "blue",
       icon: <CalendarClock className="h-5 w-5" />,

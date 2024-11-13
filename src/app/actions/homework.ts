@@ -45,15 +45,24 @@ export async function toggleTaskDone(id: number, currentDone: boolean) {
   return data;
 }
 
-export async function addTask(task: Task) {
+export async function addTask(task: Omit<Task, "id">) {
   const supabase = createClient();
+
+  const { data: user } = await supabase.auth.getUser();
+  if (!user.user) throw new Error("Not authenticated");
+
   const { data, error } = await supabase
     .from("homework")
-    .insert({ ...task, school_year_id: getCurrentSchoolYearId() })
-    .select();
+    .insert({
+      ...task,
+      user_id: user.user.id,
+      school_year_id: getCurrentSchoolYearId(),
+    })
+    .select()
+    .single();
 
   if (error) {
-    console.error(error);
+    console.error("Error adding task:", error);
     throw error;
   }
 
@@ -62,10 +71,13 @@ export async function addTask(task: Task) {
 
 export async function editTask(task: Task) {
   const supabase = createClient();
+
+  const { id, ...updateData } = task;
+
   const { data, error } = await supabase
     .from("homework")
-    .update({ ...task })
-    .eq("id", task.id)
+    .update(updateData)
+    .eq("id", id)
     .select();
 
   if (error) {

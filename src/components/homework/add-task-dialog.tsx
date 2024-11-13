@@ -53,7 +53,7 @@ export default function AddTaskDialog({
 
   const onSubmit = (data: FormData) => {
     onAdd({
-      ...data,
+      task: data.task,
       done: false,
       due_date: new Date(data.due_date),
       subject_id: data.subject_id === "none" ? null : Number(data.subject_id),
