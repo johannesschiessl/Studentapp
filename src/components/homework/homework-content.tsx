@@ -49,11 +49,11 @@ export function HomeworkContent({
     });
   }
 
-  async function handleAddTask(task: Task) {
+  async function handleAddTask(task: Omit<Task, "id">) {
     try {
       const newTask = await addTask(task);
-      if (newTask && "id" in newTask) {
-        setHomework((prev) => [...prev, newTask as unknown as Task]);
+      if (newTask) {
+        setHomework((prev) => [...prev, newTask as Task]);
       }
     } catch (error) {
       console.error("Failed to add task:", error);
@@ -76,9 +76,7 @@ export function HomeworkContent({
         <h1 className="text-2xl font-bold">{t("homeworks")}</h1>
         <AddHomeworkDialog
           subjects={subjects}
-          onAdd={(task: Omit<Task, "id">) =>
-            handleAddTask({ ...task, id: 0 } as Task)
-          }
+          onAdd={handleAddTask}
           schoolYearId={schoolYearId}
         >
           <Button>{t("homework.add")}</Button>

@@ -57,14 +57,16 @@ export default function EditTaskDialog({
   } = useForm<FormData>();
 
   const onSubmit = (data: FormData) => {
-    onEdit({
-      ...data,
+    const updatedTask: Task = {
       id: task.id,
+      task: data.task,
       done: task.done,
       due_date: new Date(data.due_date),
       subject_id: data.subject_id === "none" ? null : Number(data.subject_id),
       school_year_id: task.school_year_id,
-    });
+    };
+
+    onEdit(updatedTask);
     setIsOpen(false);
     reset();
   };
