@@ -2,6 +2,7 @@
 
 import React from "react";
 import {
+  Blocks,
   CalendarDays,
   FolderClosed,
   FolderOpen,
@@ -37,6 +38,7 @@ export function SidebarContent({ subjects }: { subjects: Subject[] }) {
     { name: t("calendar"), icon: CalendarDays, href: "/calendar" },
     { name: t("subjects"), icon: FolderOpen, href: "/subjects" },
     { name: t("homeworks"), icon: ListChecks, href: "/homework" },
+    { name: t("flashcards"), icon: Blocks, href: "/flashcards" },
   ];
 
   return (
