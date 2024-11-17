@@ -12,8 +12,8 @@ create table public.school_years (
     id bigint generated always as identity primary key,
     user_id uuid references auth.users(id) not null,
     class integer not null,
-    grading_system text not null default '1-6',
-    vacation_region text not null default 'BY',
+    grading_system text not null,
+    vacation_region text not null,
     timetable jsonb,
     created_at timestamptz not null default now(),
     updated_at timestamptz not null default now()
