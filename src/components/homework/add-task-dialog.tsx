@@ -143,7 +143,7 @@ export default function AddTaskDialog({
           </div>
           <div className="flex justify-end space-x-2">
             <Button type="button" variant="outline" onClick={onCancel}>
-              {t("homework.cancel")}
+              {t("common.cancel")}
             </Button>
             <Button type="submit">{t("homework.add")}</Button>
           </div>
