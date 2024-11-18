@@ -44,7 +44,7 @@ export async function getTimeTable(): Promise<JSON> {
 export async function getCurrentSchoolYearId(): Promise<number> {
   const cookieStore = cookies();
   const currentSchoolYearId = cookieStore.get("currentSchoolYearId");
-  return currentSchoolYearId ? parseInt(currentSchoolYearId.value, 10) : 1;
+  return currentSchoolYearId ? parseInt(currentSchoolYearId.value, 10) : 0;
 }
 
 export async function setCurrentSchoolYearId(id: number) {
