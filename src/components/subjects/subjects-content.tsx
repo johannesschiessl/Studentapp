@@ -2,8 +2,10 @@
 
 import { useTranslation } from "@/hooks/use-translation";
 import { Subject } from "@/types/subjects";
+import { Plus } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import SubjectList from "./subject-list";
-
+import Link from "next/link";
 interface SubjectsContentProps {
   subjects: Subject[];
 }
@@ -24,12 +26,12 @@ export function SubjectsContent({ subjects }: SubjectsContentProps) {
       <SubjectList subjects={subjects} />
 
       <div className="w-full text-center">
-        <p className="text-sm text-muted-foreground">
-          {t("subjects.add.notice")}
-        </p>
-        <p className="text-sm text-muted-foreground">
-          {t("subjects.add.notice.2")}
-        </p>
+        <Link href="/subjects/new">
+          <Button variant="outline">
+            <Plus className="mr-2 h-4 w-4" />
+            {t("subjects.add")}
+          </Button>
+        </Link>
       </div>
     </main>
   );
