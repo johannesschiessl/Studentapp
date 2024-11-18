@@ -57,3 +57,65 @@ export async function setCurrentSchoolYearId(id: number) {
 
   revalidatePath("/");
 }
+
+export async function createSchoolYear(
+  data: Partial<SchoolYear>,
+): Promise<SchoolYear> {
+  const supabase = createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) throw new Error("Not authenticated");
+
+  const newSchoolYear = {
+    ...data,
+    user_id: user.id,
+    grading_system: data.grading_system || "de_full_grades",
+    vacation_region: data.vacation_region || "de_bavaria",
+    timetable: data.timetable || {
+      monday: [],
+      tuesday: [],
+      wednesday: [],
+      thursday: [],
+      friday: [],
+      saturday: [],
+      sunday: [],
+    },
+  };
+
+  const { data: schoolYear, error } = await supabase
+    .from("school_years")
+    .insert(newSchoolYear)
+    .select()
+    .single();
+
+  if (error) {
+    console.error("Error creating school year:", error);
+    throw error;
+  }
+
+  return schoolYear as SchoolYear;
+}
+
+export async function getAllSchoolYears(): Promise<SchoolYear[]> {
+  const supabase = createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) throw new Error("Not authenticated");
+
+  const { data, error } = await supabase
+    .from("school_years")
+    .select("*")
+    .eq("user_id", user.id)
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("Error fetching school years:", error);
+    throw error;
+  }
+
+  return data as SchoolYear[];
+}
