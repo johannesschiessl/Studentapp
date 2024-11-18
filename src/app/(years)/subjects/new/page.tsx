@@ -5,12 +5,24 @@ import { useForm, Controller } from "react-hook-form";
 import {
   Check,
   ChevronsUpDown,
-  HomeIcon as House,
   Book,
   FlaskConical,
   Briefcase,
   X,
   Loader2,
+  Calculator,
+  Coffee,
+  Scroll,
+  Leaf,
+  Atom,
+  Terminal,
+  Hourglass,
+  Earth,
+  Scale,
+  Music,
+  Church,
+  Palette,
+  Dumbbell,
 } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
@@ -46,10 +58,22 @@ interface FormData {
 }
 
 const iconOptions = [
-  { name: "House", icon: House },
   { name: "Book", icon: Book },
+  { name: "Calculator", icon: Calculator },
+  { name: "Coffee", icon: Coffee },
+  { name: "Scroll", icon: Scroll },
+  { name: "Leaf", icon: Leaf },
   { name: "FlaskConical", icon: FlaskConical },
+  { name: "Atom", icon: Atom },
+  { name: "Terminal", icon: Terminal },
+  { name: "Hourglass", icon: Hourglass },
+  { name: "Earth", icon: Earth },
   { name: "Briefcase", icon: Briefcase },
+  { name: "Scale", icon: Scale },
+  { name: "Music", icon: Music },
+  { name: "Church", icon: Church },
+  { name: "Palette", icon: Palette },
+  { name: "Dumbbell", icon: Dumbbell },
 ];
 
 export default function NewSubjectPage() {
@@ -191,7 +215,7 @@ export default function NewSubjectPage() {
                           <span className="flex items-center">
                             {React.createElement(
                               iconOptions.find((i) => i.name === field.value)
-                                ?.icon || House,
+                                ?.icon || Book,
                               { className: "mr-2 h-4 w-4" },
                             )}
                             {field.value}
