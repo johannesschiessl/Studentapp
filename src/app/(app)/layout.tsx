@@ -4,6 +4,7 @@ import Sidebar from "@/components/sections/sidebar";
 import { SidebarProvider } from "@/contexts/sidebar-context";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
+import { getCurrentSchoolYearId } from "../actions/school-year";
 
 export default async function AppLayout({
   children,
@@ -11,6 +12,12 @@ export default async function AppLayout({
   children: React.ReactNode;
 }) {
   const supabase = createClient();
+
+  const currentSchoolYearId = await getCurrentSchoolYearId();
+
+  if (currentSchoolYearId === 0) {
+    return redirect("/years");
+  }
 
   const {
     data: { user },

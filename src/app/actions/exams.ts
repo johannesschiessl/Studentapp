@@ -2,8 +2,8 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { Exam, ExamType, ExamTypeGroup } from "@/types/exams";
-import { cookies } from "next/headers";
 import { NewExamTypeGroup, NewExamType, NewExam } from "@/types/exams";
+import { getCurrentSchoolYearId } from "./school-year";
 
 export async function getExamsForSubject(id: number): Promise<Exam[]> {
   const supabase = createClient();
@@ -96,7 +96,7 @@ export async function getExamTypesForCurrentSchoolYear(): Promise<ExamType[]> {
     throw new Error("User not authenticated");
   }
 
-  const currentSchoolYearId = getCurrentSchoolYearId();
+  const currentSchoolYearId = await getCurrentSchoolYearId();
 
   const { data, error } = await supabase
     .from("exam_types")
@@ -125,7 +125,7 @@ export async function getExamTypeGroupsForCurrentSchoolYear(): Promise<
     throw new Error("User not authenticated");
   }
 
-  const currentSchoolYearId = getCurrentSchoolYearId();
+  const currentSchoolYearId = await getCurrentSchoolYearId();
 
   const { data, error } = await supabase
     .from("exam_type_groups")
@@ -145,7 +145,7 @@ export async function addExamTypeGroup(newGroup: NewExamTypeGroup) {
   const supabase = createClient();
   const { data, error } = await supabase
     .from("exam_type_groups")
-    .insert({ ...newGroup, school_year_id: getCurrentSchoolYearId() })
+    .insert({ ...newGroup, school_year_id: await getCurrentSchoolYearId() })
     .select("*");
 
   if (error) {
@@ -160,7 +160,10 @@ export async function addExamType(newExamType: NewExamType) {
   const supabase = createClient();
   const { data, error } = await supabase
     .from("exam_types")
-    .insert({ ...newExamType, school_year_id: getCurrentSchoolYearId() })
+    .insert({
+      ...newExamType,
+      school_year_id: await getCurrentSchoolYearId(),
+    })
     .select("*");
 
   if (error) {
@@ -199,11 +202,4 @@ export async function deleteExamTypeGroup(id: number) {
   }
 
   return data;
-}
-
-// This function exists twice (one here and the other in ./school-year.ts) But having it here drastically speeds up the page load time, as there is no await.
-function getCurrentSchoolYearId(): number {
-  const cookieStore = cookies();
-  const currentSchoolYearId = cookieStore.get("currentSchoolYearId");
-  return currentSchoolYearId ? parseInt(currentSchoolYearId.value, 10) : 1;
 }

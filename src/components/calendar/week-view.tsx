@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import {
   Calendar,
   CalendarArrowDown,
+  CalendarDays,
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
@@ -20,6 +21,7 @@ import { getSubject } from "@/app/actions/subjects";
 import { getTimeTable } from "@/app/actions/school-year";
 import { TimeTable, TimeTableItem } from "@/types/school-year";
 import { LucideIcon } from "lucide-react";
+import Link from "next/link";
 
 const hours = Array.from({ length: 14 }, (_, i) => i + 7);
 
@@ -159,6 +161,16 @@ export default function WeekView({ events }: { events: Event[] }) {
           })}
         </h1>
         <div className="flex space-x-2">
+          <Link href="/calendar/timetable">
+            <Button
+              className="mr-4"
+              variant="outline"
+              onClick={() => setCurrentWeekStart(getWeekStartDate())}
+            >
+              <CalendarDays className="mr-2 h-4 w-4" />
+              Edit timetable
+            </Button>
+          </Link>
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>

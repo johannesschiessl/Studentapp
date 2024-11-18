@@ -2,7 +2,7 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { Task } from "@/types/homework";
-import { cookies } from "next/headers";
+import { getCurrentSchoolYearId } from "./school-year";
 export async function getHomeworkForCurrentSchoolYear(): Promise<Task[]> {
   const supabase = createClient();
 
@@ -14,7 +14,7 @@ export async function getHomeworkForCurrentSchoolYear(): Promise<Task[]> {
     throw new Error("User not authenticated");
   }
 
-  const currentSchoolYearId = getCurrentSchoolYearId();
+  const currentSchoolYearId = await getCurrentSchoolYearId();
 
   const { data, error } = await supabase
     .from("homework")
@@ -51,12 +51,14 @@ export async function addTask(task: Omit<Task, "id">) {
   const { data: user } = await supabase.auth.getUser();
   if (!user.user) throw new Error("Not authenticated");
 
+  const currentSchoolYearId = await getCurrentSchoolYearId();
+
   const { data, error } = await supabase
     .from("homework")
     .insert({
       ...task,
       user_id: user.user.id,
-      school_year_id: getCurrentSchoolYearId(),
+      school_year_id: currentSchoolYearId,
     })
     .select()
     .single();
@@ -98,11 +100,4 @@ export async function deleteTask(id: number) {
   }
 
   return data;
-}
-
-// This function exists twice (one here and the other in ./school-year.ts) But having it here drastically speeds up the page load time, as there is no await.
-function getCurrentSchoolYearId(): number {
-  const cookieStore = cookies();
-  const currentSchoolYearId = cookieStore.get("currentSchoolYearId");
-  return currentSchoolYearId ? parseInt(currentSchoolYearId.value, 10) : 1;
 }

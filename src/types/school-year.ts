@@ -1,6 +1,11 @@
 export interface SchoolYear {
-  îd: number;
+  id: number;
   class: number;
+  grading_system: string;
+  vacation_region: string;
+  timetable: TimeTable;
+  user_id: string;
+  created_at?: string;
 }
 
 export interface TimeTableItem {
@@ -16,7 +21,5 @@ export interface TimeTable {
   wednesday: TimeTableItem[];
   thursday: TimeTableItem[];
   friday: TimeTableItem[];
-  saturday: TimeTableItem[];
-  sunday: TimeTableItem[];
-  [key: string]: TimeTableItem[]; // Index signature for dynamic access
+  [key: string]: TimeTableItem[];
 }
