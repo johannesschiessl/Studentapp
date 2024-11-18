@@ -19,5 +19,8 @@ export async function getUser(): Promise<User> {
 
 export async function logOutUser() {
   const supabase = createClient();
+  const cookieName = "currentSchoolYearId";
+  const cookies = (await import("next/headers")).cookies();
+  cookies.delete(cookieName);
   await supabase.auth.signOut({ scope: "local" });
 }
