@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { SchoolYear, TimeTable } from "@/types/school-year";
+import { addExamType, addExamTypeGroup } from "./exams";
 
 export async function getSchoolYear(id: number): Promise<SchoolYear> {
   const supabase = createClient();
@@ -102,6 +103,59 @@ export async function createSchoolYear(
   }
 
   await setCurrentSchoolYearId(schoolYear.id);
+
+  const writtenGroup = await addExamTypeGroup({
+    name: "Schriftlich",
+    weight: 2,
+  });
+
+  const oralGroup = await addExamTypeGroup({
+    name: "Mündlich",
+    weight: 1,
+  });
+
+  await addExamType({
+    name: "Schulaufgabe",
+    group_id: writtenGroup[0].id,
+    weight: 1,
+  });
+
+  await addExamType({
+    name: "Stegreifaufgabe",
+    group_id: oralGroup[0].id,
+    weight: 1,
+  });
+
+  await addExamType({
+    name: "Abfrage",
+    group_id: oralGroup[0].id,
+    weight: 1,
+  });
+
+  await addExamType({
+    name: "Mündliche Mitarbeit",
+    group_id: oralGroup[0].id,
+    weight: 1,
+  });
+
+  await addExamType({
+    name: "Referat",
+    group_id: oralGroup[0].id,
+    weight: 1,
+  });
+
+  await addExamType({
+    name: "Kurzarbeit",
+    group_id: oralGroup[0].id,
+    weight: 1,
+  });
+
+  await addExamType({
+    name: "Vokabeltest",
+    group_id: oralGroup[0].id,
+    weight: 1,
+  });
+
   return schoolYear as SchoolYear;
 }
 

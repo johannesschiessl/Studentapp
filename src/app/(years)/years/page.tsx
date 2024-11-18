@@ -56,13 +56,7 @@ export default async function YearsPage() {
 
         {schoolYears.length === 0 && (
           <div className="rounded-lg border border-dashed p-12 text-center">
-            <p className="text-muted-foreground">No school years found.</p>
-            <Link href="/new">
-              <Button className="mt-4 gap-2">
-                <Plus className="h-5 w-5" />
-                Create Your First School Year
-              </Button>
-            </Link>
+            <p className="text-muted-foreground">No school years yet.</p>
           </div>
         )}
       </div>
