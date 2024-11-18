@@ -2,22 +2,23 @@
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { setCookie, getCookie } from "cookies-next";
+import Cookies from "js-cookie";
 
 export function CookieBanner() {
   const [showBanner, setShowBanner] = useState(false);
 
   useEffect(() => {
-    const hasAccepted = getCookie("cookie-consent");
+    const hasAccepted = Cookies.get("cookie-consent");
     if (!hasAccepted) {
       setShowBanner(true);
     }
   }, []);
 
   const acceptCookies = () => {
-    setCookie("cookie-consent", "true", {
-      maxAge: 60 * 60 * 24 * 365,
+    Cookies.set("cookie-consent", "true", {
+      expires: 365, // Days
       path: "/",
+      sameSite: "lax",
     });
     setShowBanner(false);
   };
