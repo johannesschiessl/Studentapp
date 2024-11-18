@@ -6,7 +6,7 @@ import {
 
 import { logOutUser } from "@/app/actions/user";
 import Icon from "../shared/icon";
-import { ArrowLeftRight, LogOut, Plus } from "lucide-react";
+import { ArrowLeftRight, CalendarDays, LogOut, Plus } from "lucide-react";
 import { useTranslation } from "@/hooks/use-translation";
 import Link from "next/link";
 
@@ -33,6 +33,16 @@ export default function UserMenu({ children }: { children: React.ReactNode }) {
                 <Plus className="h-5 w-5" />
               </Icon>
               Add school year
+            </div>
+          </Link>
+        </MenuItem>
+        <MenuItem>
+          <Link href="/calendar/timetable">
+            <div className="flex items-center">
+              <Icon className="mr-2">
+                <CalendarDays className="h-5 w-5" />
+              </Icon>
+              Edit timetable
             </div>
           </Link>
         </MenuItem>
