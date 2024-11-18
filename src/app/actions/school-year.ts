@@ -95,6 +95,7 @@ export async function createSchoolYear(
     throw error;
   }
 
+  await setCurrentSchoolYearId(schoolYear.id);
   return schoolYear as SchoolYear;
 }
 

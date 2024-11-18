@@ -5,7 +5,8 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import * as z from "zod";
 import Link from "next/link";
-import { X } from "lucide-react";
+import { X, Loader2 } from "lucide-react";
+import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -35,6 +36,8 @@ const formSchema = z.object({
 
 export default function NewYearPage() {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -45,10 +48,13 @@ export default function NewYearPage() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      const schoolYear = await createSchoolYear(values);
-      router.push("/years");
+      setIsLoading(true);
+      await createSchoolYear(values);
+      router.push("/home");
     } catch (error) {
       console.error("Failed to create school year:", error);
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -137,8 +143,20 @@ export default function NewYearPage() {
               )}
             />
 
-            <Button type="submit" size="lg" className="w-full">
-              Create School Year
+            <Button
+              type="submit"
+              size="lg"
+              className="w-full"
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <>
+                  <span className="mr-2">Creating...</span>
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                </>
+              ) : (
+                "Create School Year"
+              )}
             </Button>
           </form>
         </Form>
