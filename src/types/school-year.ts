@@ -21,7 +21,5 @@ export interface TimeTable {
   wednesday: TimeTableItem[];
   thursday: TimeTableItem[];
   friday: TimeTableItem[];
-  saturday: TimeTableItem[];
-  sunday: TimeTableItem[];
-  [key: string]: TimeTableItem[]; // Index signature for dynamic access
+  [key: string]: TimeTableItem[];
 }

@@ -3,7 +3,7 @@
 import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
-import { SchoolYear } from "@/types/school-year";
+import { SchoolYear, TimeTable } from "@/types/school-year";
 
 export async function getSchoolYear(id: number): Promise<SchoolYear> {
   const supabase = createClient();
@@ -22,7 +22,7 @@ export async function getSchoolYear(id: number): Promise<SchoolYear> {
   }
 }
 
-export async function getTimeTable(): Promise<JSON> {
+export async function getTimeTable(): Promise<TimeTable> {
   const supabase = createClient();
 
   const id = await getCurrentSchoolYearId();
@@ -36,9 +36,17 @@ export async function getTimeTable(): Promise<JSON> {
   if (error) {
     console.error("Error fetching timetable:", error);
     throw error;
-  } else {
-    return data.timetable;
   }
+
+  return (
+    data.timetable || {
+      monday: [],
+      tuesday: [],
+      wednesday: [],
+      thursday: [],
+      friday: [],
+    }
+  );
 }
 
 export async function getCurrentSchoolYearId(): Promise<number> {
@@ -79,8 +87,6 @@ export async function createSchoolYear(
       wednesday: [],
       thursday: [],
       friday: [],
-      saturday: [],
-      sunday: [],
     },
   };
 
@@ -119,4 +125,21 @@ export async function getAllSchoolYears(): Promise<SchoolYear[]> {
   }
 
   return data as SchoolYear[];
+}
+
+export async function updateTimeTable(timetable: TimeTable): Promise<void> {
+  const supabase = createClient();
+  const id = await getCurrentSchoolYearId();
+
+  const { error } = await supabase
+    .from("school_years")
+    .update({ timetable })
+    .eq("id", id);
+
+  if (error) {
+    console.error("Error updating timetable:", error);
+    throw error;
+  }
+
+  revalidatePath("/timetable");
 }
