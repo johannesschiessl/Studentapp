@@ -8,6 +8,7 @@ import { logOutUser } from "@/app/actions/user";
 import Icon from "../shared/icon";
 import { ArrowLeftRight, LogOut, Plus } from "lucide-react";
 import { useTranslation } from "@/hooks/use-translation";
+import Link from "next/link";
 
 export default function UserMenu({ children }: { children: React.ReactNode }) {
   const { t } = useTranslation();
@@ -16,20 +17,24 @@ export default function UserMenu({ children }: { children: React.ReactNode }) {
       <PopoverTrigger asChild>{children}</PopoverTrigger>
       <PopoverContent className="space-y-4">
         <MenuItem>
-          <div className="flex items-center">
-            <Icon className="mr-2">
-              <ArrowLeftRight className="h-5 w-5" />
-            </Icon>
-            Switch school year
-          </div>
+          <Link href="/years">
+            <div className="flex items-center">
+              <Icon className="mr-2">
+                <ArrowLeftRight className="h-5 w-5" />
+              </Icon>
+              Switch school year
+            </div>
+          </Link>
         </MenuItem>
         <MenuItem>
-          <div className="flex items-center">
-            <Icon className="mr-2">
-              <Plus className="h-5 w-5" />
-            </Icon>
-            Add school year
-          </div>
+          <Link href="/new">
+            <div className="flex items-center">
+              <Icon className="mr-2">
+                <Plus className="h-5 w-5" />
+              </Icon>
+              Add school year
+            </div>
+          </Link>
         </MenuItem>
         <MenuItem onClick={() => logOutUser()}>
           <div className="flex items-center">
