@@ -9,14 +9,25 @@ create extension if not exists "uuid-ossp";
 
 -- Create school_years table
 create table public.school_years (
-    id bigint generated always as identity primary key,
-    user_id uuid references auth.users(id) not null,
+    id bigint primary key generated always as identity,
     class integer not null,
-    grading_system text not null,
-    vacation_region text not null,
-    timetable jsonb,
-    created_at timestamptz not null default now(),
-    updated_at timestamptz not null default now()
+    grading_system text not null default 'de_full_grades',
+    vacation_region text not null default 'de_bavaria',
+    timetable jsonb not null default '{
+        "monday": [], 
+        "tuesday": [], 
+        "wednesday": [], 
+        "thursday": [], 
+        "friday": [], 
+        "saturday": [], 
+        "sunday": []
+    }'::jsonb,
+    user_id uuid not null references auth.users(id) on delete cascade,
+    created_at timestamp with time zone default timezone('utc'::text, now()) not null,
+    
+    constraint valid_class check (class >= 1 and class <= 13),
+    constraint valid_grading_system check (grading_system in ('de_full_grades', 'de_half_grades')),
+    constraint valid_vacation_region check (vacation_region in ('de_bavaria', 'de_bw'))
 );
 
 -- Create subjects table
