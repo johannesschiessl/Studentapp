@@ -1,5 +1,5 @@
 {
-  "id": "io.github.johannesschiessl.studentapp",
+  "id": "com.johannesschiessl.studentapp",
   "name": "Student-App",
   "short_name": "Student-App",
   "description": "An app for students to track their grades, homework, subjects, events and exams, as well as write notes and create flashcards.",

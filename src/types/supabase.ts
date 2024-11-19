@@ -58,13 +58,6 @@ export type Database = {
         };
         Relationships: [
           {
-            foreignKeyName: "exam_type_groups_user_id_fkey";
-            columns: ["user_id"];
-            isOneToOne: false;
-            referencedRelation: "users";
-            referencedColumns: ["id"];
-          },
-          {
             foreignKeyName: "fk_school_year_group";
             columns: ["school_year_id"];
             isOneToOne: false;
@@ -99,13 +92,6 @@ export type Database = {
           weight?: number;
         };
         Relationships: [
-          {
-            foreignKeyName: "exam_types_user_id_fkey";
-            columns: ["user_id"];
-            isOneToOne: false;
-            referencedRelation: "users";
-            referencedColumns: ["id"];
-          },
           {
             foreignKeyName: "fk_exam_type_group";
             columns: ["group_id"];
@@ -158,10 +144,10 @@ export type Database = {
         };
         Relationships: [
           {
-            foreignKeyName: "exams_user_id_fkey";
-            columns: ["user_id"];
+            foreignKeyName: "exams_subject_id_fkey";
+            columns: ["subject_id"];
             isOneToOne: false;
-            referencedRelation: "users";
+            referencedRelation: "subjects";
             referencedColumns: ["id"];
           },
           {
@@ -171,11 +157,111 @@ export type Database = {
             referencedRelation: "exam_types";
             referencedColumns: ["id"];
           },
+        ];
+      };
+      flashcard_decks: {
+        Row: {
+          created_at: string;
+          description: string | null;
+          id: number;
+          last_practiced_at: string | null;
+          name: string;
+          practice_reverse: boolean | null;
+          school_year_id: number;
+          subject_id: number | null;
+          typing_mode: boolean | null;
+          updated_at: string | null;
+          user_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          description?: string | null;
+          id?: number;
+          last_practiced_at?: string | null;
+          name: string;
+          practice_reverse?: boolean | null;
+          school_year_id: number;
+          subject_id?: number | null;
+          typing_mode?: boolean | null;
+          updated_at?: string | null;
+          user_id: string;
+        };
+        Update: {
+          created_at?: string;
+          description?: string | null;
+          id?: number;
+          last_practiced_at?: string | null;
+          name?: string;
+          practice_reverse?: boolean | null;
+          school_year_id?: number;
+          subject_id?: number | null;
+          typing_mode?: boolean | null;
+          updated_at?: string | null;
+          user_id?: string;
+        };
+        Relationships: [
           {
-            foreignKeyName: "fk_subject";
+            foreignKeyName: "flashcard_decks_school_year_id_fkey";
+            columns: ["school_year_id"];
+            isOneToOne: false;
+            referencedRelation: "school_years";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "flashcard_decks_subject_id_fkey";
             columns: ["subject_id"];
             isOneToOne: false;
             referencedRelation: "subjects";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      flashcards: {
+        Row: {
+          back_text: string;
+          created_at: string;
+          deck_id: number | null;
+          front_text: string;
+          id: number;
+          last_practiced_at: string | null;
+          level: number;
+          next_practice_at: string | null;
+          times_practiced: number;
+          updated_at: string | null;
+          user_id: string;
+        };
+        Insert: {
+          back_text: string;
+          created_at?: string;
+          deck_id?: number | null;
+          front_text: string;
+          id?: number;
+          last_practiced_at?: string | null;
+          level?: number;
+          next_practice_at?: string | null;
+          times_practiced?: number;
+          updated_at?: string | null;
+          user_id?: string;
+        };
+        Update: {
+          back_text?: string;
+          created_at?: string;
+          deck_id?: number | null;
+          front_text?: string;
+          id?: number;
+          last_practiced_at?: string | null;
+          level?: number;
+          next_practice_at?: string | null;
+          times_practiced?: number;
+          updated_at?: string | null;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "flashcards_deck_id_fkey";
+            columns: ["deck_id"];
+            isOneToOne: false;
+            referencedRelation: "flashcard_decks";
             referencedColumns: ["id"];
           },
         ];
@@ -223,18 +309,12 @@ export type Database = {
             referencedRelation: "subjects";
             referencedColumns: ["id"];
           },
-          {
-            foreignKeyName: "homework_user_id_fkey";
-            columns: ["user_id"];
-            isOneToOne: false;
-            referencedRelation: "users";
-            referencedColumns: ["id"];
-          },
         ];
       };
       school_years: {
         Row: {
           class: number;
+          created_at: string;
           grading_system: string;
           id: number;
           timetable: Json | null;
@@ -243,6 +323,7 @@ export type Database = {
         };
         Insert: {
           class: number;
+          created_at?: string;
           grading_system?: string;
           id?: never;
           timetable?: Json | null;
@@ -251,25 +332,19 @@ export type Database = {
         };
         Update: {
           class?: number;
+          created_at?: string;
           grading_system?: string;
           id?: never;
           timetable?: Json | null;
           user_id?: string;
           vacation_region?: string;
         };
-        Relationships: [
-          {
-            foreignKeyName: "school_years_user_id_fkey";
-            columns: ["user_id"];
-            isOneToOne: false;
-            referencedRelation: "users";
-            referencedColumns: ["id"];
-          },
-        ];
+        Relationships: [];
       };
       subjects: {
         Row: {
           color: string;
+          created_at: string;
           icon: string;
           id: number;
           name: string;
@@ -280,6 +355,7 @@ export type Database = {
         };
         Insert: {
           color: string;
+          created_at?: string;
           icon: string;
           id?: never;
           name: string;
@@ -290,6 +366,7 @@ export type Database = {
         };
         Update: {
           color?: string;
+          created_at?: string;
           icon?: string;
           id?: never;
           name?: string;
@@ -304,13 +381,6 @@ export type Database = {
             columns: ["school_year_id"];
             isOneToOne: false;
             referencedRelation: "school_years";
-            referencedColumns: ["id"];
-          },
-          {
-            foreignKeyName: "subjects_user_id_fkey";
-            columns: ["user_id"];
-            isOneToOne: false;
-            referencedRelation: "users";
             referencedColumns: ["id"];
           },
         ];
@@ -411,4 +481,19 @@ export type Enums<
   ? Database[PublicEnumNameOrOptions["schema"]]["Enums"][EnumName]
   : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
     ? PublicSchema["Enums"][PublicEnumNameOrOptions]
+    : never;
+
+export type CompositeTypes<
+  PublicCompositeTypeNameOrOptions extends
+    | keyof PublicSchema["CompositeTypes"]
+    | { schema: keyof Database },
+  CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
+    schema: keyof Database;
+  }
+    ? keyof Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
+    : never = never,
+> = PublicCompositeTypeNameOrOptions extends { schema: keyof Database }
+  ? Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
+  : PublicCompositeTypeNameOrOptions extends keyof PublicSchema["CompositeTypes"]
+    ? PublicSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
     : never;
