@@ -4,7 +4,7 @@ import { Task } from "@/types/homework";
 import { Subject } from "@/types/subjects";
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Circle, CircleCheck, ListChecks } from "lucide-react";
+import { Circle, CircleCheck, ListChecks, Plus } from "lucide-react";
 import { useTranslation } from "@/hooks/use-translation";
 import {
   addTask,
@@ -79,7 +79,10 @@ export function HomeworkContent({
           onAdd={handleAddTask}
           schoolYearId={schoolYearId}
         >
-          <Button>{t("homework.add")}</Button>
+          <Button>
+            <Plus className="mr-2 h-4 w-4" />
+            {t("homework.add")}
+          </Button>
         </AddHomeworkDialog>
       </div>
 

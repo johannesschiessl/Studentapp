@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { SchoolYear } from "@/types/school-year";
+import { useTranslation } from "@/hooks/use-translation";
 
 interface SchoolYearCardProps {
   year: SchoolYear;
@@ -10,6 +11,8 @@ interface SchoolYearCardProps {
 }
 
 export default function YearCard({ year, selectAction }: SchoolYearCardProps) {
+  const { t } = useTranslation();
+
   return (
     <form
       action={selectAction}
@@ -22,23 +25,30 @@ export default function YearCard({ year, selectAction }: SchoolYearCardProps) {
       <input type="hidden" name="yearId" value={year.id} />
       <Card className="transition-all hover:bg-muted">
         <CardHeader>
-          <CardTitle>{year.class}th Class</CardTitle>
+          <CardTitle>
+            {year.class}
+            {t("years.class_number")}
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <p className="text-sm text-muted-foreground">
-            Region:{" "}
-            {year.vacation_region === "de_bavaria"
-              ? "Bavaria, Germany"
-              : year.vacation_region}
+            {t("years.region")}:{" "}
+            {year.vacation_region.startsWith("de_")
+              ? year.vacation_region
+                  .split("_")
+                  .slice(1)
+                  .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                  .join(" ") + ", Deutschland"
+              : t("years.other_region")}
           </p>
           <p className="text-sm text-muted-foreground">
-            Grading:{" "}
+            {t("years.grading")}:{" "}
             {year.grading_system === "de_full_grades"
-              ? "Full Grades (1-6)"
+              ? t("years.full_grades")
               : year.grading_system}
           </p>
           <Button type="submit" variant="outline" className="mt-4 w-full">
-            Select Year
+            {t("years.select")}
           </Button>
         </CardContent>
       </Card>

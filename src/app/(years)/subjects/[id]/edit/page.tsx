@@ -26,7 +26,7 @@ import {
 import { cn } from "@/lib/utils";
 import { Subject } from "@/types/subjects";
 import * as React from "react";
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -45,15 +45,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { createSubject } from "@/app/actions/subjects";
-
-interface FormData {
-  name: string;
-  teacher: string;
-  room: string;
-  color: string;
-  icon: string;
-}
+import { getSubject, updateSubject } from "@/app/actions/subjects";
+import { toast } from "sonner";
 
 const iconOptions = [
   { name: "Book", icon: Book },
@@ -74,9 +67,14 @@ const iconOptions = [
   { name: "Dumbbell", icon: Dumbbell },
 ];
 
-export default function NewSubjectPage() {
+export default function EditSubjectPage({
+  params,
+}: {
+  params: { id: string };
+}) {
   const [openIcon, setOpenIcon] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false);
   const router = useRouter();
   const { t } = useTranslation();
 
@@ -84,33 +82,56 @@ export default function NewSubjectPage() {
     register,
     handleSubmit,
     control,
+    reset,
     formState: { errors },
-  } = useForm<FormData>();
+  } = useForm<Subject>();
 
-  const onSubmit = async (data: FormData) => {
+  const loadSubject = useCallback(async () => {
+    try {
+      const data = await getSubject(parseInt(params.id));
+      reset(data);
+      setIsInitialized(true);
+    } catch (error) {
+      console.error("Failed to load subject:", error);
+      toast.error(t("common.error"));
+      router.push("/subjects");
+    }
+  }, [params.id, reset, router, t]);
+
+  useEffect(() => {
+    if (!isInitialized) {
+      loadSubject();
+    }
+  }, [isInitialized, loadSubject]);
+
+  const onSubmit = async (data: Subject) => {
     try {
       setIsLoading(true);
-      const subject: Omit<Subject, "id"> = {
-        name: data.name,
-        teacher: data.teacher || undefined,
-        room: data.room || undefined,
-        color: data.color,
-        icon: data.icon,
-      };
-
-      await createSubject(subject);
-      router.push("/subjects");
+      await updateSubject({
+        ...data,
+        id: parseInt(params.id),
+      });
+      router.push(`/subjects/${params.id}`);
     } catch (error) {
-      console.error("Failed to create subject:", error);
+      console.error("Failed to update subject:", error);
+      toast.error(t("common.error"));
     } finally {
       setIsLoading(false);
     }
   };
 
+  if (!isInitialized) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <Loader2 className="h-4 w-4 animate-spin" />
+      </div>
+    );
+  }
+
   return (
     <>
       <div className="mb-8 pt-8 text-center">
-        <h1 className="text-3xl font-bold">{t("subjects.add.title")}</h1>
+        <h1 className="text-3xl font-bold">{t("subjects.edit.title")}</h1>
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
@@ -146,7 +167,10 @@ export default function NewSubjectPage() {
               control={control}
               rules={{ required: t("subjects.color.required") }}
               render={({ field }) => (
-                <Select onValueChange={field.onChange} value={field.value}>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
                   <SelectTrigger>
                     <SelectValue placeholder={t("subjects.select_color")} />
                   </SelectTrigger>
@@ -250,11 +274,11 @@ export default function NewSubjectPage() {
         <Button type="submit" size="lg" className="w-full" disabled={isLoading}>
           {isLoading ? (
             <>
-              <span className="mr-2">{t("common.creating")}</span>
+              <span className="mr-2">{t("common.saving")}</span>
               <Loader2 className="h-4 w-4 animate-spin" />
             </>
           ) : (
-            t("subjects.add")
+            t("common.save")
           )}
         </Button>
       </form>

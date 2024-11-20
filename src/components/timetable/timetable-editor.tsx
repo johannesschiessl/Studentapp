@@ -23,6 +23,7 @@ import { Pencil, Plus, X } from "lucide-react";
 import { updateTimeTable } from "@/app/actions/school-year";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import SubjectIcon from "@/components/shared/subject-icon";
+import { useTranslation } from "@/hooks/use-translation";
 
 interface Props {
   initialTimetable: TimeTable;
@@ -45,6 +46,8 @@ const DEFAULT_TIMETABLE: TimeTable = {
 };
 
 export function TimetableEditor({ initialTimetable, subjects }: Props) {
+  const { t } = useTranslation();
+
   const [timetable, setTimetable] = useState<TimeTable>({
     ...DEFAULT_TIMETABLE,
     ...initialTimetable,
@@ -126,7 +129,7 @@ export function TimetableEditor({ initialTimetable, subjects }: Props) {
         <TabsList className="grid w-full grid-cols-5 lg:grid-cols-5">
           {DAYS.map((day) => (
             <TabsTrigger key={day} value={day} className="capitalize">
-              {day}
+              {t(`timetable.days.${day}`)}
             </TabsTrigger>
           ))}
         </TabsList>
@@ -135,10 +138,12 @@ export function TimetableEditor({ initialTimetable, subjects }: Props) {
           <TabsContent key={day} value={day}>
             <div className="rounded-lg border p-4">
               <div className="mb-4 flex items-center justify-between">
-                <h3 className="text-lg font-semibold capitalize">{day}</h3>
+                <h3 className="text-lg font-semibold capitalize">
+                  {t(`timetable.days.${day}`)}
+                </h3>
                 <Button onClick={() => handleAddLesson(day)} size="sm">
                   <Plus className="mr-2 h-4 w-4" />
-                  Add Lesson
+                  {t("timetable.add_lesson")}
                 </Button>
               </div>
 
@@ -193,7 +198,7 @@ export function TimetableEditor({ initialTimetable, subjects }: Props) {
                 {(!timetable[day] || timetable[day].length === 0) && (
                   <div className="rounded-lg border border-dashed p-8 text-center">
                     <p className="text-sm text-muted-foreground">
-                      No lessons scheduled for this day
+                      {t("timetable.no_lessons")}
                     </p>
                     <Button
                       variant="outline"
@@ -201,7 +206,7 @@ export function TimetableEditor({ initialTimetable, subjects }: Props) {
                       onClick={() => handleAddLesson(day)}
                     >
                       <Plus className="mr-2 h-4 w-4" />
-                      Add Your First Lesson
+                      {t("timetable.add_first_lesson")}
                     </Button>
                   </div>
                 )}
@@ -215,7 +220,9 @@ export function TimetableEditor({ initialTimetable, subjects }: Props) {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>
-              {editingLesson ? "Edit Lesson" : "Add New Lesson"}
+              {editingLesson
+                ? t("timetable.edit_lesson")
+                : t("timetable.add_lesson")}
             </DialogTitle>
           </DialogHeader>
 
@@ -227,7 +234,7 @@ export function TimetableEditor({ initialTimetable, subjects }: Props) {
           >
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="start_time">Start Time</Label>
+                <Label htmlFor="start_time">{t("timetable.start_time")}</Label>
                 <Input
                   id="start_time"
                   name="start_time"
@@ -237,7 +244,7 @@ export function TimetableEditor({ initialTimetable, subjects }: Props) {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="end_time">End Time</Label>
+                <Label htmlFor="end_time">{t("timetable.end_time")}</Label>
                 <Input
                   id="end_time"
                   name="end_time"
@@ -249,14 +256,14 @@ export function TimetableEditor({ initialTimetable, subjects }: Props) {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="subject_id">Subject</Label>
+              <Label htmlFor="subject_id">{t("timetable.subject")}</Label>
               <Select
                 name="subject_id"
                 defaultValue={editingLesson?.subject_id}
                 required
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Select a subject" />
+                  <SelectValue placeholder={t("timetable.select_subject")} />
                 </SelectTrigger>
                 <SelectContent>
                   {subjects.map((subject) => (
@@ -275,7 +282,7 @@ export function TimetableEditor({ initialTimetable, subjects }: Props) {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="room">Room (Optional)</Label>
+              <Label htmlFor="room">{t("timetable.room")} (Optional)</Label>
               <Input id="room" name="room" defaultValue={editingLesson?.room} />
             </div>
 
@@ -285,10 +292,10 @@ export function TimetableEditor({ initialTimetable, subjects }: Props) {
                 variant="outline"
                 onClick={() => setIsDialogOpen(false)}
               >
-                Cancel
+                {t("common.cancel")}
               </Button>
               <Button type="submit">
-                {editingLesson ? "Save Changes" : "Add Lesson"}
+                {editingLesson ? t("common.save") : t("common.add")}
               </Button>
             </div>
           </form>

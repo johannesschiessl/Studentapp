@@ -49,6 +49,18 @@ interface AddDeckDialogProps {
   children: React.ReactNode;
 }
 
+function SubjectOption({ name, color }: { name: string; color: string }) {
+  return (
+    <div className="flex items-center">
+      <div
+        className={`mr-2 h-4 w-4 rounded bg-${color}-500`}
+        aria-hidden="true"
+      />
+      <span>{name}</span>
+    </div>
+  );
+}
+
 export function AddDeckDialog({
   subjects,
   onAdd,
@@ -80,10 +92,9 @@ export function AddDeckDialog({
 
       form.reset();
       setOpen(false);
-      toast.success(t("flashcards.deck_added_successfully"));
     } catch (error) {
       console.error("Failed to add deck:", error);
-      toast.error(t("flashcards.deck_add_error"));
+      toast.error(t("common.error"));
     }
   }
 
@@ -143,7 +154,10 @@ export function AddDeckDialog({
                           key={subject.id}
                           value={subject.id.toString()}
                         >
-                          {subject.name}
+                          <SubjectOption
+                            name={subject.name}
+                            color={subject.color}
+                          />
                         </SelectItem>
                       ))}
                     </SelectContent>

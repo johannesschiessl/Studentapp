@@ -31,7 +31,6 @@ import {
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import SubjectIcon from "@/components/shared/subject-icon";
 import { useTranslation } from "@/hooks/use-translation";
 
 const formSchema = z.object({
@@ -49,6 +48,18 @@ interface EditDeckDialogProps {
   subjects: Subject[];
   onEdit: (deck: FlashcardDeck) => void;
   children: React.ReactNode;
+}
+
+function SubjectOption({ name, color }: { name: string; color: string }) {
+  return (
+    <div className="flex items-center">
+      <div
+        className={`mr-2 h-4 w-4 rounded bg-${color}-500`}
+        aria-hidden="true"
+      />
+      <span>{name}</span>
+    </div>
+  );
 }
 
 export function EditDeckDialog({
@@ -132,14 +143,11 @@ export function EditDeckDialog({
                         <SelectItem
                           key={subject.id}
                           value={subject.id.toString()}
-                          className="flex items-center gap-2"
                         >
-                          <SubjectIcon
-                            icon={subject.icon}
+                          <SubjectOption
+                            name={subject.name}
                             color={subject.color}
-                            size="default"
                           />
-                          {subject.name}
                         </SelectItem>
                       ))}
                     </SelectContent>

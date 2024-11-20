@@ -65,6 +65,11 @@ export function DeckList({ decks, subjects, deckCards }: DeckListProps) {
           </Card>
         );
       })}
+      {decks.length === 0 && (
+        <div className="col-span-full text-center text-muted-foreground">
+          No decks yet.
+        </div>
+      )}
     </div>
   );
 }

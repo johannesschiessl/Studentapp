@@ -50,6 +50,7 @@ import {
 import { useEffect, useState } from "react";
 import { logOutUser } from "@/app/actions/user";
 import { ExamType, ExamTypeGroup } from "@/types/exams";
+import { deleteUserAccount } from "@/app/actions/user";
 
 export default function SettingsDialog({
   children,
@@ -60,6 +61,7 @@ export default function SettingsDialog({
     ExamTypeGroup[]
   >([]);
   const [initialExamTypes, setInitialExamTypes] = useState<ExamType[]>([]);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     async function getInitialData() {
@@ -189,24 +191,41 @@ export default function SettingsDialog({
               </div>
 
               <AlertDialog>
-                <AlertDialogTrigger disabled>
-                  <Button disabled variant="destructive" className="w-[170px]">
-                    {t("settings.account.delete.button")}
+                <AlertDialogTrigger>
+                  <Button
+                    variant="destructive"
+                    className="w-[170px]"
+                    disabled={isDeleting}
+                  >
+                    {isDeleting
+                      ? t("common.loading")
+                      : t("settings.account.delete.button")}
                   </Button>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                   <AlertDialogHeader>
                     <AlertDialogTitle>
-                      Are you absolutely sure?
+                      {t("settings.account.delete.confirm.title")}
                     </AlertDialogTitle>
                     <AlertDialogDescription>
-                      This action cannot be undone. This will permanently delete
-                      your account and remove all your data from our servers.
+                      {t("settings.account.delete.confirm.description")}
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction className="bg-destructive hover:bg-destructive/80">
+                    <AlertDialogCancel>{t("common.cancel")}</AlertDialogCancel>
+                    <AlertDialogAction
+                      className="bg-destructive hover:bg-destructive/80"
+                      onClick={async (e) => {
+                        e.preventDefault();
+                        setIsDeleting(true);
+                        try {
+                          await deleteUserAccount();
+                        } catch (error) {
+                          console.error("Failed to delete account:", error);
+                          setIsDeleting(false);
+                        }
+                      }}
+                    >
                       {t("settings.account.delete.button")}
                     </AlertDialogAction>
                   </AlertDialogFooter>

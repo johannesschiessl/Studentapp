@@ -1,6 +1,6 @@
 "use client";
 
-import { UserRound, MapPin, Plus } from "lucide-react";
+import { UserRound, MapPin, Plus, Pencil } from "lucide-react";
 import Badge from "@/components/shared/badge";
 import SubjectIcon from "@/components/shared/subject-icon";
 import { Button } from "@/components/ui/button";
@@ -8,48 +8,36 @@ import { Subject } from "@/types/subjects";
 import ExamList from "../exams/exam-list";
 import { Exam, ExamType, NewExam } from "@/types/exams";
 import { AddExamDialog } from "../exams/add-exam-dialog";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { addExam, deleteExam, editExam } from "@/app/actions/exams";
 import { toast } from "sonner";
 import { useTranslation } from "@/hooks/use-translation";
 import { calculateAverageGrade } from "@/lib/grades";
 import { ExamTypeGroup } from "@/types/exams";
-import { getExamTypeGroupsForCurrentSchoolYear } from "@/app/actions/exams";
+import { DeleteSubjectDialog } from "./delete-subject-dialog";
+import { deleteSubject } from "@/app/actions/subjects";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function SubjectContent({
   subject,
   intialExams,
   examTypes,
+  examTypeGroups,
 }: {
   subject: Subject;
   intialExams: Exam[];
   examTypes: ExamType[];
+  examTypeGroups: ExamTypeGroup[];
 }) {
+  const router = useRouter();
   const { t } = useTranslation();
   const [exams, setExams] = useState(intialExams);
-  const [examTypeGroups, setExamTypeGroups] = useState<ExamTypeGroup[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    async function loadExamTypeGroups() {
-      try {
-        const groups = await getExamTypeGroupsForCurrentSchoolYear();
-        setExamTypeGroups(groups);
-      } catch (error) {
-        console.error(error);
-        toast.error(t("common.error"));
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    loadExamTypeGroups();
-  }, [t]);
-
-  // Calculate the average grade
+  // Calculate the average grade using memo to prevent unnecessary recalculations
   const averageGrade = useMemo(() => {
-    if (isLoading) return null;
     return calculateAverageGrade(exams, examTypes, examTypeGroups);
-  }, [exams, examTypes, examTypeGroups, isLoading]);
+  }, [exams, examTypes, examTypeGroups]);
 
   async function handleAddExam(newExam: NewExam) {
     const data = await addExam(newExam, subject.id);
@@ -59,10 +47,11 @@ export default function SubjectContent({
   async function handleEditExam(exam: Exam) {
     try {
       const data = await editExam(exam);
-      console.log(data);
-      setExams((prev) =>
-        prev.map((ex) => (ex.id === data[0].id ? data[0] : ex)),
-      );
+      if (data && data[0]) {
+        setExams((prev) =>
+          prev.map((ex) => (ex.id === data[0].id ? data[0] : ex)),
+        );
+      }
     } catch (error) {
       console.error(error);
       toast.error(t("common.error"));
@@ -74,6 +63,16 @@ export default function SubjectContent({
       const data = await deleteExam(id);
       console.log(data);
       setExams((prev) => prev.filter((exam) => exam.id !== id));
+    } catch (error) {
+      console.error(error);
+      toast.error(t("common.error"));
+    }
+  }
+
+  async function handleDeleteSubject() {
+    try {
+      await deleteSubject(subject.id);
+      router.push("/subjects");
     } catch (error) {
       console.error(error);
       toast.error(t("common.error"));
@@ -93,14 +92,20 @@ export default function SubjectContent({
               />
             )}
             <h1 className="text-3xl font-bold">{subject?.name}</h1>
+            <div className="flex items-center gap-1">
+              <Link href={`/subjects/${subject.id}/edit`}>
+                <Button variant="ghost" size="icon">
+                  <Pencil className="h-4 w-4" />
+                </Button>
+              </Link>
+              <DeleteSubjectDialog onDelete={handleDeleteSubject} />
+            </div>
           </div>
-          <span className={`text-xl font-bold text-${subject?.color}-500`}>
-            {isLoading
-              ? "⌀ 0.00"
-              : averageGrade
-                ? `⌀ ${averageGrade.toFixed(2)}`
-                : "⌀ 1.00"}
-          </span>
+          <div className="flex items-center gap-2">
+            <div className={`text-xl font-bold text-${subject?.color}-500`}>
+              {averageGrade === null ? "" : `⌀ ${averageGrade.toFixed(2)}`}
+            </div>
+          </div>
         </div>
         {subject && (
           <div className="mt-4 w-full sm:flex sm:items-center sm:justify-between">

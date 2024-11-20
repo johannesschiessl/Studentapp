@@ -11,79 +11,47 @@ import {
 } from "@/components/ui/tooltip";
 import * as lucideIcons from "lucide-react";
 import { Event } from "@/types/calendar";
-import { getSubject } from "@/app/actions/subjects";
-import { getTimeTable } from "@/app/actions/school-year";
-import { TimeTable, TimeTableItem } from "@/types/school-year";
+import { TimeTable } from "@/types/school-year";
+import { isHoliday } from "@/constants/holidays";
+import { cn } from "@/lib/utils";
+import { transformTimetableToEvents } from "@/app/actions/calendar";
+import { useTranslation } from "@/hooks/use-translation";
 
 import { LucideIcon } from "lucide-react";
 const hours = Array.from({ length: 14 }, (_, i) => i + 7);
 
-export default function DayView({ events }: { events: Event[] }) {
-  const [currentDate, setCurrentDate] = useState(new Date());
-  const [timetable, setTimetable] = useState<TimeTable | null>(null);
-  const [transformedEvents, setTransformedEvents] = useState<Event[]>([]);
+interface DayViewProps {
+  events: Event[];
+  timetableEvents: Event[];
+  initialDate: Date;
+  timetable: TimeTable;
+}
 
+export default function DayView({
+  events,
+  timetableEvents,
+  initialDate,
+  timetable,
+}: DayViewProps) {
+  const { t } = useTranslation();
+  const [currentDate, setCurrentDate] = useState(initialDate);
+  const [currentTimetableEvents, setCurrentTimetableEvents] =
+    useState(timetableEvents);
+
+  // When date changes, transform timetable events synchronously
   useEffect(() => {
-    const fetchTimetable = async () => {
-      const timetableData = await getTimeTable();
-      const timetable = timetableData as unknown as TimeTable;
-      setTimetable(timetable);
-    };
-    fetchTimetable();
-  }, []);
+    async function updateTimetableEvents() {
+      const newEvents = await transformTimetableToEvents(
+        currentDate,
+        timetable,
+      );
+      setCurrentTimetableEvents(newEvents);
+    }
 
-  const transformTimetableToEvents = async (
-    date: Date,
-    timetable: TimeTable,
-  ): Promise<Event[]> => {
-    const dayName = date
-      .toLocaleDateString("en-US", { weekday: "long" })
-      .toLowerCase();
-    const timetableItems = timetable[dayName] || [];
-
-    const transformedItems = await Promise.all(
-      timetableItems
-        .filter((item: TimeTableItem) => item.start_time && item.end_time)
-        .map(async (item: TimeTableItem) => {
-          const [startHour, startMinute] = item.start_time
-            .split(":")
-            .map(Number);
-          const [endHour, endMinute] = item.end_time.split(":").map(Number);
-          const start = new Date(date);
-          start.setHours(startHour, startMinute);
-
-          const end = new Date(date);
-          end.setHours(endHour, endMinute);
-
-          const subject = await getSubject(parseInt(item.subject_id));
-          return {
-            title: `${subject.name}`,
-            room: item.room || subject.room,
-            start,
-            end,
-            isAllDay: false,
-            color: subject.color,
-            icon: subject.icon,
-          } as Event;
-        }),
-    );
-
-    return transformedItems;
-  };
-
-  useEffect(() => {
-    const fetchTransformedEvents = async () => {
-      if (timetable) {
-        const dayEvents = await transformTimetableToEvents(
-          currentDate,
-          timetable,
-        );
-        setTransformedEvents(dayEvents);
-      }
-    };
-
-    fetchTransformedEvents();
-  }, [currentDate, timetable]);
+    if (currentDate.getTime() !== initialDate.getTime()) {
+      updateTimetableEvents();
+    }
+  }, [currentDate, initialDate, timetable]);
 
   const changeDate = (increment: number) => {
     setCurrentDate((prevDate) => {
@@ -94,15 +62,13 @@ export default function DayView({ events }: { events: Event[] }) {
   };
 
   const getEventsForDate = (date: Date, allDay: boolean) => {
-    const filteredEvents = [...events, ...transformedEvents].filter(
+    return [...events, ...currentTimetableEvents].filter(
       (event) =>
         event.start.getDate() === date.getDate() &&
         event.start.getMonth() === date.getMonth() &&
         event.start.getFullYear() === date.getFullYear() &&
         event.isAllDay === allDay,
     );
-
-    return filteredEvents;
   };
 
   const getEventPosition = (event: Event) => {
@@ -113,15 +79,17 @@ export default function DayView({ events }: { events: Event[] }) {
     return { top, height };
   };
 
+  const holiday = isHoliday(currentDate);
+
   return (
     <div>
       <div className="flex flex-row items-center justify-between space-y-0 pb-2">
         <Button variant="outline" size="icon" onClick={() => changeDate(-1)}>
           <ChevronLeft className="h-4 w-4" />
-          <span className="sr-only">Previous day</span>
+          <span className="sr-only">{t("calendar.previous_day")}</span>
         </Button>
         <h1 className="text-md font-bold sm:text-2xl">
-          {currentDate.toLocaleDateString("en-US", {
+          {currentDate.toLocaleDateString(undefined, {
             weekday: "long",
             year: "numeric",
             month: "long",
@@ -130,14 +98,14 @@ export default function DayView({ events }: { events: Event[] }) {
         </h1>
         <Button variant="outline" size="icon" onClick={() => changeDate(1)}>
           <ChevronRight className="h-4 w-4" />
-          <span className="sr-only">Next day</span>
+          <span className="sr-only">{t("calendar.next_day")}</span>
         </Button>
       </div>
       <div>
         <div className="space-y-4">
           {/* All-day events section */}
           <div>
-            <h3 className="mb-2 font-semibold">All-day Events</h3>
+            <h3 className="mb-2 font-semibold">{t("calendar.all_day")}</h3>
             <div className="space-y-1">
               {getEventsForDate(currentDate, true).map((event) => (
                 <TooltipProvider key={event.title}>
@@ -172,35 +140,78 @@ export default function DayView({ events }: { events: Event[] }) {
                 <div className="h-[100px] flex-grow border-t border-gray-200"></div>
               </div>
             ))}
-            {getEventsForDate(currentDate, false).map((event) => {
-              const { top, height } = getEventPosition(event);
-
-              const SubjectIcon: LucideIcon | undefined = event.icon
-                ? (lucideIcons[
-                    event.icon as keyof typeof lucideIcons
-                  ] as LucideIcon)
-                : undefined;
-
-              if (!SubjectIcon) {
-                console.error(
-                  `Icon "${event.icon}" not found in Lucide icons.`,
-                );
-                return null; // Skip rendering if icon not found
-              }
-
-              return (
-                <TooltipProvider key={event.title}>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <div
-                        className={`absolute left-16 right-0 bg-${event.color}-100 text-${event.color}-500 overflow-hidden rounded p-2 text-sm ${height < 40 && "flex items-center space-x-2 px-2 py-0"}`}
-                        style={{ top: `${top}px`, height: `${height}px` }}
+            {holiday ? (
+              <div
+                className={cn(
+                  "justify-top absolute inset-0 flex flex-col items-center rounded-xl pt-32",
+                  `bg-${holiday.color}-100 text-${holiday.color}-500`,
+                )}
+              >
+                {(() => {
+                  const Icon = lucideIcons[
+                    holiday.icon as keyof typeof lucideIcons
+                  ] as LucideIcon;
+                  return (
+                    <>
+                      <Icon className={`h-12 w-12`} />
+                      <span
+                        className={`mt-4 text-xl font-semibold text-${holiday.color}-700`}
                       >
-                        <div className="flex items-center font-semibold">
-                          <SubjectIcon className="mr-1 h-4 w-4" />
-                          {event.title}
+                        {holiday.name}
+                      </span>
+                    </>
+                  );
+                })()}
+              </div>
+            ) : (
+              getEventsForDate(currentDate, false).map((event) => {
+                const { top, height } = getEventPosition(event);
+
+                const SubjectIcon: LucideIcon | undefined = event.icon
+                  ? (lucideIcons[
+                      event.icon as keyof typeof lucideIcons
+                    ] as LucideIcon)
+                  : undefined;
+
+                if (!SubjectIcon) {
+                  console.error(
+                    `Icon "${event.icon}" not found in Lucide icons.`,
+                  );
+                  return null; // Skip rendering if icon not found
+                }
+
+                return (
+                  <TooltipProvider key={event.title}>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <div
+                          className={`absolute left-16 right-0 bg-${event.color}-100 text-${event.color}-500 overflow-hidden rounded p-2 text-sm ${height < 40 && "flex items-center space-x-2 px-2 py-0"}`}
+                          style={{ top: `${top}px`, height: `${height}px` }}
+                        >
+                          <div className="flex items-center font-semibold">
+                            <SubjectIcon className="mr-1 h-4 w-4" />
+                            {event.title}
+                          </div>
+                          <div className="text-xs">
+                            {event.start.toLocaleTimeString([], {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            })}
+                            -
+                            {event.end.toLocaleTimeString([], {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            })}
+                          </div>
+                          {event.room && (
+                            <div className="text-xs">Room: {event.room}</div>
+                          )}
                         </div>
-                        <div className="text-xs">
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p className="font-semibold">{event.title}</p>
+                        <p className="text-sm">{event.description}</p>
+                        <p className="text-sm">
                           {event.start.toLocaleTimeString([], {
                             hour: "2-digit",
                             minute: "2-digit",
@@ -210,31 +221,13 @@ export default function DayView({ events }: { events: Event[] }) {
                             hour: "2-digit",
                             minute: "2-digit",
                           })}
-                        </div>
-                        {event.room && (
-                          <div className="text-xs">Room: {event.room}</div>
-                        )}
-                      </div>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p className="font-semibold">{event.title}</p>
-                      <p className="text-sm">{event.description}</p>
-                      <p className="text-sm">
-                        {event.start.toLocaleTimeString([], {
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        })}
-                        -
-                        {event.end.toLocaleTimeString([], {
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        })}
-                      </p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              );
-            })}
+                        </p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                );
+              })
+            )}
           </div>
         </div>
       </div>

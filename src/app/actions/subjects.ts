@@ -3,7 +3,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { Subject } from "@/types/subjects";
 import { getCurrentSchoolYearId } from "./school-year";
-
+import { revalidatePath } from "next/cache";
 export async function getSubjectsForCurrentSchoolYear(): Promise<Subject[]> {
   const supabase = createClient();
 
@@ -78,5 +78,46 @@ export async function createSubject(
     throw error;
   }
 
+  revalidatePath("/subjects");
+
   return data as Subject;
+}
+
+export async function updateSubject(subject: Subject): Promise<Subject> {
+  const supabase = createClient();
+
+  const { data, error } = await supabase
+    .from("subjects")
+    .update({
+      name: subject.name,
+      teacher: subject.teacher,
+      room: subject.room,
+      color: subject.color,
+      icon: subject.icon,
+    })
+    .eq("id", subject.id)
+    .select()
+    .single();
+
+  if (error) {
+    console.error("Error updating subject:", error);
+    throw error;
+  }
+
+  revalidatePath("/subjects");
+  revalidatePath(`/subjects/${subject.id}`);
+
+  return data as Subject;
+}
+
+export async function deleteSubject(id: number): Promise<void> {
+  const supabase = createClient();
+
+  const { error } = await supabase.from("subjects").delete().eq("id", id);
+
+  if (error) {
+    console.error("Error deleting subject:", error);
+    throw error;
+  }
+  revalidatePath("/subjects");
 }

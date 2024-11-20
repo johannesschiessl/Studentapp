@@ -1,17 +1,58 @@
 import DayView from "@/components/calendar/day-view";
 import WeekView from "@/components/calendar/week-view";
 import { Event } from "@/types/calendar";
+import { getTimeTable } from "@/app/actions/school-year";
+import { transformTimetableToEvents } from "@/app/actions/calendar";
 
-const events: Event[] = []; // TODO: Fetch events from DB
+function getWeekStartDate() {
+  const today = new Date();
+  const dayOfWeek = today.getDay();
+  const sunday = new Date(today);
+  sunday.setDate(today.getDate() - dayOfWeek);
+  sunday.setHours(0, 0, 0, 0);
+  return sunday;
+}
 
-export default function CalendarPage() {
+function getWeekDates(startDate: Date) {
+  return Array.from({ length: 7 }, (_, i) => {
+    const date = new Date(startDate);
+    date.setDate(date.getDate() + i);
+    return date;
+  });
+}
+
+export default async function CalendarPage() {
+  const events: Event[] = []; // TODO: Fetch events from DB
+  const timetable = await getTimeTable();
+
+  // Get current week's timetable events
+  const weekStart = getWeekStartDate();
+  const weekDates = getWeekDates(weekStart);
+  const weekEvents = await Promise.all(
+    weekDates.map((date) => transformTimetableToEvents(date, timetable)),
+  );
+
+  // Get today's timetable events
+  const today = new Date();
+  const todayEvents = await transformTimetableToEvents(today, timetable);
+
   return (
     <main>
       <div className="hidden sm:block">
-        <WeekView events={events} />
+        <WeekView
+          events={events}
+          timetableEvents={weekEvents.flat()}
+          initialDate={weekStart}
+          timetable={timetable}
+        />
       </div>
       <div className="sm:hidden">
-        <DayView events={events} />
+        <DayView
+          events={events}
+          timetableEvents={todayEvents}
+          initialDate={today}
+          timetable={timetable}
+        />
       </div>
     </main>
   );

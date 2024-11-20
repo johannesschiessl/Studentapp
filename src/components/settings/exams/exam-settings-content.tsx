@@ -83,8 +83,8 @@ export default function ExamSettingsContent({
                     <div className="flex items-center justify-between">
                       <AccordionTrigger className="flex-grow">
                         <CardTitle>
-                          {group.name} ({t("settings.exam_type.weight")}:{" "}
-                          {group.weight})
+                          {group.name} <br className="sm:hidden" />(
+                          {t("settings.exam_type.weight")}: {group.weight})
                         </CardTitle>
                       </AccordionTrigger>
                       <DeleteConfirmationDialog

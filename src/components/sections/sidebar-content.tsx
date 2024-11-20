@@ -94,11 +94,13 @@ export function SidebarContent({ subjects }: { subjects: Subject[] }) {
             </h2>
             {subjects.length > 0 ? (
               <ul className="mt-2 space-y-1">
-                {subjects.map((subject) => (
-                  <li key={subject.id}>
-                    <SubjectListItem subject={subject} pathname={pathname} />
-                  </li>
-                ))}
+                {subjects
+                  .sort((a, b) => a.name.localeCompare(b.name))
+                  .map((subject) => (
+                    <li key={subject.id}>
+                      <SubjectListItem subject={subject} pathname={pathname} />
+                    </li>
+                  ))}
               </ul>
             ) : (
               <p className="text-neutral-500 dark:text-neutral-400">
@@ -166,8 +168,6 @@ function SubjectListItem({
             "mr-2.5 rounded-xl p-2",
             `bg-${subject.color}-100`,
             `text-${subject.color}-500`,
-            `dark:bg-${subject.color}-500`,
-            `dark:text-${subject.color}-100`,
           )}
         >
           <SubjectIcon className="h-5 w-5" aria-hidden="true" />
