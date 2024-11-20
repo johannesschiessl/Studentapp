@@ -25,6 +25,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Exam, ExamType } from "@/types/exams";
 import { useTranslation } from "@/hooks/use-translation";
+import { toast } from "sonner";
 
 interface EditExamDialogProps {
   children: React.ReactNode;
@@ -32,6 +33,15 @@ interface EditExamDialogProps {
   onEdit: (exam: Exam) => void;
   onDelete: (id: number) => void;
   examTypes: ExamType[];
+}
+
+interface EditExamFormData {
+  exam_type_id: number;
+  grade?: number;
+  grade_modifier?: "+" | "-" | "none";
+  description?: string;
+  date_written: string;
+  date_returned?: string;
 }
 
 export function EditExamDialog({
@@ -42,35 +52,59 @@ export function EditExamDialog({
   examTypes,
 }: EditExamDialogProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { t } = useTranslation();
+
   const {
     register,
     handleSubmit,
     control,
     reset,
     formState: { errors },
-  } = useForm<Omit<Exam, "id" | "subject_id">>();
-
-  const onSubmit = (data: Omit<Exam, "id" | "subject_id">) => {
-    onEdit({
-      ...data,
-      id: exam.id,
-      exam_type_id: data.exam_type_id,
-      subject_id: exam.subject_id,
-      date_written: new Date(data.date_written),
-      date_returned: data.date_returned
-        ? new Date(data.date_returned)
+  } = useForm<EditExamFormData>({
+    defaultValues: {
+      exam_type_id: exam.exam_type_id,
+      grade: exam.grade,
+      grade_modifier: exam.grade_modifier || "none",
+      description: exam.description,
+      date_written: new Date(exam.date_written).toISOString().split("T")[0],
+      date_returned: exam.date_returned
+        ? new Date(exam.date_returned).toISOString().split("T")[0]
         : undefined,
-    });
-    setIsOpen(false);
-    reset();
+    },
+  });
+
+  const onSubmit = async (formData: EditExamFormData) => {
+    try {
+      setIsSubmitting(true);
+
+      const updatedExam: Exam = {
+        id: exam.id,
+        subject_id: exam.subject_id,
+        exam_type_id: formData.exam_type_id,
+        grade: formData.grade,
+        grade_modifier: formData.grade_modifier,
+        description: formData.description,
+        date_written: new Date(formData.date_written),
+        date_returned: formData.date_returned
+          ? new Date(formData.date_returned)
+          : undefined,
+      };
+
+      await onEdit(updatedExam);
+      setIsOpen(false);
+    } catch (error) {
+      console.error("Failed to update exam:", error);
+      toast.error(t("common.error"));
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const onCancel = () => {
     setIsOpen(false);
     reset();
   };
-
-  const { t } = useTranslation();
 
   return (
     <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
@@ -85,11 +119,12 @@ export function EditExamDialog({
             <Controller
               name="exam_type_id"
               control={control}
+              defaultValue={exam.exam_type_id}
               rules={{ required: t("exams.exam_type.required") }}
               render={({ field }) => (
                 <Select
                   onValueChange={(value) => field.onChange(Number(value))}
-                  defaultValue={exam.exam_type_id.toString()}
+                  value={field.value?.toString()}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder={t("exams.select_exam_type")} />
@@ -100,9 +135,6 @@ export function EditExamDialog({
                         {type.name}
                       </SelectItem>
                     ))}
-                    <p className="py-2 text-center text-muted-foreground">
-                      {t("exams.add_exam_type_in_settings")}
-                    </p>
                   </SelectContent>
                 </Select>
               )}
@@ -222,7 +254,9 @@ export function EditExamDialog({
             <Button type="button" variant="outline" onClick={onCancel}>
               {t("exams.cancel")}
             </Button>
-            <Button type="submit">{t("exams.edit")}</Button>
+            <Button type="submit" disabled={isSubmitting}>
+              {isSubmitting ? t("common.saving") : t("exams.edit")}
+            </Button>
           </div>
         </form>
       </AlertDialogContent>

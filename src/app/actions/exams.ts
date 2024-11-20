@@ -59,14 +59,33 @@ export async function addExam(exam: NewExam, subject_id: number) {
 
 export async function editExam(exam: Exam) {
   const supabase = createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    throw new Error("User not authenticated");
+  }
+
+  const formattedExam = {
+    exam_type_id: exam.exam_type_id,
+    grade: exam.grade,
+    grade_modifier: exam.grade_modifier,
+    description: exam.description,
+    date_written: exam.date_written.toISOString(),
+    date_returned: exam.date_returned?.toISOString() || null,
+  };
+
   const { data, error } = await supabase
     .from("exams")
-    .update({ ...exam })
+    .update(formattedExam)
     .eq("id", exam.id)
-    .select("*");
+    .eq("user_id", user.id)
+    .select();
 
   if (error) {
-    console.error(error);
+    console.error("Error updating exam:", error);
     throw error;
   }
 
