@@ -15,6 +15,7 @@ import { useTranslation } from "@/hooks/use-translation";
 import { calculateAverageGrade } from "@/lib/grades";
 import { ExamTypeGroup } from "@/types/exams";
 import { getExamTypeGroupsForCurrentSchoolYear } from "@/app/actions/exams";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function SubjectContent({
   subject,
@@ -94,13 +95,17 @@ export default function SubjectContent({
             )}
             <h1 className="text-3xl font-bold">{subject?.name}</h1>
           </div>
-          <span className={`text-xl font-bold text-${subject?.color}-500`}>
-            {isLoading
-              ? "⌀ 0.00"
-              : averageGrade
-                ? `⌀ ${averageGrade.toFixed(2)}`
-                : "⌀ 1.00"}
-          </span>
+          <div className={`text-xl font-bold text-${subject?.color}-500`}>
+            {isLoading ? (
+              <Skeleton className="h-8 w-16" />
+            ) : !examTypeGroups.length ? (
+              ""
+            ) : averageGrade === null ? (
+              ""
+            ) : (
+              `⌀ ${averageGrade.toFixed(2)}`
+            )}
+          </div>
         </div>
         {subject && (
           <div className="mt-4 w-full sm:flex sm:items-center sm:justify-between">

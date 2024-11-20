@@ -10,68 +10,84 @@ export function calculateAverageGrade(
   examTypes: ExamType[],
   examTypeGroups: ExamTypeGroup[],
 ): number | null {
-  // Create a map of exam types for faster lookup
-  const examTypeMap = new Map(examTypes.map((type) => [type.id, type]));
+  // Early return if no data
+  if (!exams?.length || !examTypes?.length || !examTypeGroups?.length) {
+    return null;
+  }
 
-  // Group exams by their type group
+  // Create maps for faster lookups - convert IDs to strings for consistent lookup
+  const examTypeMap = new Map(
+    examTypes.map((type) => [type.id.toString(), type]),
+  );
+
   const examsByGroup = new Map<string, GradeWithWeight[]>();
 
-  // Initialize groups
+  // Initialize groups with string IDs
   examTypeGroups.forEach((group) => {
-    examsByGroup.set(group.id, []);
+    examsByGroup.set(group.id.toString(), []);
   });
 
-  // Process exams with valid grades
+  // Process exams
   exams.forEach((exam) => {
-    if (exam.grade === undefined || exam.grade === null) return;
+    if (typeof exam.grade !== "number") return;
 
     const examType = examTypeMap.get(exam.exam_type_id.toString());
     if (!examType) return;
 
-    const groupExams = examsByGroup.get(examType.group_id) || [];
+    const groupId = examType.group_id.toString();
+    const groupExams = examsByGroup.get(groupId) || [];
 
-    // Convert grade modifiers to numerical values
+    // Calculate final grade with modifier
     let finalGrade = exam.grade;
-    if (exam.grade_modifier === "+") finalGrade += 0.3;
-    if (exam.grade_modifier === "-") finalGrade -= 0.3;
+    if (exam.grade_modifier === "+")
+      finalGrade = Math.min(finalGrade + 0.3, 1.0);
+    if (exam.grade_modifier === "-")
+      finalGrade = Math.max(finalGrade - 0.3, 6.0);
 
     groupExams.push({
       grade: finalGrade,
-      weight: examType.weight,
+      weight: examType.weight || 1, // Default weight to 1 if not specified
     });
-    examsByGroup.set(examType.group_id, groupExams);
+
+    examsByGroup.set(groupId, groupExams);
   });
 
-  // Calculate weighted average for each group
-  const groupAverages = examTypeGroups.map((group) => {
-    const groupExams = examsByGroup.get(group.id) || [];
-    if (groupExams.length === 0) return null;
+  // Calculate group averages
+  const groupAverages = examTypeGroups
+    .map((group) => {
+      const groupId = group.id.toString();
+      const groupExams = examsByGroup.get(groupId) || [];
 
-    const totalWeight = groupExams.reduce((sum, exam) => sum + exam.weight, 0);
-    const weightedSum = groupExams.reduce(
-      (sum, exam) => sum + exam.grade * exam.weight,
-      0,
+      if (groupExams.length === 0) return null;
+
+      const totalWeight = groupExams.reduce(
+        (sum, exam) => sum + exam.weight,
+        0,
+      );
+      const weightedSum = groupExams.reduce(
+        (sum, exam) => sum + exam.grade * exam.weight,
+        0,
+      );
+
+      return {
+        average: weightedSum / totalWeight,
+        weight: group.weight || 1, // Default group weight to 1 if not specified
+      };
+    })
+    .filter(
+      (group): group is { average: number; weight: number } => group !== null,
     );
 
-    return {
-      average: weightedSum / totalWeight,
-      weight: group.weight,
-    };
-  });
-
-  // Filter out groups with no grades
-  const validGroupAverages = groupAverages.filter(
-    (group): group is { average: number; weight: number } => group !== null,
-  );
-
-  if (validGroupAverages.length === 0) return null;
+  // Return null if no valid grades
+  if (groupAverages.length === 0) return null;
 
   // Calculate final weighted average
-  const totalWeight = validGroupAverages.reduce(
+  const totalWeight = groupAverages.reduce(
     (sum, group) => sum + group.weight,
     0,
   );
-  const weightedSum = validGroupAverages.reduce(
+
+  const weightedSum = groupAverages.reduce(
     (sum, group) => sum + group.average * group.weight,
     0,
   );
