@@ -1,6 +1,6 @@
 "use client";
 
-import { UserRound, MapPin, Plus } from "lucide-react";
+import { UserRound, MapPin, Plus, Pencil } from "lucide-react";
 import Badge from "@/components/shared/badge";
 import SubjectIcon from "@/components/shared/subject-icon";
 import { Button } from "@/components/ui/button";
@@ -14,6 +14,10 @@ import { toast } from "sonner";
 import { useTranslation } from "@/hooks/use-translation";
 import { calculateAverageGrade } from "@/lib/grades";
 import { ExamTypeGroup } from "@/types/exams";
+import { DeleteSubjectDialog } from "./delete-subject-dialog";
+import { deleteSubject } from "@/app/actions/subjects";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function SubjectContent({
   subject,
@@ -26,6 +30,7 @@ export default function SubjectContent({
   examTypes: ExamType[];
   examTypeGroups: ExamTypeGroup[];
 }) {
+  const router = useRouter();
   const { t } = useTranslation();
   const [exams, setExams] = useState(intialExams);
 
@@ -64,6 +69,16 @@ export default function SubjectContent({
     }
   }
 
+  async function handleDeleteSubject() {
+    try {
+      await deleteSubject(subject.id);
+      router.push("/subjects");
+    } catch (error) {
+      console.error(error);
+      toast.error(t("common.error"));
+    }
+  }
+
   return (
     <main className="mx-auto w-full max-w-5xl">
       <div className="flex flex-col">
@@ -77,9 +92,19 @@ export default function SubjectContent({
               />
             )}
             <h1 className="text-3xl font-bold">{subject?.name}</h1>
+            <div className="flex items-center gap-1">
+              <Link href={`/subjects/${subject.id}/edit`}>
+                <Button variant="ghost" size="icon">
+                  <Pencil className="h-4 w-4" />
+                </Button>
+              </Link>
+              <DeleteSubjectDialog onDelete={handleDeleteSubject} />
+            </div>
           </div>
-          <div className={`text-xl font-bold text-${subject?.color}-500`}>
-            {averageGrade === null ? "" : `⌀ ${averageGrade.toFixed(2)}`}
+          <div className="flex items-center gap-2">
+            <div className={`text-xl font-bold text-${subject?.color}-500`}>
+              {averageGrade === null ? "" : `⌀ ${averageGrade.toFixed(2)}`}
+            </div>
           </div>
         </div>
         {subject && (
