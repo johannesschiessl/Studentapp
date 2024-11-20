@@ -98,6 +98,8 @@
   "settings.exam_types": "Prüfungskategorien",
   "settings.year": "Schuljahr",
   "settings.account": "Konto",
+  "settings.account.delete.confirm.title": "Konto löschen",
+  "settings.account.delete.confirm.description": "Dies kann nicht rückgängig gemacht werden. Dies wird dein Konto und alle deine Daten von unseren Servern permanent löschen.",
   "settings.theme": "Modus",
   "settings.theme.system": "System",
   "settings.theme.light": "Hell",

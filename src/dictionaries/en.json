@@ -98,6 +98,8 @@
   "settings.exam_types": "Exam Types",
   "settings.year": "School year",
   "settings.account": "Account",
+  "settings.account.delete.confirm.title": "Delete Account",
+  "settings.account.delete.confirm.description": "This action cannot be undone. This will permanently delete your account and remove all your data from our servers.",
   "settings.theme": "Theme",
   "settings.theme.system": "System",
   "settings.theme.light": "Light",
