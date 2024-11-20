@@ -166,8 +166,6 @@ function SubjectListItem({
             "mr-2.5 rounded-xl p-2",
             `bg-${subject.color}-100`,
             `text-${subject.color}-500`,
-            `dark:bg-${subject.color}-500`,
-            `dark:text-${subject.color}-100`,
           )}
         >
           <SubjectIcon className="h-5 w-5" aria-hidden="true" />

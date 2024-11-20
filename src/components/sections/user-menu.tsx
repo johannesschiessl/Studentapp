@@ -15,14 +15,14 @@ export default function UserMenu({ children }: { children: React.ReactNode }) {
   return (
     <Popover>
       <PopoverTrigger asChild>{children}</PopoverTrigger>
-      <PopoverContent className="space-y-4">
+      <PopoverContent className="w-full space-y-4">
         <MenuItem>
           <Link href="/years">
             <div className="flex items-center">
               <Icon className="mr-2">
                 <ArrowLeftRight className="h-5 w-5" />
               </Icon>
-              Switch school year
+              {t("settings.switch_year")}
             </div>
           </Link>
         </MenuItem>
@@ -32,7 +32,7 @@ export default function UserMenu({ children }: { children: React.ReactNode }) {
               <Icon className="mr-2">
                 <Plus className="h-5 w-5" />
               </Icon>
-              Add school year
+              {t("settings.add_year")}
             </div>
           </Link>
         </MenuItem>
@@ -42,7 +42,7 @@ export default function UserMenu({ children }: { children: React.ReactNode }) {
               <Icon className="mr-2">
                 <CalendarDays className="h-5 w-5" />
               </Icon>
-              Edit timetable
+              {t("settings.edit_timetable")}
             </div>
           </Link>
         </MenuItem>

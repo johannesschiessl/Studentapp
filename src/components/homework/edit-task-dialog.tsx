@@ -161,7 +161,7 @@ export default function EditTaskDialog({
           </div>
           <div className="flex justify-end space-x-2">
             <Button type="button" variant="outline" onClick={onCancel}>
-              {t("homework.cancel")}
+              {t("common.cancel")}
             </Button>
             <Button type="submit">{t("homework.edit")}</Button>
           </div>
@@ -205,7 +205,7 @@ function DeleteTaskDialog({
         </AlertDialogDescription>
         <div className="flex items-center justify-end space-x-2">
           <AlertDialogCancel asChild>
-            <Button variant="outline">{t("homework.cancel")}</Button>
+            <Button variant="outline">{t("common.cancel")}</Button>
           </AlertDialogCancel>
           <AlertDialogAction
             className="bg-destructive hover:bg-destructive/80"

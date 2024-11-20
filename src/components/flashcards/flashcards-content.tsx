@@ -42,9 +42,9 @@ export function FlashcardsContent({
   }
 
   return (
-    <div className="space-y-8">
+    <main className="mx-auto w-full max-w-5xl space-y-5">
       <div className="flex justify-between">
-        <h1 className="text-3xl font-bold">{t("flashcards")}</h1>
+        <h1 className="text-2xl font-bold">{t("flashcards")}</h1>
         <AddDeckDialog subjects={subjects} onAdd={handleAddDeck}>
           <Button>
             <Plus className="mr-2 h-4 w-4" />
@@ -54,6 +54,6 @@ export function FlashcardsContent({
       </div>
 
       <DeckList decks={decks} subjects={subjects} deckCards={deckCards} />
-    </div>
+    </main>
   );
 }

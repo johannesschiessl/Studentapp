@@ -9,3 +9,11 @@ export interface Event {
   color: string;
   icon?: string;
 }
+
+export interface Holiday {
+  name: string;
+  startDate: Date;
+  endDate: Date;
+  color: string;
+  icon: keyof typeof import("lucide-react");
+}
