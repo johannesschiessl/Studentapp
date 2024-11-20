@@ -2,7 +2,7 @@
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { PanelLeftOpen, Settings } from "lucide-react";
+import { Ellipsis, PanelLeftOpen, Settings } from "lucide-react";
 import { useSidebar } from "@/contexts/sidebar-context";
 import {
   Tooltip,
@@ -14,6 +14,7 @@ import { useTranslation } from "@/hooks/use-translation";
 import SettingsDialog from "../settings/settings-dialog";
 import UserMenu from "./user-menu";
 import type { User } from "@supabase/supabase-js";
+import SettingsDrawer from "../settings/mobile/settings-drawer";
 
 interface HeaderContentProps {
   user?: User;
@@ -53,7 +54,21 @@ export function HeaderContent({ user }: HeaderContentProps) {
 
       {/* Mobile */}
 
-      <div className="flex w-full items-center justify-between sm:hidden"></div>
+      <div className="flex w-full items-center justify-between sm:hidden">
+        <SettingsDrawer>
+          <Button variant="ghost" size="icon">
+            <Ellipsis />
+          </Button>
+        </SettingsDrawer>
+        <UserMenu>
+          <Avatar>
+            <AvatarImage src={user?.user_metadata?.avatar_url} />
+            <AvatarFallback>
+              {user?.user_metadata?.name?.charAt(0)}
+            </AvatarFallback>
+          </Avatar>
+        </UserMenu>
+      </div>
 
       {/* Desktop */}
 
