@@ -190,5 +190,10 @@
   "timetable.days.thursday": "Donnerstag",
   "timetable.days.friday": "Freitag",
   "timetable.days.saturday": "Samstag",
-  "timetable.days.sunday": "Sonntag"
+  "timetable.days.sunday": "Sonntag",
+  "calendar.week": "Woche",
+  "calendar.edit_timetable": "Stundenplan bearbeiten",
+  "calendar.previous_week": "Vorherige Woche",
+  "calendar.next_week": "Nächste Woche",
+  "calendar.all_day": "Ganztägig"
 }

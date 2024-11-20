@@ -191,5 +191,10 @@
   "timetable.days.thursday": "Thursday",
   "timetable.days.friday": "Friday",
   "timetable.days.saturday": "Saturday",
-  "timetable.days.sunday": "Sunday"
+  "timetable.days.sunday": "Sunday",
+  "calendar.week": "Week",
+  "calendar.edit_timetable": "Edit Timetable",
+  "calendar.previous_week": "Previous Week",
+  "calendar.next_week": "Next Week",
+  "calendar.all_day": "All-day"
 }

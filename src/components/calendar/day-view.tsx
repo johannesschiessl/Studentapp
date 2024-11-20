@@ -15,6 +15,7 @@ import { TimeTable } from "@/types/school-year";
 import { isHoliday } from "@/constants/holidays";
 import { cn } from "@/lib/utils";
 import { transformTimetableToEvents } from "@/app/actions/calendar";
+import { useTranslation } from "@/hooks/use-translation";
 
 import { LucideIcon } from "lucide-react";
 const hours = Array.from({ length: 14 }, (_, i) => i + 7);
@@ -32,6 +33,7 @@ export default function DayView({
   initialDate,
   timetable,
 }: DayViewProps) {
+  const { t } = useTranslation();
   const [currentDate, setCurrentDate] = useState(initialDate);
   const [currentTimetableEvents, setCurrentTimetableEvents] =
     useState(timetableEvents);
@@ -84,10 +86,10 @@ export default function DayView({
       <div className="flex flex-row items-center justify-between space-y-0 pb-2">
         <Button variant="outline" size="icon" onClick={() => changeDate(-1)}>
           <ChevronLeft className="h-4 w-4" />
-          <span className="sr-only">Previous day</span>
+          <span className="sr-only">{t("calendar.previous_day")}</span>
         </Button>
         <h1 className="text-md font-bold sm:text-2xl">
-          {currentDate.toLocaleDateString("en-US", {
+          {currentDate.toLocaleDateString(undefined, {
             weekday: "long",
             year: "numeric",
             month: "long",
@@ -96,14 +98,14 @@ export default function DayView({
         </h1>
         <Button variant="outline" size="icon" onClick={() => changeDate(1)}>
           <ChevronRight className="h-4 w-4" />
-          <span className="sr-only">Next day</span>
+          <span className="sr-only">{t("calendar.next_day")}</span>
         </Button>
       </div>
       <div>
         <div className="space-y-4">
           {/* All-day events section */}
           <div>
-            <h3 className="mb-2 font-semibold">All-day Events</h3>
+            <h3 className="mb-2 font-semibold">{t("calendar.all_day")}</h3>
             <div className="space-y-1">
               {getEventsForDate(currentDate, true).map((event) => (
                 <TooltipProvider key={event.title}>

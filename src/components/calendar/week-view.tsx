@@ -23,6 +23,7 @@ import { getWeekTimetableEvents } from "@/app/actions/calendar";
 import { isHoliday } from "@/constants/holidays";
 import { cn } from "@/lib/utils";
 import { transformTimetableToEvents } from "@/app/actions/calendar";
+import { useTranslation } from "@/hooks/use-translation";
 
 const hours = Array.from({ length: 14 }, (_, i) => i + 7);
 
@@ -43,6 +44,8 @@ export default function WeekView({
   const [currentTimetableEvents, setCurrentTimetableEvents] =
     useState(timetableEvents);
   const [isLoadingEvents, setIsLoadingEvents] = useState(false);
+
+  const { t } = useTranslation();
 
   useEffect(() => {
     async function fetchWeekEvents() {
@@ -140,7 +143,7 @@ export default function WeekView({
     <div>
       <div className="flex flex-row items-center justify-between space-y-0 pb-2">
         <h1 className="text-2xl font-bold">
-          Week {getWeekNumber(currentWeekStart)},{" "}
+          {t("calendar.week")} {getWeekNumber(currentWeekStart)},{" "}
           {currentWeekStart.toLocaleString("default", {
             month: "long",
             year: "numeric",
@@ -154,16 +157,16 @@ export default function WeekView({
               onClick={() => setCurrentWeekStart(getWeekStartDate())}
             >
               <CalendarDays className="mr-2 h-4 w-4" />
-              Edit timetable
+              {t("calendar.edit_timetable")}
             </Button>
           </Link>
           <Button variant="outline" size="icon" onClick={() => changeWeek(-1)}>
             <ChevronLeft className="h-4 w-4" />
-            <span className="sr-only">Previous week</span>
+            <span className="sr-only">{t("calendar.previous_week")}</span>
           </Button>
           <Button variant="outline" size="icon" onClick={() => changeWeek(1)}>
             <ChevronRight className="h-4 w-4" />
-            <span className="sr-only">Next week</span>
+            <span className="sr-only">{t("calendar.next_week")}</span>
           </Button>
         </div>
       </div>
@@ -180,7 +183,7 @@ export default function WeekView({
 
           {/* All-day events section */}
           <div className="col-span-1 w-14 text-center text-sm font-semibold">
-            All-day
+            {t("calendar.all_day")}
           </div>
           {weekDates.map((date, dateIndex) => (
             <div key={dateIndex} className="min-h-[100px] p-1">
