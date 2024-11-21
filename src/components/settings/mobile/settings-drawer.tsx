@@ -3,6 +3,7 @@
 import {
   Drawer,
   DrawerContent,
+  DrawerFooter,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
@@ -48,6 +49,7 @@ import {
 import { useEffect, useState } from "react";
 import { logOutUser, deleteUserAccount } from "@/app/actions/user";
 import { ExamType, ExamTypeGroup } from "@/types/exams";
+import { Badge } from "@/components/ui/badge";
 
 export default function SettingsDrawer({
   children,
@@ -79,7 +81,7 @@ export default function SettingsDrawer({
       <Drawer>
         <DrawerTrigger asChild>{children}</DrawerTrigger>
         <DrawerContent className="h-[85vh]">
-          <DrawerHeader className="border-b pb-4">
+          <DrawerHeader>
             <DrawerTitle>{t("settings")}</DrawerTitle>
           </DrawerHeader>
           <div className="flex flex-col gap-4 p-4">
@@ -153,7 +155,7 @@ export default function SettingsDrawer({
                   </Button>
                 </DrawerTrigger>
                 <DrawerContent className="h-[85vh]">
-                  <DrawerHeader className="border-b pb-4">
+                  <DrawerHeader>
                     <DrawerTitle>{t("settings.exam_types")}</DrawerTitle>
                   </DrawerHeader>
                   <div className="p-4">
@@ -180,7 +182,7 @@ export default function SettingsDrawer({
                   </Button>
                 </DrawerTrigger>
                 <DrawerContent className="h-[85vh]">
-                  <DrawerHeader className="border-b pb-4">
+                  <DrawerHeader>
                     <DrawerTitle>{t("settings.account")}</DrawerTitle>
                   </DrawerHeader>
                   <div className="flex flex-col gap-4 p-4">
@@ -259,6 +261,13 @@ export default function SettingsDrawer({
               </Drawer>
             </SettingsItem>
           </div>
+          <DrawerFooter className="flex w-full flex-col items-center justify-between">
+            <p className="text-sm text-neutral-500">Student-App</p>
+            <p className="text-sm text-neutral-500">by Johannes Schießl</p>
+            <Badge className="ml-1 mr-2 bg-indigo-100 text-indigo-500 hover:bg-indigo-100 hover:text-indigo-500">
+              Public Beta
+            </Badge>
+          </DrawerFooter>
         </DrawerContent>
       </Drawer>
     </>
