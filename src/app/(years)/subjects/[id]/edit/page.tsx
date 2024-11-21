@@ -51,10 +51,10 @@ import { toast } from "sonner";
 const iconOptions = [
   { name: "Book", icon: Book },
   { name: "Calculator", icon: Calculator },
-  { name: "Tea", icon: Coffee },
+  { name: "Coffee", icon: Coffee },
   { name: "Scroll", icon: Scroll },
   { name: "Leaf", icon: Leaf },
-  { name: "Flask", icon: FlaskConical },
+  { name: "FlaskConical", icon: FlaskConical },
   { name: "Atom", icon: Atom },
   { name: "Terminal", icon: Terminal },
   { name: "Hourglass", icon: Hourglass },
@@ -230,7 +230,7 @@ export default function EditSubjectPage({
                               ?.icon || Book,
                             { className: "mr-2 h-4 w-4" },
                           )}
-                          {field.value}
+                          {field.value === "Coffee" ? "Tea" : field.value}
                         </span>
                       ) : (
                         <span>{t("subjects.select_icon")}</span>
@@ -260,7 +260,9 @@ export default function EditSubjectPage({
                           {React.createElement(icon.icon, {
                             className: "mr-2 h-4 w-4",
                           })}
-                          <span>{icon.name}</span>
+                          <span>
+                            {icon.name === "Coffee" ? "Tea" : icon.name}
+                          </span>
                         </div>
                       ))}
                     </ScrollArea>
