@@ -151,11 +151,7 @@ export default function WeekView({
         </h1>
         <div className="flex space-x-2">
           <Link href="/calendar/timetable">
-            <Button
-              className="mr-4"
-              variant="outline"
-              onClick={() => setCurrentWeekStart(getWeekStartDate())}
-            >
+            <Button className="mr-4" variant="outline">
               <CalendarDays className="mr-2 h-4 w-4" />
               {t("calendar.edit_timetable")}
             </Button>
