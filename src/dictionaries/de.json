@@ -206,5 +206,22 @@
   "calendar.edit_timetable": "Stundenplan bearbeiten",
   "calendar.previous_week": "Vorherige Woche",
   "calendar.next_week": "Nächste Woche",
-  "calendar.all_day": "Ganztägig"
+  "calendar.all_day": "Ganztägig",
+  "onboarding.welcome.title": "Willkommen bei Student App",
+  "onboarding.welcome.description": "Dein digitaler Schulbegleiter für einen perfekt organisierten Schulalltag.",
+  "onboarding.subjects.title": "Deine Schulfächer im Überblick",
+  "onboarding.subjects.description": "Organisiere deine Fächer und behalte Noten, Aufgaben und Materialien im Blick.",
+  "onboarding.homework.title": "Hausaufgaben clever organisiert",
+  "onboarding.homework.description": "Erfasse und plane deine Hausaufgaben, damit du nie wieder wichtige Abgaben verpasst.",
+  "onboarding.schedule.title": "Dein persönlicher Stundenplan",
+  "onboarding.schedule.description": "Behalte deinen Schulalltag im Griff mit einem übersichtlichen digitalen Stundenplan.",
+  "onboarding.exams.title": "Prüfungen im Blick",
+  "onboarding.exams.description": "Plane deine Prüfungsvorbereitung und behalte alle wichtigen Termine im Auge.",
+  "onboarding.flashcards.title": "Lernen mit Karteikarten",
+  "onboarding.flashcards.description": "Erstelle digitale Karteikarten für effektives Lernen und bessere Prüfungsergebnisse.",
+  "onboarding.devices.title": "Immer und überall dabei",
+  "onboarding.devices.description": "Greife von jedem Gerät auf deine Daten zu - in der Schule, zu Hause oder unterwegs.",
+  "onboarding.get_started": "Los geht's",
+  "onboarding.next": "Weiter",
+  "onboarding.previous": "Zurück"
 }

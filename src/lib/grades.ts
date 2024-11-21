@@ -37,15 +37,8 @@ export function calculateAverageGrade(
     const groupId = examType.group_id.toString();
     const groupExams = examsByGroup.get(groupId) || [];
 
-    // Calculate final grade with modifier
-    let finalGrade = exam.grade;
-    if (exam.grade_modifier === "+")
-      finalGrade = Math.min(finalGrade + 0.3, 1.0);
-    if (exam.grade_modifier === "-")
-      finalGrade = Math.max(finalGrade - 0.3, 6.0);
-
     groupExams.push({
-      grade: finalGrade,
+      grade: exam.grade,
       weight: examType.weight || 1, // Default weight to 1 if not specified
     });
 
