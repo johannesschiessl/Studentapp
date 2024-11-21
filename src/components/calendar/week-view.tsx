@@ -116,15 +116,6 @@ export default function WeekView({
     return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
   };
 
-  function getWeekStartDate() {
-    const today = new Date();
-    const dayOfWeek = today.getDay();
-    const sunday = new Date(today);
-    sunday.setDate(today.getDate() - dayOfWeek);
-    sunday.setHours(0, 0, 0, 0);
-    return sunday;
-  }
-
   useEffect(() => {
     async function updateTimetableEvents() {
       const weekDates = getWeekDates(currentWeekStart);
