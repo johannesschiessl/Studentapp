@@ -207,5 +207,22 @@
   "calendar.edit_timetable": "Edit Timetable",
   "calendar.previous_week": "Previous Week",
   "calendar.next_week": "Next Week",
-  "calendar.all_day": "All-day"
+  "calendar.all_day": "All-day",
+  "onboarding.welcome.title": "Welcome to Student App",
+  "onboarding.welcome.description": "Your digital companion for a perfectly organized school life.",
+  "onboarding.subjects.title": "Track Your Subjects",
+  "onboarding.subjects.description": "Organize your subjects and keep track of grades, assignments, and materials all in one place.",
+  "onboarding.homework.title": "Smart Homework Management",
+  "onboarding.homework.description": "Track and plan your assignments to never miss important deadlines again.",
+  "onboarding.schedule.title": "Your Personal Timetable",
+  "onboarding.schedule.description": "Stay on top of your daily schedule with a clear and convenient digital timetable.",
+  "onboarding.exams.title": "Exam Overview",
+  "onboarding.exams.description": "Plan your exam preparation and keep track of all important test dates.",
+  "onboarding.flashcards.title": "Study with Flashcards",
+  "onboarding.flashcards.description": "Create digital flashcards for effective learning and better exam results.",
+  "onboarding.devices.title": "Access Everywhere",
+  "onboarding.devices.description": "Access your data from any device - at school, at home, or on the go.",
+  "onboarding.get_started": "Get Started",
+  "onboarding.next": "Next",
+  "onboarding.previous": "Previous"
 }
