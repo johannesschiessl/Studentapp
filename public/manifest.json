@@ -1,6 +1,6 @@
 {
   "name": "Student-App",
-  "short_name": "Students",
+  "short_name": "Student-App",
   "icons": [
     {
       "src": "/web-app-manifest-192x192.png",
