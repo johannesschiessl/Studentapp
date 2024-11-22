@@ -3,7 +3,7 @@
 import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
-import { SchoolYear, TimeTable } from "@/types/school-year";
+import { SchoolYear, TimeTable, SchoolYearSettings } from "@/types/school-year";
 import { addExamType, addExamTypeGroup } from "./exams";
 
 export async function getSchoolYear(id: number): Promise<SchoolYear> {
@@ -18,9 +18,19 @@ export async function getSchoolYear(id: number): Promise<SchoolYear> {
   if (error) {
     console.error("Error fetching subjects:", error);
     throw error;
-  } else {
-    return data as SchoolYear;
   }
+
+  const defaultSettings: SchoolYearSettings = {
+    enableStatistics: false,
+  };
+
+  return {
+    ...data,
+    settings: {
+      ...defaultSettings,
+      ...data.settings,
+    },
+  } as SchoolYear;
 }
 
 export async function getTimeTable(): Promise<TimeTable> {
@@ -88,6 +98,10 @@ export async function createSchoolYear(
       wednesday: [],
       thursday: [],
       friday: [],
+    },
+    settings: {
+      enableStatistics: false,
+      ...data.settings,
     },
   };
 
@@ -196,4 +210,23 @@ export async function updateTimeTable(timetable: TimeTable): Promise<void> {
   }
 
   revalidatePath("/timetable");
+}
+
+export async function updateSchoolYearSettings(
+  settings: SchoolYearSettings,
+): Promise<void> {
+  const supabase = createClient();
+  const id = await getCurrentSchoolYearId();
+
+  const { error } = await supabase
+    .from("school_years")
+    .update({ settings })
+    .eq("id", id);
+
+  if (error) {
+    console.error("Error updating settings:", error);
+    throw error;
+  }
+
+  revalidatePath("/subjects/[id]", "page");
 }

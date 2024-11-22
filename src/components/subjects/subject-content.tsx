@@ -18,21 +18,29 @@ import { DeleteSubjectDialog } from "./delete-subject-dialog";
 import { deleteSubject } from "@/app/actions/subjects";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { SubjectStatistics } from "./subject-statistics";
+import { SchoolYearSettings } from "@/types/school-year";
+
+interface SubjectContentProps {
+  subject: Subject;
+  intialExams: Exam[];
+  examTypes: ExamType[];
+  examTypeGroups: ExamTypeGroup[];
+  settings?: SchoolYearSettings;
+}
 
 export default function SubjectContent({
   subject,
   intialExams,
   examTypes,
   examTypeGroups,
-}: {
-  subject: Subject;
-  intialExams: Exam[];
-  examTypes: ExamType[];
-  examTypeGroups: ExamTypeGroup[];
-}) {
+  settings,
+}: SubjectContentProps) {
   const router = useRouter();
   const { t } = useTranslation();
   const [exams, setExams] = useState(intialExams);
+  const showStatistics = settings?.enableStatistics ?? false;
 
   // Calculate the average grade using memo to prevent unnecessary recalculations
   const averageGrade = useMemo(() => {
@@ -146,15 +154,40 @@ export default function SubjectContent({
         )}
       </div>
 
-      <div className="mt-4">
-        <ExamList
-          examTypes={examTypes}
-          onEdit={(exam) => handleEditExam(exam)}
-          onDelete={(id) => handleDeleteExam(id)}
-          exams={exams}
-          color={subject?.color}
-        />
-      </div>
+      {showStatistics ? (
+        <Tabs defaultValue="exams" className="mt-6">
+          <TabsList className="grid w-full grid-cols-2 lg:w-[400px]">
+            <TabsTrigger value="exams">{t("exams")}</TabsTrigger>
+            <TabsTrigger value="statistics">{t("statistics")}</TabsTrigger>
+          </TabsList>
+          <TabsContent value="exams" className="mt-6">
+            <ExamList
+              examTypes={examTypes}
+              onEdit={(exam) => handleEditExam(exam)}
+              onDelete={(id) => handleDeleteExam(id)}
+              exams={exams}
+              color={subject?.color}
+            />
+          </TabsContent>
+          <TabsContent value="statistics" className="mt-6">
+            <SubjectStatistics
+              exams={exams}
+              examTypes={examTypes}
+              examTypeGroups={examTypeGroups}
+            />
+          </TabsContent>
+        </Tabs>
+      ) : (
+        <div className="mt-6">
+          <ExamList
+            examTypes={examTypes}
+            onEdit={(exam) => handleEditExam(exam)}
+            onDelete={(id) => handleDeleteExam(id)}
+            exams={exams}
+            color={subject?.color}
+          />
+        </div>
+      )}
     </main>
   );
 }

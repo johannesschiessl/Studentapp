@@ -4,8 +4,14 @@ export interface SchoolYear {
   grading_system: string;
   vacation_region: string;
   timetable: TimeTable;
+  settings: SchoolYearSettings;
   user_id: string;
   created_at?: string;
+}
+
+export interface SchoolYearSettings {
+  enableStatistics: boolean;
+  // Add other settings here in the future
 }
 
 export interface TimeTableItem {
