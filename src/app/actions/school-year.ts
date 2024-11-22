@@ -5,6 +5,10 @@ import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { SchoolYear, TimeTable, SchoolYearSettings } from "@/types/school-year";
 import { addExamType, addExamTypeGroup } from "./exams";
+import {
+  RESOURCE_LIMITS,
+  checkResourceLimit,
+} from "@/lib/validation/resource-limits";
 
 export async function getSchoolYear(id: number): Promise<SchoolYear> {
   const supabase = createClient();
@@ -86,6 +90,16 @@ export async function createSchoolYear(
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) throw new Error("Not authenticated");
+
+  // Check school year limit
+  await checkResourceLimit(
+    supabase,
+    "school_years",
+    "id",
+    { user_id: user.id },
+    RESOURCE_LIMITS.SCHOOL_YEARS_PER_USER,
+    "You have reached the maximum limit of school years (4)",
+  );
 
   const newSchoolYear = {
     ...data,

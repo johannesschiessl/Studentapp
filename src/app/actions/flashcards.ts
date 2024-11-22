@@ -4,6 +4,14 @@ import { createClient } from "@/lib/supabase/server";
 import { Flashcard, FlashcardDeck } from "@/types/flashcards";
 import { revalidatePath } from "next/cache";
 import { getCurrentSchoolYearId } from "@/app/actions/school-year";
+import {
+  validateStringLength,
+  STRING_LIMITS,
+} from "@/lib/validation/string-limits";
+import {
+  RESOURCE_LIMITS,
+  checkResourceLimit,
+} from "@/lib/validation/resource-limits";
 
 export async function getDecks() {
   const supabase = createClient();
@@ -149,7 +157,20 @@ export async function getCardsForDeck(deckId: number) {
 export async function addCard(
   card: Omit<Flashcard, "id" | "created_at" | "updated_at">,
 ) {
+  validateStringLength(card.front_text, STRING_LIMITS.LONG_TEXT);
+  validateStringLength(card.back_text, STRING_LIMITS.LONG_TEXT);
+
   const supabase = createClient();
+
+  // Check cards per deck limit
+  await checkResourceLimit(
+    supabase,
+    "flashcards",
+    "id",
+    { deck_id: card.deck_id },
+    RESOURCE_LIMITS.CARDS_PER_DECK,
+    "You have reached the maximum limit of cards (500) for this deck",
+  );
 
   const { data, error } = await supabase
     .from("flashcards")
@@ -163,6 +184,9 @@ export async function addCard(
 }
 
 export async function editCard(card: Flashcard) {
+  validateStringLength(card.front_text, STRING_LIMITS.LONG_TEXT);
+  validateStringLength(card.back_text, STRING_LIMITS.LONG_TEXT);
+
   const supabase = createClient();
 
   const { data, error } = await supabase
@@ -189,8 +213,23 @@ export async function deleteCard(id: number, deckId: number) {
 export async function addDeck(
   deck: Omit<FlashcardDeck, "id" | "created_at" | "updated_at">,
 ) {
+  validateStringLength(deck.name);
+  if (deck.description) {
+    validateStringLength(deck.description, STRING_LIMITS.LONG_TEXT);
+  }
+
   const supabase = createClient();
   const schoolYearId = await getCurrentSchoolYearId();
+
+  // Check deck limit
+  await checkResourceLimit(
+    supabase,
+    "flashcard_decks",
+    "id",
+    { school_year_id: schoolYearId },
+    RESOURCE_LIMITS.DECKS_PER_SCHOOL_YEAR,
+    "You have reached the maximum limit of flashcard decks (200) for this school year",
+  );
 
   const { data, error } = await supabase
     .from("flashcard_decks")
