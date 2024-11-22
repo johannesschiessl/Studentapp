@@ -6,6 +6,10 @@ import {
   getExamTypesForCurrentSchoolYear,
   getExamTypeGroupsForCurrentSchoolYear,
 } from "@/app/actions/exams";
+import {
+  getSchoolYear,
+  getCurrentSchoolYearId,
+} from "@/app/actions/school-year";
 
 export default async function SubjectPage({
   params,
@@ -20,12 +24,15 @@ export default async function SubjectPage({
     getExamTypeGroupsForCurrentSchoolYear(),
   ]);
 
+  const schoolYear = await getSchoolYear(await getCurrentSchoolYearId());
+
   return (
     <SubjectContent
       subject={subject}
       intialExams={intialExams}
       examTypes={examTypes}
       examTypeGroups={examTypeGroups}
+      settings={schoolYear.settings}
     />
   );
 }

@@ -4,7 +4,7 @@ import Sidebar from "@/components/sections/sidebar";
 import { SidebarProvider } from "@/contexts/sidebar-context";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
-import { getCurrentSchoolYearId } from "../actions/school-year";
+import { getCurrentSchoolYearId } from "@/app/actions/school-year";
 import { cookies } from "next/headers";
 
 export default async function AppLayout({

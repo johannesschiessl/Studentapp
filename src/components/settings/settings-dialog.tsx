@@ -53,12 +53,29 @@ import { logOutUser } from "@/app/actions/user";
 import { ExamType, ExamTypeGroup } from "@/types/exams";
 import { deleteUserAccount } from "@/app/actions/user";
 import { Badge } from "../ui/badge";
+import { SchoolYearSettings } from "@/types/school-year";
+import { BarChart3 } from "lucide-react";
+import { updateSchoolYearSettings } from "@/app/actions/school-year";
+import { toast } from "sonner";
+import { Switch } from "../ui/switch";
+
+interface SettingsDialogProps {
+  children: React.ReactNode;
+  settings?: SchoolYearSettings;
+}
 
 export default function SettingsDialog({
   children,
-}: {
-  children: React.ReactNode;
-}) {
+  settings: initialSettings,
+}: SettingsDialogProps) {
+  const defaultSettings: SchoolYearSettings = {
+    enableStatistics: false,
+  };
+
+  const [settings, setSettings] = useState<SchoolYearSettings>(
+    initialSettings || defaultSettings,
+  );
+
   const [initialExamTypeGroups, setInitialExamTypeGroups] = useState<
     ExamTypeGroup[]
   >([]);
@@ -78,6 +95,23 @@ export default function SettingsDialog({
   const { theme, setTheme } = useTheme();
   const { language, setLanguage } = useLanguage();
   const { t } = useTranslation();
+
+  console.log(settings);
+
+  async function handleSettingChange(
+    key: keyof SchoolYearSettings,
+    value: boolean,
+  ) {
+    const newSettings = { ...settings, [key]: value };
+    setSettings(newSettings);
+    try {
+      await updateSchoolYearSettings(newSettings);
+    } catch (error) {
+      console.error("Failed to update settings:", error);
+      toast.error(t("common.error"));
+    }
+  }
+
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
@@ -158,6 +192,28 @@ export default function SettingsDialog({
                   ))}
                 </SelectContent>
               </Select>
+            </div>
+            <div className="mb-2 flex w-full cursor-pointer items-center justify-between rounded-[1rem] py-2 text-neutral-700 transition-all duration-200 ease-in-out dark:text-neutral-300">
+              <div className="flex items-center">
+                <Icon className="mr-2">
+                  <BarChart3 className="h-5 w-5" />
+                </Icon>
+                <div className="flex flex-col">
+                  <span>{t("settings.statistics.enable")}</span>
+                  <span className="text-sm text-muted-foreground">
+                    {t("settings.statistics.description")}
+                  </span>
+                </div>
+              </div>
+              <Switch
+                checked={settings.enableStatistics}
+                onCheckedChange={() =>
+                  handleSettingChange(
+                    "enableStatistics",
+                    !settings.enableStatistics,
+                  )
+                }
+              />
             </div>
           </TabsContent>
           <TabsContent value="examTypes">

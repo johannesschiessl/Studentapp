@@ -15,12 +15,14 @@ import SettingsDialog from "../settings/settings-dialog";
 import UserMenu from "./user-menu";
 import type { User } from "@supabase/supabase-js";
 import SettingsDrawer from "../settings/mobile/settings-drawer";
+import { SchoolYearSettings } from "@/types/school-year";
 
 interface HeaderContentProps {
   user?: User;
+  settings?: SchoolYearSettings;
 }
 
-export function HeaderContent({ user }: HeaderContentProps) {
+export function HeaderContent({ user, settings }: HeaderContentProps) {
   const { isOpen: isSidebarOpen, toggleSidebar } = useSidebar();
   const { t } = useTranslation();
 
@@ -55,7 +57,7 @@ export function HeaderContent({ user }: HeaderContentProps) {
       {/* Mobile */}
 
       <div className="flex w-full items-center justify-between sm:hidden">
-        <SettingsDrawer>
+        <SettingsDrawer settings={settings}>
           <Button variant="ghost" size="icon">
             <Ellipsis />
           </Button>
@@ -76,7 +78,7 @@ export function HeaderContent({ user }: HeaderContentProps) {
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
-              <SettingsDialog>
+              <SettingsDialog settings={settings}>
                 <Button
                   variant="ghost"
                   size="icon"
