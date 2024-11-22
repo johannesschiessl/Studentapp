@@ -3,6 +3,15 @@
 import { createClient } from "@/lib/supabase/server";
 import { Task } from "@/types/homework";
 import { getCurrentSchoolYearId } from "./school-year";
+import {
+  validateStringLength,
+  STRING_LIMITS,
+} from "@/lib/validation/string-limits";
+import {
+  RESOURCE_LIMITS,
+  checkResourceLimit,
+} from "@/lib/validation/resource-limits";
+
 export async function getHomeworkForCurrentSchoolYear(): Promise<Task[]> {
   const supabase = createClient();
 
@@ -46,12 +55,24 @@ export async function toggleTaskDone(id: number, currentDone: boolean) {
 }
 
 export async function addTask(task: Omit<Task, "id">) {
+  validateStringLength(task.task, STRING_LIMITS.LONG_TEXT);
+
   const supabase = createClient();
 
   const { data: user } = await supabase.auth.getUser();
   if (!user.user) throw new Error("Not authenticated");
 
   const currentSchoolYearId = await getCurrentSchoolYearId();
+
+  // Check homework limit
+  await checkResourceLimit(
+    supabase,
+    "homework",
+    "id",
+    { school_year_id: currentSchoolYearId },
+    RESOURCE_LIMITS.HOMEWORK_PER_SCHOOL_YEAR,
+    "You have reached the maximum limit of homework tasks (500) for this school year",
+  );
 
   const { data, error } = await supabase
     .from("homework")
@@ -72,6 +93,8 @@ export async function addTask(task: Omit<Task, "id">) {
 }
 
 export async function editTask(task: Task) {
+  validateStringLength(task.task, STRING_LIMITS.LONG_TEXT);
+
   const supabase = createClient();
 
   const { id, ...updateData } = task;

@@ -4,6 +4,12 @@ import { createClient } from "@/lib/supabase/server";
 import { Subject } from "@/types/subjects";
 import { getCurrentSchoolYearId } from "./school-year";
 import { revalidatePath } from "next/cache";
+import { validateStringLength } from "@/lib/validation/string-limits";
+import {
+  RESOURCE_LIMITS,
+  checkResourceLimit,
+} from "@/lib/validation/resource-limits";
+
 export async function getSubjectsForCurrentSchoolYear(): Promise<Subject[]> {
   const supabase = createClient();
 
@@ -63,6 +69,22 @@ export async function createSubject(
 
   const currentSchoolYearId = await getCurrentSchoolYearId();
 
+  validateStringLength(subject.name);
+  if (subject.teacher) validateStringLength(subject.teacher);
+  if (subject.room) validateStringLength(subject.room);
+  validateStringLength(subject.icon);
+  validateStringLength(subject.color);
+
+  // Check subject limit
+  await checkResourceLimit(
+    supabase,
+    "subjects",
+    "id",
+    { school_year_id: currentSchoolYearId },
+    RESOURCE_LIMITS.SUBJECTS_PER_SCHOOL_YEAR,
+    "You have reached the maximum limit of subjects (30) for this school year",
+  );
+
   const { data, error } = await supabase
     .from("subjects")
     .insert({
@@ -85,6 +107,12 @@ export async function createSubject(
 
 export async function updateSubject(subject: Subject): Promise<Subject> {
   const supabase = createClient();
+
+  validateStringLength(subject.name);
+  if (subject.teacher) validateStringLength(subject.teacher);
+  if (subject.room) validateStringLength(subject.room);
+  validateStringLength(subject.icon);
+  validateStringLength(subject.color);
 
   const { data, error } = await supabase
     .from("subjects")

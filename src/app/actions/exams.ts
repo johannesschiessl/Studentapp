@@ -4,6 +4,14 @@ import { createClient } from "@/lib/supabase/server";
 import { Exam, ExamType, ExamTypeGroup } from "@/types/exams";
 import { NewExamTypeGroup, NewExamType, NewExam } from "@/types/exams";
 import { getCurrentSchoolYearId } from "./school-year";
+import {
+  validateStringLength,
+  STRING_LIMITS,
+} from "@/lib/validation/string-limits";
+import {
+  RESOURCE_LIMITS,
+  checkResourceLimit,
+} from "@/lib/validation/resource-limits";
 
 export async function getExamsForSubject(id: number): Promise<Exam[]> {
   const supabase = createClient();
@@ -35,9 +43,22 @@ export async function addExam(exam: NewExam, subject_id: number) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
+  if (!user) throw new Error("User not authenticated");
 
-  if (!user) {
-    throw new Error("User not authenticated");
+  const schoolYearId = await getCurrentSchoolYearId();
+
+  // Check exam limit
+  await checkResourceLimit(
+    supabase,
+    "exams",
+    "id",
+    { school_year_id: schoolYearId },
+    RESOURCE_LIMITS.EXAMS_PER_SCHOOL_YEAR,
+    "You have reached the maximum limit of exams (150) for this school year",
+  );
+
+  if (exam.description) {
+    validateStringLength(exam.description, STRING_LIMITS.LONG_TEXT);
   }
 
   const { data, error } = await supabase
@@ -46,6 +67,7 @@ export async function addExam(exam: NewExam, subject_id: number) {
       ...exam,
       subject_id,
       user_id: user.id,
+      school_year_id: schoolYearId,
     })
     .select("*");
 
@@ -66,6 +88,10 @@ export async function editExam(exam: Exam) {
 
   if (!user) {
     throw new Error("User not authenticated");
+  }
+
+  if (exam.description) {
+    validateStringLength(exam.description, STRING_LIMITS.LONG_TEXT);
   }
 
   const formattedExam = {
@@ -162,9 +188,23 @@ export async function getExamTypeGroupsForCurrentSchoolYear(): Promise<
 
 export async function addExamTypeGroup(newGroup: NewExamTypeGroup) {
   const supabase = createClient();
+  const schoolYearId = await getCurrentSchoolYearId();
+
+  // Check exam group limit
+  await checkResourceLimit(
+    supabase,
+    "exam_type_groups",
+    "id",
+    { school_year_id: schoolYearId },
+    RESOURCE_LIMITS.EXAM_GROUPS_PER_SCHOOL_YEAR,
+    "You have reached the maximum limit of exam groups (5) for this school year",
+  );
+
+  validateStringLength(newGroup.name);
+
   const { data, error } = await supabase
     .from("exam_type_groups")
-    .insert({ ...newGroup, school_year_id: await getCurrentSchoolYearId() })
+    .insert({ ...newGroup, school_year_id: schoolYearId })
     .select("*");
 
   if (error) {
@@ -177,11 +217,25 @@ export async function addExamTypeGroup(newGroup: NewExamTypeGroup) {
 
 export async function addExamType(newExamType: NewExamType) {
   const supabase = createClient();
+  const schoolYearId = await getCurrentSchoolYearId();
+
+  // Check exam type limit for the specific group
+  await checkResourceLimit(
+    supabase,
+    "exam_types",
+    "id",
+    { group_id: newExamType.group_id },
+    RESOURCE_LIMITS.EXAM_TYPES_PER_GROUP,
+    "You have reached the maximum limit of exam types (10) for this group",
+  );
+
+  validateStringLength(newExamType.name);
+
   const { data, error } = await supabase
     .from("exam_types")
     .insert({
       ...newExamType,
-      school_year_id: await getCurrentSchoolYearId(),
+      school_year_id: schoolYearId,
     })
     .select("*");
 
