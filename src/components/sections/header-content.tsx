@@ -2,7 +2,7 @@
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Ellipsis, PanelLeftOpen, Settings } from "lucide-react";
+import { Ellipsis, PanelLeftOpen, Settings, Share } from "lucide-react";
 import { useSidebar } from "@/contexts/sidebar-context";
 import {
   Tooltip,
@@ -16,6 +16,7 @@ import UserMenu from "./user-menu";
 import type { User } from "@supabase/supabase-js";
 import SettingsDrawer from "../settings/mobile/settings-drawer";
 import { SchoolYearSettings } from "@/types/school-year";
+import SharePopover from "./share-popover";
 
 interface HeaderContentProps {
   user?: User;
@@ -75,6 +76,15 @@ export function HeaderContent({ user, settings }: HeaderContentProps) {
       {/* Desktop */}
 
       <div className="hidden items-center gap-4 md:flex">
+        <SharePopover>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="rounded-[1rem] bg-indigo-100 text-sm text-indigo-500 hover:bg-indigo-100 hover:text-indigo-500"
+          >
+            <Share className="mr-2 h-5 w-5" /> {t("share_studentapp")}
+          </Button>
+        </SharePopover>
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
