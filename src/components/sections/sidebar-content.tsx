@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useMemo } from "react";
 import {
   Blocks,
   CalendarDays,
@@ -9,6 +9,8 @@ import {
   House,
   ListChecks,
   PanelLeftClose,
+  ChevronDown,
+  Plus,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -27,11 +29,12 @@ import {
 } from "@/components/ui/tooltip";
 import type { LucideIcon } from "lucide-react";
 import clsx from "clsx";
-
+import { AnimatePresence, motion } from "framer-motion";
 export function SidebarContent({ subjects }: { subjects: Subject[] }) {
   const { t } = useTranslation();
   const pathname = usePathname();
   const { isOpen: isSidebarOpen, toggleSidebar } = useSidebar();
+  const [showAllSubjects, setShowAllSubjects] = useState(false);
 
   const navItems = [
     { name: t("home"), icon: House, href: "/home" },
@@ -40,6 +43,11 @@ export function SidebarContent({ subjects }: { subjects: Subject[] }) {
     { name: t("homeworks"), icon: ListChecks, href: "/homework" },
     { name: t("flashcards"), icon: Blocks, href: "/flashcards" },
   ];
+
+  const sortedSubjects = useMemo(
+    () => [...subjects].sort((a, b) => a.name.localeCompare(b.name)),
+    [subjects],
+  );
 
   return (
     <div
@@ -89,19 +97,105 @@ export function SidebarContent({ subjects }: { subjects: Subject[] }) {
           <Separator />
 
           <div className="my-4">
-            <h2 className="mb-2 text-sm font-semibold text-neutral-500 dark:text-neutral-400">
-              {t("subjects")}
-            </h2>
+            <div className="mb-2 flex items-center justify-between">
+              <h2 className="text-sm font-semibold text-neutral-500 dark:text-neutral-400">
+                {t("subjects")}
+              </h2>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Link href="/subjects/new">
+                      <Button
+                        variant="ghost"
+                        className="rounded-[1rem] text-neutral-500 hover:bg-neutral-200 dark:hover:bg-neutral-700"
+                        size="icon"
+                      >
+                        <Plus className="h-5 w-5" />
+                      </Button>
+                    </Link>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{t("subjects.add")}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
             {subjects.length > 0 ? (
-              <ul className="mt-2 space-y-1">
-                {subjects
-                  .sort((a, b) => a.name.localeCompare(b.name))
-                  .map((subject) => (
-                    <li key={subject.id}>
-                      <SubjectListItem subject={subject} pathname={pathname} />
-                    </li>
-                  ))}
-              </ul>
+              <>
+                <motion.div
+                  initial={false}
+                  animate={{ height: "auto" }}
+                  className="overflow-hidden"
+                >
+                  <ul className="mt-2 space-y-1">
+                    {sortedSubjects.slice(0, 5).map((subject, index) => (
+                      <motion.li
+                        key={subject.id}
+                        initial={{ opacity: 0, y: -5 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{
+                          duration: 0.15,
+                          delay: index * 0.03,
+                          ease: "easeOut",
+                        }}
+                      >
+                        <SubjectListItem
+                          subject={subject}
+                          pathname={pathname}
+                        />
+                      </motion.li>
+                    ))}
+
+                    <AnimatePresence mode="wait">
+                      {showAllSubjects &&
+                        sortedSubjects.slice(5).map((subject, index) => (
+                          <motion.li
+                            key={subject.id}
+                            initial={{ opacity: 0, y: -5 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -5 }}
+                            transition={{
+                              duration: 0.15,
+                              delay: index * 0.03,
+                              ease: "easeOut",
+                            }}
+                          >
+                            <SubjectListItem
+                              subject={subject}
+                              pathname={pathname}
+                            />
+                          </motion.li>
+                        ))}
+                    </AnimatePresence>
+                  </ul>
+                </motion.div>
+                {subjects.length > 5 && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.15 }}
+                  >
+                    <Button
+                      variant="ghost"
+                      className="mt-2 w-full justify-between rounded-[1rem] text-neutral-500 hover:bg-neutral-200 dark:hover:bg-neutral-700"
+                      onClick={() => setShowAllSubjects(!showAllSubjects)}
+                    >
+                      <span>
+                        {showAllSubjects
+                          ? t("subjects.show_less")
+                          : t("subjects.show_all_subjects")}
+                      </span>
+                      <motion.div
+                        initial={false}
+                        animate={{ rotate: showAllSubjects ? 180 : 0 }}
+                        transition={{ duration: 0.15 }}
+                      >
+                        <ChevronDown className="h-4 w-4" />
+                      </motion.div>
+                    </Button>
+                  </motion.div>
+                )}
+              </>
             ) : (
               <p className="text-neutral-500 dark:text-neutral-400">
                 {t("no_subjects")}
