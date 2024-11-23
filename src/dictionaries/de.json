@@ -46,6 +46,8 @@
   "subjects.delete.description": "Dies kann nicht rückgängig gemacht werden. Dies wird das Fach und alle zugehörigen Prüfungen permanent löschen.",
   "subjects.updated": "Fach erfolgreich aktualisiert",
   "subjects.deleted": "Fach erfolgreich gelöscht",
+  "subjects.preset": "Presets",
+  "subjects.select_preset": "Preset auswählen",
   "homeworks": "Hausaufgaben",
   "homework": "Hausaufgabe",
   "homework.add": "Hinzufügen",

@@ -46,6 +46,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { createSubject } from "@/app/actions/subjects";
+import { SUBJECT_PRESETS } from "@/constants/subject-presets";
 
 interface FormData {
   name: string;
@@ -84,8 +85,18 @@ export default function NewSubjectPage() {
     register,
     handleSubmit,
     control,
+    setValue,
     formState: { errors },
   } = useForm<FormData>();
+
+  const handlePresetChange = (presetName: string) => {
+    const preset = SUBJECT_PRESETS.find((p) => p.name === presetName);
+    if (preset) {
+      setValue("name", preset.name);
+      setValue("color", preset.color);
+      setValue("icon", preset.icon);
+    }
+  };
 
   const onSubmit = async (data: FormData) => {
     try {
@@ -111,6 +122,29 @@ export default function NewSubjectPage() {
     <>
       <div className="mb-8 pt-8 text-center">
         <h1 className="text-3xl font-bold">{t("subjects.add.title")}</h1>
+      </div>
+
+      <div className="mb-8">
+        <Label htmlFor="preset">{t("subjects.preset")}</Label>
+        <Select onValueChange={handlePresetChange}>
+          <SelectTrigger>
+            <SelectValue placeholder={t("subjects.select_preset")} />
+          </SelectTrigger>
+          <SelectContent>
+            {SUBJECT_PRESETS.map((preset) => (
+              <SelectItem key={preset.name} value={preset.name}>
+                <div className="flex items-center gap-2">
+                  {React.createElement(
+                    iconOptions.find((i) => i.name === preset.icon)?.icon ||
+                      Book,
+                    { className: "mr-2 h-4 w-4" },
+                  )}
+                  {preset.name}
+                </div>
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">

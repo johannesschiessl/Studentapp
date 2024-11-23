@@ -46,6 +46,8 @@
   "subjects.delete.description": "This action cannot be undone. This will permanently delete this subject and all associated exams.",
   "subjects.updated": "Subject updated successfully",
   "subjects.deleted": "Subject deleted successfully",
+  "subjects.preset": "Presets",
+  "subjects.select_preset": "Select Preset",
   "homework": "Homework",
   "homeworks": "Homework",
   "homework.add": "Add",
