@@ -8,8 +8,9 @@ export default function SubjectList({ subjects }: { subjects: Subject[] }) {
   const { t } = useTranslation();
 
   return (
-    <div className="mt-8 w-full gap-4 space-y-4 md:grid md:grid-cols-3 md:space-y-0">
+    <div className="w-full gap-4 space-y-4 md:grid md:grid-cols-3 md:space-y-0">
       {subjects
+        // Sort subjects alphabetically by name
         .sort((a, b) => a.name.localeCompare(b.name))
         .map((subject) => (
           <SubjectCard key={subject.id} subject={subject} />

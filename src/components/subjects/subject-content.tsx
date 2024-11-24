@@ -8,7 +8,7 @@ import { Subject } from "@/types/subjects";
 import ExamList from "../exams/exam-list";
 import { Exam, ExamType, NewExam } from "@/types/exams";
 import { AddExamDialog } from "../exams/add-exam-dialog";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { addExam, deleteExam, editExam } from "@/app/actions/exams";
 import { toast } from "sonner";
 import { useTranslation } from "@/hooks/use-translation";
@@ -21,6 +21,7 @@ import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { SubjectStatistics } from "./subject-statistics";
 import { SchoolYearSettings } from "@/types/school-year";
+import { updateSubjectAverageGrade } from "@/app/actions/subjects";
 
 interface SubjectContentProps {
   subject: Subject;
@@ -46,6 +47,13 @@ export default function SubjectContent({
   const averageGrade = useMemo(() => {
     return calculateAverageGrade(exams, examTypes, examTypeGroups);
   }, [exams, examTypes, examTypeGroups]);
+
+  // Check and update average grade if it's different from the stored one
+  useEffect(() => {
+    if (averageGrade !== subject.average_grade) {
+      updateSubjectAverageGrade(subject.id, averageGrade).catch(console.error);
+    }
+  }, [averageGrade, subject.id, subject.average_grade]);
 
   async function handleAddExam(newExam: NewExam) {
     const data = await addExam(newExam, subject.id);

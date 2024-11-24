@@ -11,6 +11,20 @@ export const changelog: ChangelogEntry[] = [
   {
     date: "2024-11-24",
     type: "new",
+    title: "Gesamtdurchschnitt berechnung",
+    description:
+      "Der Gesamtdurchschnitt wird nun auf der Startseite und auf der Fächerseite angezeigt. Wenn die Statistiken aktiviert sind, werden auf der Startseite auch die Notenstatistiken angezeigt.",
+  },
+  {
+    date: "2024-11-24",
+    type: "new",
+    title: "Zukünftige Prüfungen",
+    description:
+      "Zukünftige Prüfungen werden nun auf der Startseite angezeigt.",
+  },
+  {
+    date: "2024-11-24",
+    type: "new",
     title: "Weitere Verbesserungen",
     description:
       "Fächer in der Seitenleiste sind nun standardmäßig zugeklappt, wobei nur favorisierte Fächer angezeigt werden. Vorlagen für häufige Fächer hinzugefügt. Tagesüberschriften auf der Hausaufgabenseite ins Deutsche übersetzt. Ein Menü zum Teilen der Student-App mit Freunden hinzugefügt.",
