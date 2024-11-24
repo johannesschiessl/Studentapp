@@ -20,6 +20,12 @@ export default function SubjectCard({ subject }: { subject: Subject }) {
           />
           <p className={`text-xl font-semibold`}>{subject.name}</p>
         </div>
+        {subject.average_grade !== null &&
+          subject.average_grade !== undefined && (
+            <div className={`text-lg font-bold text-${subject.color}-500`}>
+              ⌀{subject.average_grade.toFixed(2)}
+            </div>
+          )}
       </div>
       <div className="mt-4 flex w-full flex-col items-start space-y-2">
         {subject.teacher && (

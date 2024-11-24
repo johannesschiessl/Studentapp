@@ -6,4 +6,5 @@ export interface Subject {
   color: string;
   icon: string;
   favorite?: boolean;
+  average_grade?: number;
 }

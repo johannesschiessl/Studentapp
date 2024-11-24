@@ -168,3 +168,23 @@ export async function toggleSubjectFavorite(
 
   revalidatePath("/subjects");
 }
+
+export async function updateSubjectAverageGrade(
+  subjectId: number,
+  averageGrade: number | null,
+): Promise<void> {
+  const supabase = createClient();
+
+  const { error } = await supabase
+    .from("subjects")
+    .update({ average_grade: averageGrade })
+    .eq("id", subjectId);
+
+  if (error) {
+    console.error("Error updating subject average grade:", error);
+    throw error;
+  }
+
+  revalidatePath(`/subjects/${subjectId}`);
+  revalidatePath("/subjects");
+}

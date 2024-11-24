@@ -7,6 +7,7 @@ export interface SchoolYear {
   settings: SchoolYearSettings;
   user_id: string;
   created_at?: string;
+  average_grade?: number;
 }
 
 export interface SchoolYearSettings {

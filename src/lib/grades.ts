@@ -1,8 +1,22 @@
 import { Exam, ExamType, ExamTypeGroup } from "@/types/exams";
+import { Subject } from "@/types/subjects";
 
 interface GradeWithWeight {
   grade: number;
   weight: number;
+}
+
+function roundGradeToInteger(grade: number): number {
+  // Special case for exactly 1.50
+  if (grade === 1.5) return 1;
+
+  // For all other cases, if decimal part is > 0.50, round up
+  const decimalPart = grade % 1;
+  if (decimalPart > 0.5) {
+    return Math.ceil(grade);
+  }
+  // Otherwise round down
+  return Math.floor(grade);
 }
 
 export function calculateAverageGrade(
@@ -79,11 +93,29 @@ export function calculateAverageGrade(
     (sum, group) => sum + group.weight,
     0,
   );
-
   const weightedSum = groupAverages.reduce(
     (sum, group) => sum + group.average * group.weight,
     0,
   );
 
   return Number((weightedSum / totalWeight).toFixed(2));
+}
+
+export function calculateTotalAverageGrade(subjects: Subject[]): number | null {
+  if (!subjects || !Array.isArray(subjects) || subjects.length === 0)
+    return null;
+
+  const subjectsWithGrades = subjects.filter(
+    (subject) =>
+      subject.average_grade !== null && subject.average_grade !== undefined,
+  );
+
+  if (subjectsWithGrades.length === 0) return null;
+
+  const totalGrade = subjectsWithGrades.reduce((sum, subject) => {
+    const roundedGrade = roundGradeToInteger(subject.average_grade || 0);
+    return sum + roundedGrade;
+  }, 0);
+
+  return totalGrade / subjectsWithGrades.length;
 }

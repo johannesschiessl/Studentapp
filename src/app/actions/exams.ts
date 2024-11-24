@@ -12,6 +12,8 @@ import {
   RESOURCE_LIMITS,
   checkResourceLimit,
 } from "@/lib/validation/resource-limits";
+import { calculateAverageGrade } from "@/lib/grades";
+import { updateSubjectAverageGrade } from "./subjects";
 
 export async function getExamsForSubject(id: number): Promise<Exam[]> {
   const supabase = createClient();
@@ -76,12 +78,18 @@ export async function addExam(exam: NewExam, subject_id: number) {
     throw error;
   }
 
+  // After adding the exam, fetch all exams for this subject and recalculate average
+  const allExams = await getExamsForSubject(subject_id);
+  const examTypes = await getExamTypesForCurrentSchoolYear();
+  const examTypeGroups = await getExamTypeGroupsForCurrentSchoolYear();
+  const newAverage = calculateAverageGrade(allExams, examTypes, examTypeGroups);
+  await updateSubjectAverageGrade(subject_id, newAverage);
+
   return data;
 }
 
 export async function editExam(exam: Exam) {
   const supabase = createClient();
-
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -115,19 +123,45 @@ export async function editExam(exam: Exam) {
     throw error;
   }
 
+  // After editing the exam, recalculate average
+  const allExams = await getExamsForSubject(exam.subject_id);
+  const examTypes = await getExamTypesForCurrentSchoolYear();
+  const examTypeGroups = await getExamTypeGroupsForCurrentSchoolYear();
+  const newAverage = calculateAverageGrade(allExams, examTypes, examTypeGroups);
+  await updateSubjectAverageGrade(exam.subject_id, newAverage);
+
   return data;
 }
 
 export async function deleteExam(id: number) {
   const supabase = createClient();
-  const { data, error } = await supabase.from("exams").delete().eq("id", id);
+
+  // First get the exam to know its subject_id
+  const { data: examData } = await supabase
+    .from("exams")
+    .select("subject_id")
+    .eq("id", id)
+    .single();
+
+  if (!examData) {
+    throw new Error("Exam not found");
+  }
+
+  const { error } = await supabase.from("exams").delete().eq("id", id);
 
   if (error) {
     console.error(error);
     throw error;
   }
 
-  return data;
+  // After deleting the exam, recalculate average
+  const allExams = await getExamsForSubject(examData.subject_id);
+  const examTypes = await getExamTypesForCurrentSchoolYear();
+  const examTypeGroups = await getExamTypeGroupsForCurrentSchoolYear();
+  const newAverage = calculateAverageGrade(allExams, examTypes, examTypeGroups);
+  await updateSubjectAverageGrade(examData.subject_id, newAverage);
+
+  return examData;
 }
 
 export async function getExamTypesForCurrentSchoolYear(): Promise<ExamType[]> {
