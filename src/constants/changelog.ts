@@ -13,7 +13,7 @@ export const changelog: ChangelogEntry[] = [
     type: "new",
     title: "Weitere Verbesserungen",
     description:
-      "Fächer in der Seitenleiste sind nun standardmäßig zugeklappt, wobei nur die ersten fünf angezeigt werden. Vorlagen für häufige Fächer hinzugefügt. Tagesüberschriften auf der Hausaufgabenseite ins Deutsche übersetzt. Ein Menü zum Teilen der Student-App mit Freunden hinzugefügt.",
+      "Fächer in der Seitenleiste sind nun standardmäßig zugeklappt, wobei nur favorisierte Fächer angezeigt werden. Vorlagen für häufige Fächer hinzugefügt. Tagesüberschriften auf der Hausaufgabenseite ins Deutsche übersetzt. Ein Menü zum Teilen der Student-App mit Freunden hinzugefügt.",
   },
   {
     date: "2024-11-22",
