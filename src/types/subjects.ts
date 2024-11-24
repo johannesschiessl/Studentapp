@@ -5,4 +5,5 @@ export interface Subject {
   room?: string;
   color: string;
   icon: string;
+  favorite?: boolean;
 }

@@ -11,6 +11,7 @@ import {
   PanelLeftClose,
   ChevronDown,
   Plus,
+  Star,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -30,6 +31,15 @@ import {
 import type { LucideIcon } from "lucide-react";
 import clsx from "clsx";
 import { AnimatePresence, motion } from "framer-motion";
+import { cn } from "@/lib/utils";
+import { toggleSubjectFavorite } from "@/app/actions/subjects";
+
+type SortedSubjects = {
+  initialSubjects: Subject[];
+  remainingSubjects: Subject[];
+  hasMore: boolean;
+};
+
 export function SidebarContent({ subjects }: { subjects: Subject[] }) {
   const { t } = useTranslation();
   const pathname = usePathname();
@@ -44,10 +54,32 @@ export function SidebarContent({ subjects }: { subjects: Subject[] }) {
     { name: t("flashcards"), icon: Blocks, href: "/flashcards" },
   ];
 
-  const sortedSubjects = useMemo(
-    () => [...subjects].sort((a, b) => a.name.localeCompare(b.name)),
-    [subjects],
-  );
+  const sortedAndFilteredSubjects = useMemo((): SortedSubjects => {
+    const sorted = [...subjects].sort((a, b) => {
+      if (a.favorite && !b.favorite) return -1;
+      if (!a.favorite && b.favorite) return 1;
+      return a.name.localeCompare(b.name);
+    });
+
+    const hasFavorites = sorted.some((subject) => subject.favorite);
+
+    if (hasFavorites) {
+      const favorites = sorted.filter((subject) => subject.favorite);
+      const nonFavorites = sorted.filter((subject) => !subject.favorite);
+
+      return {
+        initialSubjects: favorites,
+        remainingSubjects: showAllSubjects ? nonFavorites : [],
+        hasMore: nonFavorites.length > 0,
+      };
+    } else {
+      return {
+        initialSubjects: sorted.slice(0, 5),
+        remainingSubjects: showAllSubjects ? sorted.slice(5) : [],
+        hasMore: sorted.length > 5,
+      };
+    }
+  }, [subjects, showAllSubjects]);
 
   return (
     <div
@@ -127,37 +159,49 @@ export function SidebarContent({ subjects }: { subjects: Subject[] }) {
                   animate={{ height: "auto" }}
                   className="overflow-hidden"
                 >
-                  <ul className="mt-2 space-y-1">
-                    {sortedSubjects.slice(0, 5).map((subject, index) => (
-                      <motion.li
-                        key={subject.id}
-                        initial={{ opacity: 0, y: -5 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{
-                          duration: 0.15,
-                          delay: index * 0.03,
-                          ease: "easeOut",
-                        }}
-                      >
-                        <SubjectListItem
-                          subject={subject}
-                          pathname={pathname}
-                        />
-                      </motion.li>
-                    ))}
+                  <ul className="relative mt-2 space-y-1">
+                    {sortedAndFilteredSubjects.initialSubjects.map(
+                      (subject) => (
+                        <motion.li
+                          key={subject.id}
+                          layout
+                          initial={{ opacity: 0, scale: 0.95 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{
+                            layout: {
+                              type: "spring",
+                              bounce: 0.15,
+                              duration: 0.4,
+                            },
+                            opacity: { duration: 0.15 },
+                            scale: { duration: 0.15 },
+                          }}
+                        >
+                          <SubjectListItem
+                            subject={subject}
+                            pathname={pathname}
+                          />
+                        </motion.li>
+                      ),
+                    )}
 
-                    <AnimatePresence mode="wait">
-                      {showAllSubjects &&
-                        sortedSubjects.slice(5).map((subject, index) => (
+                    <AnimatePresence mode="popLayout">
+                      {sortedAndFilteredSubjects.remainingSubjects.map(
+                        (subject: Subject) => (
                           <motion.li
                             key={subject.id}
-                            initial={{ opacity: 0, y: -5 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -5 }}
+                            layout
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.95 }}
                             transition={{
-                              duration: 0.15,
-                              delay: index * 0.03,
-                              ease: "easeOut",
+                              layout: {
+                                type: "spring",
+                                bounce: 0.15,
+                                duration: 0.4,
+                              },
+                              opacity: { duration: 0.15 },
+                              scale: { duration: 0.15 },
                             }}
                           >
                             <SubjectListItem
@@ -165,11 +209,12 @@ export function SidebarContent({ subjects }: { subjects: Subject[] }) {
                               pathname={pathname}
                             />
                           </motion.li>
-                        ))}
+                        ),
+                      )}
                     </AnimatePresence>
                   </ul>
                 </motion.div>
-                {subjects.length > 5 && (
+                {sortedAndFilteredSubjects.hasMore && (
                   <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
@@ -244,30 +289,78 @@ function SubjectListItem({
   subject: Subject;
   pathname: string;
 }) {
+  const [isFavorite, setIsFavorite] = useState(subject.favorite);
+  const [isHovered, setIsHovered] = useState(false);
   const SubjectIcon: LucideIcon =
     (subject.icon &&
       (lucideIcons[subject.icon as keyof typeof lucideIcons] as LucideIcon)) ||
     FolderClosed;
   const isActive = pathname === `/subjects/${subject.id}`;
 
+  const handleToggleFavorite = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    try {
+      await toggleSubjectFavorite(subject.id, !isFavorite);
+      setIsFavorite(!isFavorite);
+    } catch (error) {
+      console.error("Error toggling favorite:", error);
+    }
+  };
+
   return (
-    <Link href={`/subjects/${subject.id}`} passHref>
-      <span
-        className={`flex items-center rounded-[1rem] px-4 py-2 text-neutral-700 transition-all duration-200 ease-in-out hover:bg-neutral-200 dark:text-neutral-300 dark:hover:bg-neutral-700 ${
-          isActive ? "bg-neutral-200 dark:bg-neutral-700" : ""
-        }`}
-      >
-        <div
-          className={clsx(
-            "mr-2.5 rounded-xl p-2",
-            `bg-${subject.color}-100`,
-            `text-${subject.color}-500`,
-          )}
+    <motion.div layout>
+      <Link href={`/subjects/${subject.id}`} passHref>
+        <span
+          className={`relative flex items-center rounded-[1rem] px-4 py-2 text-neutral-700 transition-all duration-200 ease-in-out hover:bg-neutral-200 dark:text-neutral-300 dark:hover:bg-neutral-700 ${
+            isActive ? "bg-neutral-200 dark:bg-neutral-700" : ""
+          }`}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
         >
-          <SubjectIcon className="h-5 w-5" aria-hidden="true" />
-        </div>
-        {subject.name}
-      </span>
-    </Link>
+          <div
+            className={clsx(
+              "mr-2.5 rounded-xl p-2",
+              `bg-${subject.color}-100`,
+              `text-${subject.color}-500`,
+            )}
+          >
+            <SubjectIcon className="h-5 w-5" aria-hidden="true" />
+          </div>
+          <span className="flex-1">{subject.name}</span>
+
+          <Button
+            variant="ghost"
+            size="icon"
+            className={cn(
+              "ml-2 h-6 w-6 transition-colors duration-200",
+              // Show on touch devices (tablets)
+              "sm:pointer-events-none sm:opacity-0",
+              // Show on hover or if favorite
+              (isHovered || isFavorite) &&
+                "sm:pointer-events-auto sm:opacity-100",
+              // Color states
+              isFavorite ? "text-yellow-500" : "text-muted-foreground",
+              // Always show on touch devices
+              "@media (hover: none) { } pointer-events-auto opacity-100",
+            )}
+            onClick={handleToggleFavorite}
+          >
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.div
+                key={isFavorite ? "star-filled" : "star-empty"}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                transition={{ duration: 0.15 }}
+              >
+                <Star className="h-4 w-4" aria-hidden="true" />
+              </motion.div>
+            </AnimatePresence>
+          </Button>
+        </span>
+      </Link>
+    </motion.div>
   );
 }

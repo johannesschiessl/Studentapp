@@ -149,3 +149,22 @@ export async function deleteSubject(id: number): Promise<void> {
   }
   revalidatePath("/subjects");
 }
+
+export async function toggleSubjectFavorite(
+  subjectId: number,
+  favorite: boolean,
+): Promise<void> {
+  const supabase = createClient();
+
+  const { error } = await supabase
+    .from("subjects")
+    .update({ favorite })
+    .eq("id", subjectId);
+
+  if (error) {
+    console.error("Error toggling subject favorite:", error);
+    throw error;
+  }
+
+  revalidatePath("/subjects");
+}
