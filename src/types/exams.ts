@@ -7,6 +7,7 @@ export interface Exam {
   date_returned?: Date;
   description?: string;
   subject_id: number;
+  school_year_id?: number;
 }
 
 export interface ExamType {

@@ -1,13 +1,16 @@
 import Greeting from "@/components/home/greeting";
 import QuoteCard from "@/components/home/quote-card";
 import TimetableCard from "@/components/home/timetable-card";
+import UpcomingExamsCard from "@/components/home/upcoming-exams-card";
 import { getTimeTable } from "@/app/actions/school-year";
 import { getSubjectsForCurrentSchoolYear } from "@/app/actions/subjects";
+import { getUpcomingExams } from "@/app/actions/exams";
 
 export default async function HomePage() {
-  const [timetable, subjects] = await Promise.all([
+  const [timetable, subjects, upcomingExams] = await Promise.all([
     getTimeTable(),
     getSubjectsForCurrentSchoolYear(),
+    getUpcomingExams(),
   ]);
 
   return (
@@ -16,6 +19,7 @@ export default async function HomePage() {
       <div className="space-y-6">
         <QuoteCard />
         <TimetableCard timetable={timetable} subjects={subjects} />
+        <UpcomingExamsCard exams={upcomingExams} subjects={subjects} />
       </div>
     </main>
   );
