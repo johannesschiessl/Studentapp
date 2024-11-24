@@ -69,12 +69,27 @@ export default function TaskList({
 
   const { t } = useTranslation();
 
+  const translations = {
+    dueDateNotSet: t("homework.due_date_not_set"),
+    dueToday: t("homework.due_today"),
+    dueTomorrow: t("homework.due_tomorrow"),
+    dueTomorrowNotMuchTime: t("homework.due_tomorrow_not_much_time"),
+    dueIn: t("homework.due_in"),
+    dueSoon: t("homework.due_soon"),
+    day: t("homework.day"),
+    days: t("homework.days"),
+    overdue1: t("homework.overdue.1"),
+    overdue2: t("homework.overdue.2"),
+  };
+
   return (
     <div ref={taskListParent} className="space-y-5">
       {sortedDates.length > 0 ? (
         sortedDates.map((date) => (
           <div key={date} className="space-y-5">
-            {category === "open" && <OpenDayHeader date={date} />}
+            {category === "open" && (
+              <OpenDayHeader date={date} translations={translations} />
+            )}
             {category === "completed" && <CompletedDayHeader date={date} />}
             {category === "all" && <AllDayHeader date={date} />}
             <div className="space-y-2 md:grid md:grid-cols-3 md:gap-4 md:space-y-0">
@@ -108,8 +123,14 @@ export default function TaskList({
   );
 }
 
-function OpenDayHeader({ date }: { date: string }) {
-  const { color, icon, note } = getDayProps(date.toString());
+function OpenDayHeader({
+  date,
+  translations,
+}: {
+  date: string;
+  translations: Record<string, string>;
+}) {
+  const { color, icon, note } = getDayProps(date.toString(), translations);
 
   return (
     <div
@@ -150,13 +171,12 @@ function AllDayHeader({ date }: { date: string }) {
   );
 }
 
-function getDayProps(date: string) {
-  const { t } = useTranslation();
+function getDayProps(date: string, translations: Record<string, string>) {
   if (!date) {
     return {
       color: "neutral",
       icon: <Calendar className="mr-2 h-5 w-5" />,
-      note: t("homework.due_date_not_set"),
+      note: translations.dueDateNotSet,
     };
   }
 
@@ -170,15 +190,15 @@ function getDayProps(date: string) {
     return {
       color: "red",
       icon: <AlertCircle className="h-5 w-5" />,
-      note: t("homework.due_today"),
+      note: translations.dueToday,
     };
   } else if (isBefore(dueDateParsed, now)) {
     return {
       color: "red",
       icon: <AlertCircle className="h-5 w-5" />,
-      note: `${t("homework.overdue.1")} ${-daysUntilDue} ${
-        -daysUntilDue === 1 ? t("homework.day") : t("homework.days")
-      }${t("homework.overdue.2")}`,
+      note: `${translations.overdue1} ${-daysUntilDue} ${
+        -daysUntilDue === 1 ? translations.day : translations.days
+      }${translations.overdue2}`,
     };
   } else if (
     isDueTomorrow &&
@@ -187,27 +207,27 @@ function getDayProps(date: string) {
     return {
       color: "orange",
       icon: <AlertTriangle className="h-5 w-5" />,
-      note: t("homework.due_tomorrow_not_much_time"),
+      note: translations.dueTomorrowNotMuchTime,
     };
   } else if (isDueTomorrow) {
     return {
       color: "blue",
       icon: <CalendarClock className="h-5 w-5" />,
-      note: t("homework.due_tomorrow"),
+      note: translations.dueTomorrow,
     };
   } else if (daysUntilDue > 1) {
     return {
       color: "green",
       icon: <Calendar className="h-5 w-5" />,
-      note: `${t("homework.due_in")} ${daysUntilDue} ${
-        daysUntilDue === 1 ? t("homework.day") : t("homework.days")
+      note: `${translations.dueIn} ${daysUntilDue} ${
+        daysUntilDue === 1 ? translations.day : translations.days
       }.`,
     };
   } else {
     return {
       color: "neutral",
       icon: <Calendar className="h-5 w-5" />,
-      note: t("homework.due_soon"),
+      note: translations.dueSoon,
     };
   }
 }
