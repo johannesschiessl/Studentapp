@@ -11,9 +11,9 @@ export const changelog: ChangelogEntry[] = [
   {
     date: "2024-11-24",
     type: "new",
-    title: "Gesamtdurchschnitt berechnung",
+    title: "Gesamtdurchschnittsberechnung",
     description:
-      "Der Gesamtdurchschnitt wird nun auf der Startseite und auf der Fächerseite angezeigt. Wenn die Statistiken aktiviert sind, werden auf der Startseite auch die Notenstatistiken angezeigt.",
+      "Der Gesamtdurchschnitt wird nun auf der Startseite und auf der Fächerseite angezeigt. Wenn die Statistiken aktiviert sind, werden auf der Startseite auch Notenstatistiken angezeigt.",
   },
   {
     date: "2024-11-24",
