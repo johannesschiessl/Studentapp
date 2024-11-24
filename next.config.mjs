@@ -8,6 +8,10 @@ const withPWA = nextPWA({
   disable: false,
 });
 
-const nextConfig = {};
+const nextConfig = {
+  images: {
+    domains: ["api.qrserver.com"],
+  },
+};
 
 export default withPWA(nextConfig);
