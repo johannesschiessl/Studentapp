@@ -151,11 +151,12 @@ function AllDayHeader({ date }: { date: string }) {
 }
 
 function getDayProps(date: string) {
+  const { t } = useTranslation();
   if (!date) {
     return {
       color: "neutral",
       icon: <Calendar className="mr-2 h-5 w-5" />,
-      note: "Due date not set",
+      note: t("homework.due_date_not_set"),
     };
   }
 
@@ -169,15 +170,15 @@ function getDayProps(date: string) {
     return {
       color: "red",
       icon: <AlertCircle className="h-5 w-5" />,
-      note: "Due today!",
+      note: t("homework.due_today"),
     };
   } else if (isBefore(dueDateParsed, now)) {
     return {
       color: "red",
       icon: <AlertCircle className="h-5 w-5" />,
-      note: `These tasks are ${-daysUntilDue} ${
-        -daysUntilDue === 1 ? "day" : "days"
-      } overdue!`,
+      note: `${t("homework.overdue.1")} ${-daysUntilDue} ${
+        -daysUntilDue === 1 ? t("homework.day") : t("homework.days")
+      }${t("homework.overdue.2")}`,
     };
   } else if (
     isDueTomorrow &&
@@ -186,25 +187,27 @@ function getDayProps(date: string) {
     return {
       color: "orange",
       icon: <AlertTriangle className="h-5 w-5" />,
-      note: "Due tomorrow. Not much time left!",
+      note: t("homework.due_tomorrow_not_much_time"),
     };
   } else if (isDueTomorrow) {
     return {
       color: "blue",
       icon: <CalendarClock className="h-5 w-5" />,
-      note: "Due tomorrow.",
+      note: t("homework.due_tomorrow"),
     };
   } else if (daysUntilDue > 1) {
     return {
       color: "green",
       icon: <Calendar className="h-5 w-5" />,
-      note: `Due in ${daysUntilDue} days.`,
+      note: `${t("homework.due_in")} ${daysUntilDue} ${
+        daysUntilDue === 1 ? t("homework.day") : t("homework.days")
+      }.`,
     };
   } else {
     return {
       color: "neutral",
       icon: <Calendar className="h-5 w-5" />,
-      note: "Due soon.",
+      note: t("homework.due_soon"),
     };
   }
 }
