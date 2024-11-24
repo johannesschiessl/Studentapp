@@ -276,3 +276,38 @@ export async function deleteExamTypeGroup(id: number) {
 
   return data;
 }
+
+export async function getUpcomingExams(): Promise<
+  (Exam & { exam_type: ExamType })[]
+> {
+  const supabase = createClient();
+  const currentSchoolYearId = await getCurrentSchoolYearId();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) throw new Error("Not authenticated");
+
+  const today = new Date().toISOString();
+
+  const { data, error } = await supabase
+    .from("exams")
+    .select(
+      `
+      *,
+      exam_type:exam_types(*)
+    `,
+    )
+    .eq("school_year_id", currentSchoolYearId)
+    .eq("user_id", user.id)
+    .gte("date_written", today)
+    .order("date_written", { ascending: true })
+    .limit(5);
+
+  if (error) {
+    console.error("Error fetching upcoming exams:", error);
+    throw error;
+  }
+
+  return data as (Exam & { exam_type: ExamType })[];
+}
