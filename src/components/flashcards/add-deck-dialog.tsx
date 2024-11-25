@@ -80,10 +80,25 @@ export function AddDeckDialog({
 
   async function onSubmit(data: FormData) {
     try {
+      const selectedSubject = subjects.find(
+        (subject) => subject.id === parseInt(data.subjectId),
+      );
+
+      if (!selectedSubject) {
+        toast.error(t("subject.not_found"));
+        return;
+      }
+
+      if (!selectedSubject.school_year_id) {
+        toast.error(t("subject.invalid_school_year"));
+        return;
+      }
+
       const newDeck = {
         name: data.name,
         description: data.description || "",
         subject_id: parseInt(data.subjectId),
+        school_year_id: selectedSubject.school_year_id,
       };
 
       if (onAdd) {

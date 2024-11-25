@@ -10,6 +10,7 @@ export const RESOURCE_LIMITS = {
   CARDS_PER_DECK: 400,
   EXAM_GROUPS_PER_SCHOOL_YEAR: 5,
   EXAM_TYPES_PER_GROUP: 20,
+  AI_CREDITS_PER_SCHOOL_YEAR: 10,
 } as const;
 
 export class ResourceLimitError extends Error {

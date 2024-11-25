@@ -21,6 +21,7 @@ import {
   Trash2,
   Star,
   CircleDot,
+  ImagePlus,
 } from "lucide-react";
 import { useTranslation } from "@/hooks/use-translation";
 import { useRouter } from "next/navigation";
@@ -53,6 +54,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { getCardsDuePractice } from "@/lib/flashcards";
+import { AddCardsFromImageDialog } from "./add-cards-from-image-dialog";
 
 interface DeckContentProps {
   deck: FlashcardDeck;
@@ -202,6 +204,15 @@ export function DeckContent({
           </div>
         </div>
         <div className="flex gap-2">
+          <AddCardsFromImageDialog
+            deck={deck}
+            onCardsGenerated={() => router.refresh()}
+          >
+            <Button variant="outline">
+              <ImagePlus className="mr-2 h-4 w-4" />
+              {t("flashcards.add_cards_from_image")}
+            </Button>
+          </AddCardsFromImageDialog>
           <AddCardDialog deck={deck} onAdd={handleAddCard}>
             <Button>
               <Plus className="mr-2 h-4 w-4" />

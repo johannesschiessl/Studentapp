@@ -3,6 +3,7 @@ export interface FlashcardDeck {
   name: string;
   description: string;
   subject_id: number;
+  school_year_id: number;
 }
 
 export interface Flashcard {
@@ -34,4 +35,5 @@ export interface NewDeck {
   name: string;
   description: string;
   subject_id: number;
+  school_year_id: number;
 }
