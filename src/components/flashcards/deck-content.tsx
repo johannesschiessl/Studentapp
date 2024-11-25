@@ -21,6 +21,7 @@ import {
   Trash2,
   Star,
   CircleDot,
+  ImagePlus,
 } from "lucide-react";
 import { useTranslation } from "@/hooks/use-translation";
 import { useRouter } from "next/navigation";
@@ -53,12 +54,15 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { getCardsDuePractice } from "@/lib/flashcards";
+import { AddCardsFromImageDialog } from "./add-cards-from-image-dialog";
+import { SchoolYearSettings } from "@/types/school-year";
 
 interface DeckContentProps {
   deck: FlashcardDeck;
   subject: Subject;
   subjects: Subject[];
   initialCards: Flashcard[];
+  settings?: SchoolYearSettings;
 }
 
 const LEVEL_LABELS = {
@@ -75,10 +79,13 @@ export function DeckContent({
   subject,
   subjects,
   initialCards,
+  settings,
 }: DeckContentProps) {
   const [cards, setCards] = useState<Flashcard[]>(initialCards);
   const router = useRouter();
   const { t } = useTranslation();
+
+  const showStatistics = settings?.enableStatistics ?? false;
 
   // Prepare chart data
   const levelCounts = cards.reduce(
@@ -156,14 +163,16 @@ export function DeckContent({
   }
 
   return (
-    <main className="mx-auto w-full max-w-5xl space-y-5">
-      <div className="flex w-full items-center justify-between">
+    <main className="mx-auto w-full max-w-5xl space-y-5 p-4">
+      <div className="flex w-full flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-4">
           <SubjectIcon icon={subject.icon} color={subject.color} size="lg" />
-          <div>
-            <h1 className="text-2xl font-bold">{deck.name}</h1>
+          <div className="flex-1">
+            <h1 className="text-xl font-bold sm:text-2xl">{deck.name}</h1>
             {deck.description && (
-              <p className="text-muted-foreground">{deck.description}</p>
+              <p className="text-sm text-muted-foreground">
+                {deck.description}
+              </p>
             )}
           </div>
           <div className="flex gap-2">
@@ -201,16 +210,39 @@ export function DeckContent({
             </AlertDialog>
           </div>
         </div>
-        <div className="flex gap-2">
+
+        <div className="flex flex-col gap-2 sm:flex-row">
+          <AddCardsFromImageDialog
+            deck={deck}
+            onCardsGenerated={() => router.refresh()}
+          >
+            <Button
+              variant="outline"
+              className="w-full justify-center sm:w-auto"
+            >
+              <ImagePlus className="mr-2 h-4 w-4" />
+              <span className="hidden sm:inline">
+                {t("flashcards.add_cards_from_image")}
+              </span>
+              <span className="sm:hidden">
+                {t("flashcards.add_cards_from_image")}
+              </span>
+            </Button>
+          </AddCardsFromImageDialog>
+
           <AddCardDialog deck={deck} onAdd={handleAddCard}>
-            <Button>
+            <Button className="w-full justify-center sm:w-auto">
               <Plus className="mr-2 h-4 w-4" />
-              {t("flashcards.add_card")}
+              <span className="hidden sm:inline">
+                {t("flashcards.add_card")}
+              </span>
+              <span className="sm:hidden">{t("common.add")}</span>
             </Button>
           </AddCardDialog>
+
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button>
+              <Button className="w-full justify-center sm:w-auto">
                 <Brain className="mr-2 h-4 w-4" />
                 {t("flashcards.practice")}
                 {cardsDue > 0 && (
@@ -244,30 +276,36 @@ export function DeckContent({
         </div>
       </div>
 
-      <div className="rounded-lg border bg-card p-6">
-        <h2 className="mb-4 text-lg font-semibold">Statistics</h2>
-        <ChartContainer config={chartConfig} className="min-h-[300px] w-full">
-          <BarChart data={chartData}>
-            <CartesianGrid vertical={false} />
-            <XAxis
-              dataKey="level"
-              tickLine={false}
-              tickMargin={10}
-              axisLine={false}
-            />
-            <ChartTooltip content={<ChartTooltipContent />} />
-            <ChartLegend content={<ChartLegendContent />} />
-            <Bar
-              dataKey="count"
-              fill="var(--color-count)"
-              radius={[4, 4, 0, 0]}
-            />
-          </BarChart>
-        </ChartContainer>
-      </div>
+      {showStatistics && (
+        <div className="rounded-lg border bg-card p-4 sm:p-6">
+          <h2 className="mb-4 text-lg font-semibold">Statistics</h2>
+          <ChartContainer
+            config={chartConfig}
+            className="min-h-[250px] w-full sm:min-h-[300px]"
+          >
+            <BarChart data={chartData}>
+              <CartesianGrid vertical={false} />
+              <XAxis
+                dataKey="level"
+                tickLine={false}
+                tickMargin={10}
+                axisLine={false}
+                tick={{ fontSize: 12 }}
+              />
+              <ChartTooltip content={<ChartTooltipContent />} />
+              <ChartLegend content={<ChartLegendContent />} />
+              <Bar
+                dataKey="count"
+                fill="var(--color-count)"
+                radius={[4, 4, 0, 0]}
+              />
+            </BarChart>
+          </ChartContainer>
+        </div>
+      )}
 
       <Tabs defaultValue="all" className="mx-auto mt-4">
-        <TabsList className="w-full">
+        <TabsList className="hidden w-full sm:flex">
           <TabsTrigger value="all" className="flex w-full items-center">
             <ListChecks className="mr-2 h-4 w-4" />
             All ({cardsByLevel.all.length})

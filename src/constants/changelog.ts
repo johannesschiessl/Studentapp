@@ -9,6 +9,13 @@ export interface ChangelogEntry {
 
 export const changelog: ChangelogEntry[] = [
   {
+    date: "2024-11-25",
+    type: "new",
+    title: "KI generierte Karteikarten",
+    description:
+      "KI-generierte Karteikarten hinzugefügt. Karteikarten können nun aus einem Bild automatisch generiert werden. (Während der Beta auf 10 pro Schuljahr beschränkt)",
+  },
+  {
     date: "2024-11-24",
     type: "new",
     title: "Gesamtdurchschnittsberechnung",

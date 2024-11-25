@@ -1,7 +1,12 @@
 import { getDeck, getCardsForDeck } from "@/app/actions/flashcards";
 import { getSubjectsForCurrentSchoolYear } from "@/app/actions/subjects";
+import {
+  getCurrentSchoolYearId,
+  getSchoolYear,
+} from "@/app/actions/school-year";
 import { DeckContent } from "@/components/flashcards/deck-content";
 import { notFound } from "next/navigation";
+import { Subject } from "@/types/subjects";
 
 interface DeckPageProps {
   params: {
@@ -13,15 +18,16 @@ export default async function DeckPage({ params }: DeckPageProps) {
   const deckId = parseInt(params.deckId);
   if (isNaN(deckId)) notFound();
 
-  const [deck, cards, subjects] = await Promise.all([
+  const [deck, cards, subjects, schoolYear] = await Promise.all([
     getDeck(deckId),
     getCardsForDeck(deckId),
     getSubjectsForCurrentSchoolYear(),
+    getSchoolYear(await getCurrentSchoolYearId()),
   ]);
 
   if (!deck) notFound();
 
-  const subject = subjects.find((s) => s.id === deck.subject_id);
+  const subject = subjects.find((s: Subject) => s.id === deck.subject_id);
   if (!subject) notFound();
 
   return (
@@ -30,6 +36,7 @@ export default async function DeckPage({ params }: DeckPageProps) {
       deck={deck}
       subject={subject}
       subjects={subjects}
+      settings={schoolYear.settings}
     />
   );
 }

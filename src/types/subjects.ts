@@ -7,4 +7,5 @@ export interface Subject {
   icon: string;
   favorite?: boolean;
   average_grade?: number;
+  school_year_id?: number;
 }
