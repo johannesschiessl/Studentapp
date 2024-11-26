@@ -28,7 +28,6 @@ export function FlashcardsContent({
   aiCreditsUsed,
 }: FlashcardsContentProps) {
   const [decks, setDecks] = useState<FlashcardDeck[]>(initialDecks);
-
   const { t } = useTranslation();
 
   async function handleAddDeck(
@@ -51,23 +50,27 @@ export function FlashcardsContent({
   }
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <h1 className="text-3xl font-bold">Flashcards</h1>
-          <AiCreditsCounter usedCredits={aiCreditsUsed} />
+    <main className="mx-auto w-full max-w-5xl space-y-5 px-4 sm:px-6">
+      <div className="space-y-4">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-4">
+            <h1 className="text-xl font-bold sm:text-2xl">{t("flashcards")}</h1>
+            <AiCreditsCounter usedCredits={aiCreditsUsed} />
+          </div>
+          <div className="flex flex-col gap-2 sm:flex-row">
+            <AddAiDeckDialog />
+            <AddDeckDialog subjects={subjects} onAdd={handleAddDeck}>
+              <Button className="w-full justify-center sm:w-auto">
+                <Plus className="mr-2 h-4 w-4" />
+                <span className="whitespace-nowrap">
+                  {t("flashcards.add_deck")}
+                </span>
+              </Button>
+            </AddDeckDialog>
+          </div>
         </div>
-        <div className="flex gap-2">
-          <AddAiDeckDialog />
-          <AddDeckDialog subjects={subjects} onAdd={handleAddDeck}>
-            <Button>
-              <Plus className="mr-2 h-4 w-4" />
-              {t("flashcards.add_deck")}
-            </Button>
-          </AddDeckDialog>
-        </div>
+        <DeckList decks={decks} subjects={subjects} deckCards={deckCards} />
       </div>
-      <DeckList decks={decks} subjects={subjects} deckCards={deckCards} />
-    </div>
+    </main>
   );
 }

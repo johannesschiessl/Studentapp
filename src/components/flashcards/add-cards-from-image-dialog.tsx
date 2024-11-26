@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import {
   Dialog,
   DialogContent,
@@ -39,15 +39,17 @@ export function AddCardsFromImageDialog({
   const [showMessage, setShowMessage] = useState(true);
   const { t } = useTranslation();
 
-  const loadingMessages = [
-    t("flashcards.collecting_images"),
-    t("flashcards.analyzing_content"),
-    t("flashcards.creating_cards"),
-    t("flashcards.processing_text"),
-    t("flashcards.almost_there"),
-  ];
+  const loadingMessages = useMemo(
+    () => [
+      t("flashcards.collecting_images"),
+      t("flashcards.analyzing_content"),
+      t("flashcards.creating_cards"),
+      t("flashcards.processing_text"),
+      t("flashcards.almost_there"),
+    ],
+    [t],
+  );
 
-  // Animate through loading messages
   useEffect(() => {
     if (!isLoading) return;
 
@@ -60,7 +62,7 @@ export function AddCardsFromImageDialog({
     }, 3000);
 
     return () => clearInterval(messageInterval);
-  }, [isLoading]);
+  }, [isLoading, loadingMessages.length]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
