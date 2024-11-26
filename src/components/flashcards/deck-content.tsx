@@ -218,14 +218,15 @@ export function DeckContent({
           >
             <Button
               variant="outline"
+              disabled
               className="w-full justify-center sm:w-auto"
             >
               <ImagePlus className="mr-2 h-4 w-4" />
               <span className="hidden sm:inline">
-                {t("flashcards.add_cards_from_image")}
+                {t("flashcards.add_cards_from_image")} (coming soon)
               </span>
               <span className="sm:hidden">
-                {t("flashcards.add_cards_from_image")}
+                {t("flashcards.add_cards_from_image")} (coming soon)
               </span>
             </Button>
           </AddCardsFromImageDialog>

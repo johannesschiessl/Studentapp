@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import {
   Dialog,
   DialogContent,
@@ -30,18 +30,20 @@ export function AddAiDeckDialog() {
   const router = useRouter();
   const { t } = useTranslation();
 
-  const loadingMessages = [
-    t("flashcards.collecting_images"),
-    t("flashcards.generating"),
-    t("flashcards.creating_deck"),
-    t("flashcards.analyzing_images"),
-    t("flashcards.extracting_information"),
-    t("flashcards.creating_flashcards"),
-    t("flashcards.organizing_content"),
-    t("flashcards.almost_there"),
-  ];
+  const loadingMessages = useMemo(
+    () => [
+      t("flashcards.collecting_images"),
+      t("flashcards.generating"),
+      t("flashcards.creating_deck"),
+      t("flashcards.analyzing_images"),
+      t("flashcards.extracting_information"),
+      t("flashcards.creating_flashcards"),
+      t("flashcards.organizing_content"),
+      t("flashcards.almost_there"),
+    ],
+    [t],
+  );
 
-  // Animate through loading messages
   useEffect(() => {
     if (!isLoading) return;
 
@@ -50,11 +52,11 @@ export function AddAiDeckDialog() {
       setTimeout(() => {
         setLoadingMessageIndex((prev) => (prev + 1) % loadingMessages.length);
         setShowMessage(true);
-      }, 500); // Wait for fade out before changing message
-    }, 3000); // Change message every 3 seconds
+      }, 500);
+    }, 3000);
 
     return () => clearInterval(messageInterval);
-  }, [isLoading]);
+  }, [isLoading, loadingMessages.length]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -99,10 +101,11 @@ export function AddAiDeckDialog() {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
+      <DialogTrigger disabled asChild>
+        {/*Temporary disabled */}
         <Button variant="outline">
           <ImagePlus className="mr-2 h-4 w-4" />
-          {t("flashcards.generate_from_image")}
+          {t("flashcards.generate_from_image")} (coming soon)
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[625px]">
