@@ -51,23 +51,25 @@ export function FlashcardsContent({
   }
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <h1 className="text-3xl font-bold">Flashcards</h1>
-          <AiCreditsCounter usedCredits={aiCreditsUsed} />
+    <main className="mx-auto w-full max-w-5xl space-y-5">
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <h1 className="text-2xl font-bold">{t("flashcards")}</h1>
+            <AiCreditsCounter usedCredits={aiCreditsUsed} />
+          </div>
+          <div className="flex gap-2">
+            <AddAiDeckDialog />
+            <AddDeckDialog subjects={subjects} onAdd={handleAddDeck}>
+              <Button>
+                <Plus className="mr-2 h-4 w-4" />
+                {t("flashcards.add_deck")}
+              </Button>
+            </AddDeckDialog>
+          </div>
         </div>
-        <div className="flex gap-2">
-          <AddAiDeckDialog />
-          <AddDeckDialog subjects={subjects} onAdd={handleAddDeck}>
-            <Button>
-              <Plus className="mr-2 h-4 w-4" />
-              {t("flashcards.add_deck")}
-            </Button>
-          </AddDeckDialog>
-        </div>
+        <DeckList decks={decks} subjects={subjects} deckCards={deckCards} />
       </div>
-      <DeckList decks={decks} subjects={subjects} deckCards={deckCards} />
-    </div>
+    </main>
   );
 }
