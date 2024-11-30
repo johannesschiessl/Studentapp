@@ -11,16 +11,16 @@ export const changelog: ChangelogEntry[] = [
   {
     date: "2024-11-30",
     type: "new",
+    title: "Support für Österreich",
+    description:
+      "Österreich kann nun als Land ausgewählt werden. Außerdem kann das Notensystem für Österreich ausgewählt werden.",
+  },
+  {
+    date: "2024-11-30",
+    type: "new",
     title: "Fächer teilen",
     description:
       "Fächer können nun mit Freunden geteilt werden. Diese können dann importiert werden und so schnell eingefügt werden.",
-  },
-  {
-    date: "2024-11-25",
-    type: "new",
-    title: "KI generierte Karteikarten",
-    description:
-      "KI-generierte Karteikarten hinzugefügt. Karteikarten können nun aus einem Bild automatisch generiert werden. (Während der Beta auf 10 pro Schuljahr beschränkt)",
   },
   {
     date: "2024-11-24",
