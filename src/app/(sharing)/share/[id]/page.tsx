@@ -18,7 +18,7 @@ export default async function SharePage({ params }: SharePageProps) {
   const sharedItem = await getSharedItem(params.id);
 
   return (
-    <main className="container flex min-h-[calc(100vh-4rem)] items-center justify-center py-10">
+    <main className="flex w-full items-center justify-center pt-32">
       <Card className="w-full max-w-2xl">
         <CardHeader>
           <CardTitle>{sharedItem.title}</CardTitle>
