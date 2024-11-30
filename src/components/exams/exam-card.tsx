@@ -10,12 +10,14 @@ export default function ExamCard({
   onEdit,
   onDelete,
   examTypes,
+  gradingSystem,
 }: {
   exam: Exam;
   color: string;
   onEdit: (exam: Exam) => void;
   onDelete: (id: number) => void;
   examTypes: ExamType[];
+  gradingSystem: string;
 }) {
   const { t } = useTranslation();
   return (
@@ -24,6 +26,7 @@ export default function ExamCard({
       onEdit={(data: Exam) => onEdit(data)}
       onDelete={(id: number) => onDelete(id)}
       examTypes={examTypes}
+      gradingSystem={gradingSystem}
     >
       <div
         key={exam.id}

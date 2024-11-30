@@ -33,6 +33,7 @@ export default async function SubjectPage({
       examTypes={examTypes}
       examTypeGroups={examTypeGroups}
       settings={schoolYear.settings}
+      gradingSystem={schoolYear.grading_system}
     />
   );
 }

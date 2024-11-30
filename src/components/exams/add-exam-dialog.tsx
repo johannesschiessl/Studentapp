@@ -27,12 +27,14 @@ interface AddExamDialogProps {
   examTypes: ExamType[];
   onAdd: (exam: NewExam) => void;
   children: React.ReactNode;
+  gradingSystem: string;
 }
 
 export function AddExamDialog({
   children,
   onAdd,
   examTypes,
+  gradingSystem,
 }: AddExamDialogProps) {
   const [isOpen, setIsOpen] = useState(false);
   const {
@@ -119,7 +121,10 @@ export function AddExamDialog({
                     <SelectItem value="none">
                       {t("exams.no_grade_yet")}
                     </SelectItem>
-                    {[1, 2, 3, 4, 5, 6].map((grade) => (
+                    {(gradingSystem === "de_full_grades"
+                      ? [1, 2, 3, 4, 5, 6]
+                      : [1, 2, 3, 4, 5]
+                    ).map((grade) => (
                       <SelectItem key={grade} value={grade.toString()}>
                         {grade}
                       </SelectItem>
