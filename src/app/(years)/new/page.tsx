@@ -32,6 +32,7 @@ export default function NewYearPage() {
   const { t } = useTranslation();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedCountry, setSelectedCountry] = useState("de");
 
   const formSchema = z.object({
     class: z.coerce
@@ -43,6 +44,7 @@ export default function NewYearPage() {
       .refine((val) => !isNaN(val), {
         message: t("years.class_error"),
       }),
+    country: z.string(),
     grading_system: z.string().default("de_full_grades"),
     vacation_region: z.string().default("de_baden_wuerttemberg"),
   });
@@ -52,13 +54,26 @@ export default function NewYearPage() {
     defaultValues: {
       grading_system: "de_full_grades",
       vacation_region: "de_baden_wuerttemberg",
+      country: "de",
     },
   });
+
+  const handleCountryChange = (value: string) => {
+    setSelectedCountry(value);
+    form.setValue(
+      "vacation_region",
+      value === "de" ? "de_baden_wuerttemberg" : "at_wien",
+    );
+  };
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       setIsLoading(true);
-      await createSchoolYear(values);
+      await createSchoolYear({
+        class: values.class,
+        grading_system: values.grading_system,
+        vacation_region: values.vacation_region,
+      });
       router.push("/home");
     } catch (error) {
       console.error("Failed to create school year:", error);
@@ -94,6 +109,112 @@ export default function NewYearPage() {
 
           <FormField
             control={form.control}
+            name="country"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t("years.country")}</FormLabel>
+                <Select
+                  onValueChange={(value) => {
+                    field.onChange(value);
+                    handleCountryChange(value);
+                  }}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder={t("years.select_country")} />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="de">Deutschland</SelectItem>
+                    <SelectItem value="at">Österreich</SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="vacation_region"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t("years.region")}</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder={t("years.select_region")} />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {selectedCountry === "de" ? (
+                      <>
+                        <SelectItem value="de_baden_wuerttemberg">
+                          Baden-Württemberg
+                        </SelectItem>
+                        <SelectItem value="de_bayern">Bayern</SelectItem>
+                        <SelectItem value="de_berlin">Berlin</SelectItem>
+                        <SelectItem value="de_bremen">Bremen</SelectItem>
+                        <SelectItem value="de_hamburg">Hamburg</SelectItem>
+                        <SelectItem value="de_hessen">Hessen</SelectItem>
+                        <SelectItem value="de_mecklenburg_vorpommern">
+                          Mecklenburg-Vorpommern
+                        </SelectItem>
+                        <SelectItem value="de_niedersachsen">
+                          Niedersachsen
+                        </SelectItem>
+                        <SelectItem value="de_nordrhein_westfalen">
+                          Nordrhein-Westfalen
+                        </SelectItem>
+                        <SelectItem value="de_rheinland_pfalz">
+                          Rheinland-Pfalz
+                        </SelectItem>
+                        <SelectItem value="de_saarland">Saarland</SelectItem>
+                        <SelectItem value="de_sachsen_anhalt">
+                          Sachsen-Anhalt
+                        </SelectItem>
+                        <SelectItem value="de_sachsen">Sachsen</SelectItem>
+                        <SelectItem value="de_schleswig_holstein">
+                          Schleswig-Holstein
+                        </SelectItem>
+                        <SelectItem value="de_thueringen">Thüringen</SelectItem>
+                      </>
+                    ) : (
+                      <>
+                        <SelectItem value="at_wien">Wien</SelectItem>
+                        <SelectItem value="at_niederoesterreich">
+                          Niederösterreich
+                        </SelectItem>
+                        <SelectItem value="at_salzburg">Salzburg</SelectItem>
+                        <SelectItem value="at_karnten">Kärnten</SelectItem>
+                        <SelectItem value="at_oberoesterreich">
+                          Oberösterreich
+                        </SelectItem>
+                        <SelectItem value="at_steiermark">
+                          Steiermark
+                        </SelectItem>
+                        <SelectItem value="at_tirol">Tirol</SelectItem>
+                        <SelectItem value="at_vorarlberg">
+                          Vorarlberg
+                        </SelectItem>
+                        <SelectItem value="at_burgenland">
+                          Burgenland
+                        </SelectItem>
+                      </>
+                    )}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
             name="grading_system"
             render={({ field }) => (
               <FormItem>
@@ -111,73 +232,8 @@ export default function NewYearPage() {
                     <SelectItem value="de_full_grades">
                       {t("years.full_grades")}
                     </SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="vacation_region"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t("years.region")}</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue="de_baden_wuerttemberg"
-                >
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder={t("years.select_region")} />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="de_baden_wuerttemberg">
-                      Baden-Württemberg, Deutschland
-                    </SelectItem>
-                    <SelectItem value="de_bayern">
-                      Bayern, Deutschland
-                    </SelectItem>
-                    <SelectItem value="de_berlin">
-                      Berlin, Deutschland
-                    </SelectItem>
-                    <SelectItem value="de_bremen">
-                      Bremen, Deutschland
-                    </SelectItem>
-                    <SelectItem value="de_hamburg">
-                      Hamburg, Deutschland
-                    </SelectItem>
-                    <SelectItem value="de_hessen">
-                      Hessen, Deutschland
-                    </SelectItem>
-                    <SelectItem value="de_mecklenburg_vorpommern">
-                      Mecklenburg-Vorpommern, Deutschland
-                    </SelectItem>
-                    <SelectItem value="de_niedersachsen">
-                      Niedersachsen, Deutschland
-                    </SelectItem>
-                    <SelectItem value="de_nordrhein_westfalen">
-                      Nordrhein-Westfalen, Deutschland
-                    </SelectItem>
-                    <SelectItem value="de_rheinland_pfalz">
-                      Rheinland-Pfalz, Deutschland
-                    </SelectItem>
-                    <SelectItem value="de_saarland">
-                      Saarland, Deutschland
-                    </SelectItem>
-                    <SelectItem value="de_sachsen_anhalt">
-                      Sachsen-Anhalt, Deutschland
-                    </SelectItem>
-                    <SelectItem value="de_sachsen">
-                      Sachsen, Deutschland
-                    </SelectItem>
-                    <SelectItem value="de_schleswig_holstein">
-                      Schleswig-Holstein, Deutschland
-                    </SelectItem>
-                    <SelectItem value="de_thueringen">
-                      Thüringen, Deutschland
+                    <SelectItem value="at_full_grades">
+                      {t("years.full_grades_1-5")}
                     </SelectItem>
                   </SelectContent>
                 </Select>
