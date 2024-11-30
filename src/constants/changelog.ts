@@ -9,6 +9,13 @@ export interface ChangelogEntry {
 
 export const changelog: ChangelogEntry[] = [
   {
+    date: "2024-11-30",
+    type: "new",
+    title: "Fächer teilen",
+    description:
+      "Fächer können nun mit Freunden geteilt werden. Diese können dann importiert werden und so schnell eingefügt werden.",
+  },
+  {
     date: "2024-11-25",
     type: "new",
     title: "KI generierte Karteikarten",
