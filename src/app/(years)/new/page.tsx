@@ -128,6 +128,9 @@ export default function NewYearPage() {
                   <SelectContent>
                     <SelectItem value="de">Deutschland</SelectItem>
                     <SelectItem value="at">Österreich</SelectItem>
+                    <SelectItem value="other">
+                      {t("years.other_region")}
+                    </SelectItem>
                   </SelectContent>
                 </Select>
                 <FormMessage />
@@ -183,7 +186,7 @@ export default function NewYearPage() {
                         </SelectItem>
                         <SelectItem value="de_thueringen">Thüringen</SelectItem>
                       </>
-                    ) : (
+                    ) : selectedCountry === "at" ? (
                       <>
                         <SelectItem value="at_wien">Wien</SelectItem>
                         <SelectItem value="at_niederoesterreich">
@@ -205,6 +208,10 @@ export default function NewYearPage() {
                           Burgenland
                         </SelectItem>
                       </>
+                    ) : (
+                      <SelectItem value="other">
+                        {t("years.other_region")}
+                      </SelectItem>
                     )}
                   </SelectContent>
                 </Select>

@@ -242,6 +242,7 @@
   "years.full_grades_1-5": "Ganze Noten (1-5)",
   "years.select_country": "Land auswählen",
   "years.country": "Land",
+  "years.other_region": "Anderes",
   "timetable.title": "Stundenplan",
   "timetable.add_lesson": "Stunde hinzufügen",
   "timetable.no_lessons": "Keine Stunden geplant.",
