@@ -29,6 +29,7 @@ interface SubjectContentProps {
   examTypes: ExamType[];
   examTypeGroups: ExamTypeGroup[];
   settings?: SchoolYearSettings;
+  gradingSystem: string;
 }
 
 export default function SubjectContent({
@@ -37,6 +38,7 @@ export default function SubjectContent({
   examTypes,
   examTypeGroups,
   settings,
+  gradingSystem,
 }: SubjectContentProps) {
   const router = useRouter();
   const { t } = useTranslation();
@@ -142,6 +144,7 @@ export default function SubjectContent({
               <AddExamDialog
                 examTypes={examTypes}
                 onAdd={(exam) => handleAddExam(exam)}
+                gradingSystem={gradingSystem}
               >
                 <Button variant="outline" className="w-full sm:hidden">
                   <Plus className="mr-2 h-5 w-5" />
@@ -152,6 +155,7 @@ export default function SubjectContent({
             <AddExamDialog
               examTypes={examTypes}
               onAdd={(exam) => handleAddExam(exam)}
+              gradingSystem={gradingSystem}
             >
               <Button className="hidden sm:flex">
                 <Plus className="mr-2 h-5 w-5" />
@@ -175,6 +179,7 @@ export default function SubjectContent({
               onDelete={(id) => handleDeleteExam(id)}
               exams={exams}
               color={subject?.color}
+              gradingSystem={gradingSystem}
             />
           </TabsContent>
           <TabsContent value="statistics" className="mt-6">
@@ -193,6 +198,7 @@ export default function SubjectContent({
             onDelete={(id) => handleDeleteExam(id)}
             exams={exams}
             color={subject?.color}
+            gradingSystem={gradingSystem}
           />
         </div>
       )}

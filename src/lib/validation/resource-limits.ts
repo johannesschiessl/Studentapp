@@ -2,7 +2,7 @@ import { SupabaseClient } from "@supabase/supabase-js";
 import { Database } from "@/types/supabase";
 
 export const RESOURCE_LIMITS = {
-  SCHOOL_YEARS_PER_USER: 1,
+  SCHOOL_YEARS_PER_USER: 2,
   EXAMS_PER_SCHOOL_YEAR: 100,
   HOMEWORK_PER_SCHOOL_YEAR: 400,
   SUBJECTS_PER_SCHOOL_YEAR: 20,

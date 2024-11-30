@@ -10,12 +10,14 @@ export default function ExamList({
   onEdit,
   onDelete,
   examTypes,
+  gradingSystem,
 }: {
   exams: Exam[];
   color: string;
   onEdit: (exam: Exam) => void;
   onDelete: (id: number) => void;
   examTypes: ExamType[];
+  gradingSystem: string;
 }) {
   const upcomingExamListParent = useRef(null);
   const pendingExamListParent = useRef(null);
@@ -72,6 +74,7 @@ export default function ExamList({
                 key={exam.id}
                 exam={exam}
                 color={color}
+                gradingSystem={gradingSystem}
               />
             ))}
           </div>
@@ -94,6 +97,7 @@ export default function ExamList({
                 key={exam.id}
                 exam={exam}
                 color={color}
+                gradingSystem={gradingSystem}
               />
             ))}
           </div>
@@ -116,6 +120,7 @@ export default function ExamList({
                 key={exam.id}
                 exam={exam}
                 color={color}
+                gradingSystem={gradingSystem}
               />
             ))}
           </div>

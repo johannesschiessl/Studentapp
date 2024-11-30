@@ -33,6 +33,7 @@ interface EditExamDialogProps {
   onEdit: (exam: Exam) => void;
   onDelete: (id: number) => void;
   examTypes: ExamType[];
+  gradingSystem: string;
 }
 
 interface EditExamFormData {
@@ -50,10 +51,13 @@ export function EditExamDialog({
   onEdit,
   onDelete,
   examTypes,
+  gradingSystem,
 }: EditExamDialogProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { t } = useTranslation();
+
+  console.log(gradingSystem);
 
   const {
     register,
@@ -161,7 +165,10 @@ export function EditExamDialog({
                     <SelectValue placeholder={t("exams.select_grade")} />
                   </SelectTrigger>
                   <SelectContent>
-                    {[1, 2, 3, 4, 5, 6].map((grade) => (
+                    {(gradingSystem === "de_full_grades"
+                      ? [1, 2, 3, 4, 5, 6]
+                      : [1, 2, 3, 4, 5]
+                    ).map((grade) => (
                       <SelectItem key={grade} value={grade.toString()}>
                         {grade}
                       </SelectItem>

@@ -39,13 +39,21 @@ export default function YearCard({ year, selectAction }: SchoolYearCardProps) {
                   .slice(1)
                   .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
                   .join(" ") + ", Deutschland"
-              : t("years.other_region")}
+              : year.vacation_region.startsWith("at_")
+                ? year.vacation_region
+                    .split("_")
+                    .slice(1)
+                    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                    .join(" ") + ", Österreich"
+                : t("years.other_region")}
           </p>
           <p className="text-sm text-muted-foreground">
             {t("years.grading")}:{" "}
             {year.grading_system === "de_full_grades"
               ? t("years.full_grades")
-              : year.grading_system}
+              : year.grading_system === "at_full_grades"
+                ? t("years.full_grades_1-5")
+                : year.grading_system}
           </p>
           <Button type="submit" variant="outline" className="mt-4 w-full">
             {t("years.select")}
