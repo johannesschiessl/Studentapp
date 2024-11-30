@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import SubjectList from "./subject-list";
 import Link from "next/link";
 import { calculateTotalAverageGrade } from "@/lib/grades";
+import { ShareSubjectsDialog } from "./share-subjects-dialog";
 
 interface SubjectsContentProps {
   subjects: Subject[];
@@ -36,13 +37,14 @@ export function SubjectsContent({ subjects }: SubjectsContentProps) {
 
       <SubjectList subjects={subjects} />
 
-      <div className="w-full text-center">
+      <div className="flex w-full items-center justify-center gap-4">
         <Link href="/subjects/new">
           <Button variant="outline">
             <Plus className="mr-2 h-4 w-4" />
             {t("subjects.add")}
           </Button>
         </Link>
+        <ShareSubjectsDialog subjects={subjects} />
       </div>
     </main>
   );
