@@ -1,5 +1,3 @@
-import Link from "next/link";
-import { X } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
@@ -11,13 +9,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 export default function TermsPage() {
   return (
     <>
-      <Link
-        href="/"
-        className="fixed right-6 top-6 z-50 rounded-full bg-background p-3 hover:bg-gray-100 dark:hover:bg-gray-800"
-      >
-        <X className="h-6 w-6" />
-      </Link>
-
       <div className="relative mx-auto max-w-4xl p-6">
         <div className="mb-8 pt-8 text-center">
           <h1 className="text-3xl font-bold">

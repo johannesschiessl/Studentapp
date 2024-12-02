@@ -11,7 +11,7 @@ export default async function Index() {
   }
 
   if (!data) {
-    redirect("/login");
+    redirect("/landing");
   } else {
     redirect("/home");
   }
