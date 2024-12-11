@@ -1,3 +1,5 @@
+import React, { Suspense } from "react";
+import PageLoader from "@/components/shared/page-loader";
 import { getDeck, getCardsForPractice } from "@/app/actions/flashcards";
 import { PracticeSession } from "@/components/flashcards/practice-session";
 import { PracticeMode } from "@/types/flashcards";
@@ -9,7 +11,15 @@ interface PracticePageProps {
   searchParams: { mode?: string };
 }
 
-export default async function PracticePage({
+export default function PracticePage(props: PracticePageProps) {
+  return (
+    <Suspense fallback={<PageLoader />}>
+      <PracticePageContent {...props} />
+    </Suspense>
+  );
+}
+
+async function PracticePageContent({
   params,
   searchParams,
 }: PracticePageProps) {
