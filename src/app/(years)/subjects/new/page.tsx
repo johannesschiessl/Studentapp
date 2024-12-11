@@ -47,6 +47,7 @@ import {
 } from "@/components/ui/select";
 import { createSubject } from "@/app/actions/subjects";
 import { SUBJECT_PRESETS } from "@/constants/subject-presets";
+import BackButton from "@/components/shared/back-button";
 
 interface FormData {
   name: string;
@@ -120,6 +121,7 @@ export default function NewSubjectPage() {
 
   return (
     <>
+      <BackButton url="/subjects" />
       <div className="mb-8 pt-8 text-center">
         <h1 className="text-3xl font-bold">{t("subjects.add.title")}</h1>
       </div>

@@ -1,4 +1,5 @@
-import React from "react";
+import React, { Suspense } from "react";
+import PageLoader from "@/components/shared/page-loader";
 import { getSubject } from "@/app/actions/subjects";
 import SubjectContent from "@/components/subjects/subject-content";
 import {
@@ -11,11 +12,15 @@ import {
   getCurrentSchoolYearId,
 } from "@/app/actions/school-year";
 
-export default async function SubjectPage({
-  params,
-}: {
-  params: { id: string };
-}) {
+export default function SubjectPage({ params }: { params: { id: string } }) {
+  return (
+    <Suspense fallback={<PageLoader />}>
+      <SubjectPageContent params={params} />
+    </Suspense>
+  );
+}
+
+async function SubjectPageContent({ params }: { params: { id: string } }) {
   const subjectId = params.id;
   const [subject, examTypes, intialExams, examTypeGroups] = await Promise.all([
     getSubject(parseInt(subjectId)),

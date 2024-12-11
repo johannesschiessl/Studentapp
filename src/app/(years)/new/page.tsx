@@ -27,6 +27,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { createSchoolYear } from "@/app/actions/school-year";
 import { useTranslation } from "@/hooks/use-translation";
+import BackButton from "@/components/shared/back-button";
 
 export default function NewYearPage() {
   const { t } = useTranslation();
@@ -84,10 +85,10 @@ export default function NewYearPage() {
 
   return (
     <>
+      <BackButton url="/years" />
       <div className="mb-8 pt-8 text-center">
         <h1 className="text-3xl font-bold">{t("years.create_new")}</h1>
       </div>
-
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField

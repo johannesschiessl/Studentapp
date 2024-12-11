@@ -1,3 +1,5 @@
+import React, { Suspense } from "react";
+import PageLoader from "@/components/shared/page-loader";
 import { getDeck, getCardsForDeck } from "@/app/actions/flashcards";
 import { getSubjectsForCurrentSchoolYear } from "@/app/actions/subjects";
 import {
@@ -14,7 +16,15 @@ interface DeckPageProps {
   };
 }
 
-export default async function DeckPage({ params }: DeckPageProps) {
+export default function DeckPage({ params }: DeckPageProps) {
+  return (
+    <Suspense fallback={<PageLoader />}>
+      <DeckPageContent params={params} />
+    </Suspense>
+  );
+}
+
+async function DeckPageContent({ params }: DeckPageProps) {
   const deckId = parseInt(params.deckId);
   if (isNaN(deckId)) notFound();
 

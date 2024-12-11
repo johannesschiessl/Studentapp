@@ -1,3 +1,5 @@
+import { Suspense } from "react";
+import PageLoader from "@/components/shared/page-loader";
 import DayView from "@/components/calendar/day-view";
 import WeekView from "@/components/calendar/week-view";
 import { Event } from "@/types/calendar";
@@ -21,7 +23,15 @@ function getWeekDates(startDate: Date) {
   });
 }
 
-export default async function CalendarPage() {
+export default function CalendarPage() {
+  return (
+    <Suspense fallback={<PageLoader />}>
+      <CalendarPageContent />
+    </Suspense>
+  );
+}
+
+async function CalendarPageContent() {
   const events: Event[] = []; // TODO: Fetch events from DB
   const timetable = await getTimeTable();
 

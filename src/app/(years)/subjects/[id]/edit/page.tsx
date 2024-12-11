@@ -47,6 +47,7 @@ import {
 } from "@/components/ui/select";
 import { getSubject, updateSubject } from "@/app/actions/subjects";
 import { toast } from "sonner";
+import BackButton from "@/components/shared/back-button";
 
 const iconOptions = [
   { name: "Book", icon: Book },
@@ -130,6 +131,7 @@ export default function EditSubjectPage({
 
   return (
     <>
+      <BackButton url={`/subjects/${params.id}`} />
       <div className="mb-8 pt-8 text-center">
         <h1 className="text-3xl font-bold">{t("subjects.edit.title")}</h1>
       </div>
