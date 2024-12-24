@@ -102,8 +102,9 @@ export default function WeekView({
   };
 
   const getEventPosition = (event: Event) => {
-    const startHour = event.start.getHours() + event.start.getMinutes() / 60;
-    const endHour = event.end.getHours() + event.end.getMinutes() / 60;
+    const startHour =
+      event.start.getUTCHours() + event.start.getUTCMinutes() / 60;
+    const endHour = event.end.getUTCHours() + event.end.getUTCMinutes() / 60;
     const top = (startHour - 7) * 100;
     const height = (endHour - startHour) * 100;
     return { top, height };
@@ -273,15 +274,9 @@ export default function WeekView({
                                   {event.title}
                                 </div>
                                 <div className="text-xs">
-                                  {event.start.toLocaleTimeString([], {
-                                    hour: "2-digit",
-                                    minute: "2-digit",
-                                  })}{" "}
+                                  {`${String(event.start.getUTCHours()).padStart(2, "0")}:${String(event.start.getUTCMinutes()).padStart(2, "0")}`}{" "}
                                   -{" "}
-                                  {event.end.toLocaleTimeString([], {
-                                    hour: "2-digit",
-                                    minute: "2-digit",
-                                  })}
+                                  {`${String(event.end.getUTCHours()).padStart(2, "0")}:${String(event.end.getUTCMinutes()).padStart(2, "0")}`}
                                 </div>
                                 {event.room && (
                                   <div className="text-xs">
@@ -294,15 +289,9 @@ export default function WeekView({
                               <p className="font-semibold">{event.title}</p>
                               <p className="text-sm">{event.description}</p>
                               <p className="text-sm">
-                                {event.start.toLocaleTimeString([], {
-                                  hour: "2-digit",
-                                  minute: "2-digit",
-                                })}{" "}
+                                {`${String(event.start.getUTCHours()).padStart(2, "0")}:${String(event.start.getUTCMinutes()).padStart(2, "0")}`}{" "}
                                 -{" "}
-                                {event.end.toLocaleTimeString([], {
-                                  hour: "2-digit",
-                                  minute: "2-digit",
-                                })}
+                                {`${String(event.end.getUTCHours()).padStart(2, "0")}:${String(event.end.getUTCMinutes()).padStart(2, "0")}`}
                               </p>
                             </TooltipContent>
                           </Tooltip>

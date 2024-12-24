@@ -20,11 +20,12 @@ export async function transformTimetableToEvents(
       .map(async (item: TimeTableItem) => {
         const [startHour, startMinute] = item.start_time.split(":").map(Number);
         const [endHour, endMinute] = item.end_time.split(":").map(Number);
+
         const start = new Date(date);
-        start.setHours(startHour, startMinute);
+        start.setUTCHours(startHour, startMinute, 0, 0);
 
         const end = new Date(date);
-        end.setHours(endHour, endMinute);
+        end.setUTCHours(endHour, endMinute, 0, 0);
 
         const subject = await getSubject(parseInt(item.subject_id));
         return {
