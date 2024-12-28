@@ -168,6 +168,7 @@
   "settings.statistics.description": "Enable statistics for this school year.",
   "settings.updated": "Settings updated successfully",
   "flashcards": "Flashcards",
+  "flashcards.memorics_coming_soon": "Exciting news! A dedicated app for flashcards based on AI, called Memorics, is coming in January.",
   "flashcards.add_deck": "Add Deck",
   "flashcards.edit_deck": "Edit Deck",
   "flashcards.deck_name": "Deck Name",
