@@ -69,6 +69,9 @@ export function FlashcardsContent({
             </AddDeckDialog>
           </div>
         </div>
+        <div className="mb-4 rounded-[1rem] bg-indigo-100 p-4 text-lg font-semibold text-indigo-700">
+          <p>{t("flashcards.memorics_coming_soon")}</p>
+        </div>
         <DeckList decks={decks} subjects={subjects} deckCards={deckCards} />
       </div>
     </main>
