@@ -9,6 +9,20 @@ export interface ChangelogEntry {
 
 export const changelog: ChangelogEntry[] = [
   {
+    date: "2024-12-28",
+    type: "fix",
+    title: "Fehler in der Seitenleiste behoben",
+    description:
+      "Ein Fehler wurde behoben, der dazu führte, dass die Fächer in der Seitenleiste nicht mehr angezeigt wurden.",
+  },
+  {
+    date: "2024-12-24",
+    type: "fix",
+    title: "Fehler im Stundenplan behoben",
+    description:
+      "Ein Fehler wurde behoben, der jede Stunde im Stundenplan eine Stunde später anzeigte.",
+  },
+  {
     date: "2024-11-30",
     type: "new",
     title: "Support für Österreich",
