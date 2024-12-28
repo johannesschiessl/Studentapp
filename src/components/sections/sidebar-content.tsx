@@ -185,23 +185,19 @@ export function SidebarContent({ subjects }: { subjects: Subject[] }) {
                       ),
                     )}
 
-                    <AnimatePresence mode="popLayout">
+                    <AnimatePresence initial={false}>
                       {sortedAndFilteredSubjects.remainingSubjects.map(
                         (subject: Subject) => (
                           <motion.li
                             key={subject.id}
-                            layout
-                            initial={{ opacity: 0, scale: 0.95 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            exit={{ opacity: 0, scale: 0.95 }}
+                            layout="position"
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: "auto" }}
+                            exit={{ opacity: 0, height: 0 }}
                             transition={{
-                              layout: {
-                                type: "spring",
-                                bounce: 0.15,
-                                duration: 0.4,
-                              },
-                              opacity: { duration: 0.15 },
-                              scale: { duration: 0.15 },
+                              type: "spring",
+                              bounce: 0.15,
+                              duration: 0.4,
                             }}
                           >
                             <SubjectListItem
