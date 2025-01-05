@@ -62,7 +62,7 @@ function HeroSection() {
         <div className="relative mx-auto max-w-6xl">
           <div className="relative aspect-[16/9] w-full">
             <Image
-              src="/landing/hero.PNG"
+              src="https://utfs.io/f/TTYnsox52Rd1TiN08gx52Rd1jrQz3iOox0nfGvuP9FY6wp8J"
               alt="Student-App auf iPhone und iPad"
               fill
               className="object-cover"
@@ -81,19 +81,22 @@ function FeaturesSection() {
       title: "Notenübersicht",
       description:
         "Behalte den Überblick über deine Leistungen in allen Fächern.",
-      image: "/landing/subjects.PNG",
+      image:
+        "https://utfs.io/f/TTYnsox52Rd1EPpOabHLeclwySKJY1bOsGTBx2hR8jP9unWd",
     },
     {
       title: "Hausaufgaben-Tracker",
       description:
         "Verpasse nie wieder eine Abgabe mit unserem intelligenten Aufgabenmanager.",
-      image: "/landing/homework.PNG",
+      image:
+        "https://utfs.io/f/TTYnsox52Rd10cYFk0W2haVAeobZzQ1rxtMg9KBs8CdGSI7m",
     },
     {
       title: "Digitale Karteikarten",
       description:
         "Lerne effektiv mit personalisierten Lernkarten für jedes Fach.",
-      image: "/landing/deck.PNG",
+      image:
+        "https://utfs.io/f/TTYnsox52Rd15IQok4gY15DqbjQIJWC6duVXtT4kAmzOSgva",
     },
   ];
 
