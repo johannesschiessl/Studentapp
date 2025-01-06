@@ -26,49 +26,56 @@ export default function OnboardingPage() {
     {
       title: t("onboarding.welcome.title"),
       description: t("onboarding.welcome.description"),
-      image: "/onboarding/home.PNG",
+      image:
+        "https://utfs.io/f/TTYnsox52Rd1r02heO9Y1KXvUqxZOA6e4CylDtFgEnSaRB3N",
       icon: BookOpen,
       iconColor: "bg-blue-100 text-blue-500",
     },
     {
       title: t("onboarding.subjects.title"),
       description: t("onboarding.subjects.description"),
-      image: "/onboarding/subjects.PNG",
+      image:
+        "https://utfs.io/f/TTYnsox52Rd1H8R6z7TCxTg9va1neN46X7fQ5UyBElIkpdAu",
       icon: GraduationCap,
       iconColor: "bg-green-100 text-green-500",
     },
     {
       title: t("onboarding.homework.title"),
       description: t("onboarding.homework.description"),
-      image: "/onboarding/homework.PNG",
+      image:
+        "https://utfs.io/f/TTYnsox52Rd1R4u7g7Ymjegb3rvsEG64O8fuFAkxLoalp1c5",
       icon: BookCheck,
       iconColor: "bg-purple-100 text-purple-500",
     },
     {
       title: t("onboarding.schedule.title"),
       description: t("onboarding.schedule.description"),
-      image: "/onboarding/calendar.PNG",
+      image:
+        "https://utfs.io/f/TTYnsox52Rd1aHCs6UoWpmtYOnLX7H1akhGPEs2BCyZ9bTei",
       icon: Calendar,
       iconColor: "bg-orange-100 text-orange-500",
     },
     {
       title: t("onboarding.exams.title"),
       description: t("onboarding.exams.description"),
-      image: "/onboarding/exams.PNG",
+      image:
+        "https://utfs.io/f/TTYnsox52Rd1NoDomM5yzLAxXt9O0mZvp8EMcriBW46wCSJa",
       icon: CalendarClock,
       iconColor: "bg-emerald-100 text-emerald-500",
     },
     {
       title: t("onboarding.flashcards.title"),
       description: t("onboarding.flashcards.description"),
-      image: "/onboarding/flashcards.PNG",
+      image:
+        "https://utfs.io/f/TTYnsox52Rd1iQBYciO2peOy41vZ9gSlYxs8CQru7aq5ndTH",
       icon: Boxes,
       iconColor: "bg-pink-100 text-pink-500",
     },
     {
       title: t("onboarding.devices.title"),
       description: t("onboarding.devices.description"),
-      image: "/onboarding/works-on-all-devices.png",
+      image:
+        "https://utfs.io/f/TTYnsox52Rd1UX8nTX2MchTKu2EYyOLjFDkJCxeAIsz3q4lP",
       icon: Monitor,
       iconColor: "bg-indigo-100 text-indigo-500",
     },
