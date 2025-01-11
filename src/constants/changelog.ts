@@ -9,80 +9,87 @@ export interface ChangelogEntry {
 
 export const changelog: ChangelogEntry[] = [
   {
-    date: "2024-12-28",
+    date: "12. Januar 2025",
+    type: "new",
+    title: "Die App ist jetzt bereit für dich!",
+    description:
+      "Die App ist jetzt schneller und stabiler als je zuvor! Außerdem haben wir die Public Beta offiziell beendet – ab jetzt ist alles bereit für euch.",
+  },
+  {
+    date: "28. Dezember 2024",
     type: "fix",
     title: "Fehler in der Seitenleiste behoben",
     description:
-      "Ein Fehler wurde behoben, der dazu führte, dass die Fächer in der Seitenleiste nicht mehr angezeigt wurden.",
+      "Die Fächer in der Seitenleiste wurden nicht mehr angezeigt – das Problem ist jetzt behoben.",
   },
   {
-    date: "2024-12-24",
+    date: "24. Dezember 2024",
     type: "fix",
-    title: "Fehler im Stundenplan behoben",
+    title: "Stundenplan-Anzeige korrigiert",
     description:
-      "Ein Fehler wurde behoben, der jede Stunde im Stundenplan eine Stunde später anzeigte.",
+      "Stunden im Stundenplan wurden falsch angezeigt und waren immer eine Stunde später. Das passt jetzt wieder!",
   },
   {
-    date: "2024-11-30",
+    date: "30. November 2024",
     type: "new",
     title: "Support für Österreich",
     description:
-      "Österreich kann nun als Land ausgewählt werden. Außerdem kann das Notensystem für Österreich ausgewählt werden.",
+      "Ab sofort kannst du Österreich als Land und das österreichische Notensystem auswählen.",
   },
   {
-    date: "2024-11-30",
+    date: "30. November 2024",
     type: "new",
     title: "Fächer teilen",
     description:
-      "Fächer können nun mit Freunden geteilt werden. Diese können dann importiert werden und so schnell eingefügt werden.",
+      "Teile deine Fächer ganz einfach mit Freunden – so könnt ihr sie schnell importieren und nutzen.",
   },
   {
-    date: "2024-11-24",
+    date: "24. November 2024",
     type: "new",
-    title: "Gesamtdurchschnittsberechnung",
+    title: "Gesamtdurchschnitt berechnen",
     description:
-      "Der Gesamtdurchschnitt wird nun auf der Startseite und auf der Fächerseite angezeigt. Wenn die Statistiken aktiviert sind, werden auf der Startseite auch Notenstatistiken angezeigt.",
+      "Auf der Startseite und der Fächerseite wird jetzt dein Gesamtdurchschnitt angezeigt. Mit aktivierten Statistiken gibt es sogar noch mehr Infos über deine Noten.",
   },
   {
-    date: "2024-11-24",
+    date: "24. November 2024",
     type: "new",
-    title: "Zukünftige Prüfungen",
+    title: "Zukünftige Prüfungen auf einen Blick",
     description:
-      "Zukünftige Prüfungen werden nun auf der Startseite angezeigt.",
+      "Deine anstehenden Prüfungen werden jetzt direkt auf der Startseite angezeigt.",
   },
   {
-    date: "2024-11-24",
+    date: "24. November 2024",
     type: "new",
-    title: "Weitere Verbesserungen",
+    title: "Mehr Komfort im Alltag",
     description:
-      "Fächer in der Seitenleiste sind nun standardmäßig zugeklappt, wobei nur favorisierte Fächer angezeigt werden. Vorlagen für häufige Fächer hinzugefügt. Tagesüberschriften auf der Hausaufgabenseite ins Deutsche übersetzt. Ein Menü zum Teilen der Student-App mit Freunden hinzugefügt.",
+      "Die Fächer in der Seitenleiste sind jetzt standardmäßig zugeklappt, es werden nur deine Favoriten angezeigt. Außerdem gibt es Vorlagen für häufige Fächer, deutsche Tagesüberschriften bei den Hausaufgaben und ein Menü, um die App mit Freunden zu teilen.",
   },
   {
-    date: "2024-11-22",
+    date: "22. November 2024",
     type: "new",
     title: "Prüfungsstatistiken hinzugefügt",
     description:
-      "Prüfungsstatistiken auf der Prüfungsseite eingeführt. Diese können in den Einstellungen aktiviert werden. Sie zeigen interessante Statistiken wie Notenverlauf, Anzahl der Notentypen und Durchschnittsnote pro Typ.",
+      "In den Einstellungen kannst du jetzt Prüfungsstatistiken aktivieren, die dir den Notenverlauf, die Anzahl der Notentypen und den Durchschnitt pro Typ anzeigen.",
   },
   {
-    date: "2024-11-21",
+    date: "21. November 2024",
     type: "fix",
-    title: "Kleine Korrekturen",
+    title: "Ein paar Kleinigkeiten verbessert",
     description:
-      "Einen Fehler behoben, der die App beim Bearbeiten des Stundenplans abstürzen ließ. Das Kaffee-Icon in Tee umbenannt (dies war ein Nutzerwunsch, den wir sehr ernst nehmen). Den Onboarding-Prozess verbessert.",
+      "Ein Problem beim Bearbeiten des Stundenplans, das die App abstürzen ließ, wurde behoben. Außerdem ist das Kaffee-Icon jetzt ein Tee-Icon (ein viel gewünschtes Update!). Auch das Onboarding wurde überarbeitet.",
   },
   {
-    date: "2024-11-20",
+    date: "20. November 2024",
     type: "fix",
     title: "Optimierungen der Public Beta",
     description:
-      "Einen Fehler behoben, der zu falschen Notenberechnungen führte. Die Kalenderseite ins Deutsche übersetzt. Einen Fehler behoben, der das Bearbeiten von Prüfungen verhinderte. Die Ladezeit des Kalenders drastisch verbessert (wobei noch Optimierungspotenzial besteht). Mobile Einstellungen, PWA-Unterstützung und weitere kleine Verbesserungen hinzugefügt.",
+      "Ein Fehler bei der Notenberechnung wurde korrigiert, die Kalenderseite ist jetzt auf Deutsch, und das Bearbeiten von Prüfungen funktioniert wieder. Außerdem haben wir die Ladezeit des Kalenders stark verbessert und mobile Einstellungen sowie PWA-Unterstützung hinzugefügt.",
   },
   {
-    date: "2024-11-18",
+    date: "18. November 2024",
     type: "new",
-    title: "Public Beta Release",
+    title: "Public Beta gestartet",
     description:
-      "Student-App ist nun in der öffentlichen Beta verfügbar. Ab sofort können Nutzer Schuljahre erstellen, Fächer hinzufügen, Prüfungen und Hausaufgaben verwalten sowie ihren Stundenplan anzeigen und bearbeiten. Noten werden jetzt ebenfalls berechnet. Nutzer können auch den aktuellen Tagesplan auf dem Startbildschirm sehen.",
+      "Die Student-App ist jetzt in der öffentlichen Beta verfügbar! Erstelle Schuljahre, füge Fächer hinzu, verwalte Prüfungen und Hausaufgaben und behalte deinen Stundenplan im Blick. Auch deine Noten werden direkt berechnet, und der Tagesplan ist auf der Startseite sichtbar.",
   },
 ];

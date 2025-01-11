@@ -11,9 +11,11 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Student-App",
-  description:
-    "An app for students to track their grades, homework, subjects, events and exams.",
-  manifest: "/manifest.json",
+  description: "Behalte deinen Schulalltag im Griff mit der Student-App.",
+  manifest: "./manifest.json",
+  appleWebApp: {
+    title: "Student-App",
+  },
 };
 
 export default function RootLayout({
@@ -22,7 +24,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="de" suppressHydrationWarning>
       <body className={inter.className}>
         <CSPostHogProvider>
           <ThemeProvider
