@@ -3,7 +3,6 @@
 import { Button } from "@/components/ui/button";
 import {
   SkipForward,
-  ArrowLeft,
   ArrowRight,
   BookOpen,
   BookCheck,
@@ -26,7 +25,7 @@ export default function OnboardingPage() {
       title: t("onboarding.welcome.title"),
       description: t("onboarding.welcome.description"),
       image:
-        "https://utfs.io/f/TTYnsox52Rd1r02heO9Y1KXvUqxZOA6e4CylDtFgEnSaRB3N",
+        "https://ygokgtgl7r.ufs.sh/f/UZ4yvln5I9S5MfJlNEc8igA9us2Pm7QH3Vokth8OeyKJYL1r",
       icon: BookOpen,
       iconColor: "bg-blue-100 text-blue-500",
     },
@@ -34,7 +33,7 @@ export default function OnboardingPage() {
       title: t("onboarding.subjects.title"),
       description: t("onboarding.subjects.description"),
       image:
-        "https://utfs.io/f/TTYnsox52Rd1H8R6z7TCxTg9va1neN46X7fQ5UyBElIkpdAu",
+        "https://ygokgtgl7r.ufs.sh/f/UZ4yvln5I9S505vMY1G2IlcvhrjQdFX0UkZtYwH6x9opmSsD",
       icon: GraduationCap,
       iconColor: "bg-green-100 text-green-500",
     },
@@ -42,7 +41,7 @@ export default function OnboardingPage() {
       title: t("onboarding.homework.title"),
       description: t("onboarding.homework.description"),
       image:
-        "https://utfs.io/f/TTYnsox52Rd1R4u7g7Ymjegb3rvsEG64O8fuFAkxLoalp1c5",
+        "https://ygokgtgl7r.ufs.sh/f/UZ4yvln5I9S5V5i0FLuQ6P3E2zgFTukCjNGOtqW8U5bhIwyD",
       icon: BookCheck,
       iconColor: "bg-purple-100 text-purple-500",
     },
@@ -50,7 +49,7 @@ export default function OnboardingPage() {
       title: t("onboarding.schedule.title"),
       description: t("onboarding.schedule.description"),
       image:
-        "https://utfs.io/f/TTYnsox52Rd1aHCs6UoWpmtYOnLX7H1akhGPEs2BCyZ9bTei",
+        "https://ygokgtgl7r.ufs.sh/f/UZ4yvln5I9S5IplF0AwLqvXCDgkZlWrsOKpz5w8QEY9PMnG6",
       icon: Calendar,
       iconColor: "bg-orange-100 text-orange-500",
     },
@@ -58,7 +57,7 @@ export default function OnboardingPage() {
       title: t("onboarding.exams.title"),
       description: t("onboarding.exams.description"),
       image:
-        "https://utfs.io/f/TTYnsox52Rd1NoDomM5yzLAxXt9O0mZvp8EMcriBW46wCSJa",
+        "https://ygokgtgl7r.ufs.sh/f/UZ4yvln5I9S51yrcXFquXPH0mjOyn78abUdv94Z3lwCJxeRT",
       icon: CalendarClock,
       iconColor: "bg-emerald-100 text-emerald-500",
     },
@@ -66,7 +65,7 @@ export default function OnboardingPage() {
       title: t("onboarding.devices.title"),
       description: t("onboarding.devices.description"),
       image:
-        "https://utfs.io/f/TTYnsox52Rd1UX8nTX2MchTKu2EYyOLjFDkJCxeAIsz3q4lP",
+        "https://ygokgtgl7r.ufs.sh/f/UZ4yvln5I9S5fvVgYVJ7YXwUdxpIk90Ka8oNFGW2Dj5hArBV",
       icon: Monitor,
       iconColor: "bg-indigo-100 text-indigo-500",
     },
@@ -89,11 +88,6 @@ export default function OnboardingPage() {
       setDirection(1);
       setCurrentStep((prev) => prev + 1);
     }
-  };
-
-  const handlePrevious = () => {
-    setDirection(-1);
-    setCurrentStep((prev) => prev - 1);
   };
 
   const slideVariants = {
@@ -215,7 +209,7 @@ export default function OnboardingPage() {
                   alt={step.title}
                   fill
                   priority
-                  className="bg-background object-contain"
+                  className="rounded-xl bg-background object-contain"
                   onLoadingComplete={() => setImageLoaded(true)}
                 />
                 {!imageLoaded && (
@@ -229,21 +223,7 @@ export default function OnboardingPage() {
         </AnimatePresence>
 
         <div className="mt-6 flex items-center justify-between gap-2 sm:mt-8 sm:gap-4">
-          <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-            <Button
-              variant="outline"
-              onClick={handlePrevious}
-              disabled={currentStep === 0}
-              className="flex items-center gap-1 px-3 sm:gap-2 sm:px-4"
-              size="sm"
-            >
-              <ArrowLeft className="h-4 w-4" />
-              <span className="hidden sm:inline">
-                {t("onboarding.previous")}
-              </span>
-            </Button>
-          </motion.div>
-
+          <div></div>
           <div className="flex gap-1.5 sm:gap-2">
             {ONBOARDING_STEPS.map((_, index) => (
               <motion.div

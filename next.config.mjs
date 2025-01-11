@@ -10,7 +10,7 @@ const withPWA = nextPWA({
 
 const nextConfig = {
   images: {
-    domains: ["api.qrserver.com", "utfs.io"],
+    domains: ["api.qrserver.com", "ygokgtgl7r.ufs.sh"],
   },
 };
 

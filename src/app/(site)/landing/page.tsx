@@ -3,7 +3,14 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Clock, Smile } from "lucide-react";
+import {
+  ChartNoAxesGantt,
+  Check,
+  Clock,
+  GalleryVerticalEnd,
+  Goal,
+  Smile,
+} from "lucide-react";
 import { TrendingUp } from "lucide-react";
 import {
   Accordion,
@@ -33,19 +40,18 @@ function HeroSection() {
       <div className="mx-auto max-w-5xl space-y-12 px-6 py-24">
         <div className="space-y-8 text-center">
           <Badge className="bg-indigo-100 text-sm text-indigo-500 hover:bg-indigo-100 hover:text-indigo-500">
-            Public Beta
+            Jetzt verfügbar!
           </Badge>
 
           <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl">
-            Lerne <span className="text-indigo-500">smarter</span>,{" "}
-            <span className="text-amber-500">einfacher</span> und{" "}
-            <span className="text-blue-500">besser</span> organisiert
+            Deine Schulzeit, <span className="text-indigo-500">perfekt</span>{" "}
+            organisiert
           </h1>
 
-          <p className="mx-auto max-w-2xl text-xl text-muted-foreground">
-            Die All-in-One App für Schüler. Verwalte Noten, Hausaufgaben und
-            Lernmaterialien in einer modernen und intuitiven App.
-          </p>
+          <h2 className="mx-auto max-w-2xl text-xl text-muted-foreground">
+            Plane deinen Stundenplan, tracke deine Noten und vergiss nie wieder
+            eine Prüfung oder Hausaufgabe - alles in einer App.
+          </h2>
 
           <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
             <Button size="lg" asChild>
@@ -60,9 +66,9 @@ function HeroSection() {
         </div>
 
         <div className="relative mx-auto max-w-6xl">
-          <div className="relative aspect-[16/9] w-full">
+          <div className="relative aspect-[4/3] w-full">
             <Image
-              src="https://utfs.io/f/TTYnsox52Rd1TiN08gx52Rd1jrQz3iOox0nfGvuP9FY6wp8J"
+              src="https://ygokgtgl7r.ufs.sh/f/UZ4yvln5I9S5fvVgYVJ7YXwUdxpIk90Ka8oNFGW2Dj5hArBV"
               alt="Student-App auf iPhone und iPad"
               fill
               className="object-cover"
@@ -78,18 +84,32 @@ function HeroSection() {
 function FeaturesSection() {
   const features = [
     {
-      title: "Notenübersicht",
+      title: "Fächer",
       description:
-        "Behalte den Überblick über deine Leistungen in allen Fächern.",
+        "Organisiere deine Fächer übersichtlich, damit du alles Wichtige immer griffbereit hast.",
       image:
-        "https://utfs.io/f/TTYnsox52Rd1EPpOabHLeclwySKJY1bOsGTBx2hR8jP9unWd",
+        "https://ygokgtgl7r.ufs.sh/f/UZ4yvln5I9S505vMY1G2IlcvhrjQdFX0UkZtYwH6x9opmSsD",
     },
     {
-      title: "Hausaufgaben-Tracker",
+      title: "Prüfungen",
       description:
-        "Verpasse nie wieder eine Abgabe mit unserem intelligenten Aufgabenmanager.",
+        "Plane deine Tests und Klausuren, tracke deine Noten und behalte deine Ziele im Blick.",
       image:
-        "https://utfs.io/f/TTYnsox52Rd10cYFk0W2haVAeobZzQ1rxtMg9KBs8CdGSI7m",
+        "https://ygokgtgl7r.ufs.sh/f/UZ4yvln5I9S51yrcXFquXPH0mjOyn78abUdv94Z3lwCJxeRT",
+    },
+    {
+      title: "Hausaufgaben",
+      description:
+        "Trage deine Hausaufgaben ein und vergiss nie wieder eine Abgabe – einfach und stressfrei.",
+      image:
+        "https://ygokgtgl7r.ufs.sh/f/UZ4yvln5I9S5V5i0FLuQ6P3E2zgFTukCjNGOtqW8U5bhIwyD",
+    },
+    {
+      title: "Stundenplan",
+      description:
+        "Erstelle und verwalte deinen Stundenplan, damit du immer weißt, was als Nächstes ansteht.",
+      image:
+        "https://ygokgtgl7r.ufs.sh/f/UZ4yvln5I9S5IplF0AwLqvXCDgkZlWrsOKpz5w8QEY9PMnG6",
     },
   ];
 
@@ -122,25 +142,45 @@ function FeaturesSection() {
 function BenefitsSection() {
   const benefits = [
     {
-      title: "Bessere Noten",
+      title: "Besserer Überblick",
       description:
-        "Durch strukturiertes Lernen und Überblick über deine Leistungen.",
-      icon: TrendingUp,
+        "Behalte Hausaufgaben, Prüfungen und Noten jederzeit im Blick.",
+      icon: ChartNoAxesGantt,
       color: "sky",
     },
     {
       title: "Weniger Stress",
-      description:
-        "Organisiere deinen Schulalltag effizient und reduziere Prüfungsangst.",
+      description: "Organisiere deinen Schulalltag, ohne dich zu überfordern.",
       icon: Smile,
       color: "emerald",
     },
     {
-      title: "Mehr Freizeit",
+      title: "Mehr Zeit",
       description:
-        "Optimiere deine Lernzeit und genieße mehr Freizeit mit Freunden und Familie.",
+        "Plane alles an einem Ort und spare dir das Suchen und Nachdenken.",
       icon: Clock,
       color: "indigo",
+    },
+    {
+      title: "Bessere Noten",
+      description:
+        "Verpasse keine Abgaben oder Prüfungen und sei immer gut vorbereitet.",
+      icon: Goal,
+      color: "amber",
+    },
+    {
+      title: "Einfach starten",
+      description:
+        "Keine komplizierten Funktionen – die App ist leicht und schnell zu nutzen.",
+      icon: TrendingUp,
+      color: "sky",
+    },
+    {
+      title: "Alles dabei",
+      description:
+        "Egal ob Stundenplan, Hausaufgaben oder Noten – du hast alles in einer App.",
+      icon: GalleryVerticalEnd,
+      color: "rose",
     },
   ];
 
@@ -195,13 +235,9 @@ function TestimonialSection() {
 
   return (
     <section className="container relative py-24">
-      <h2 className="mb-4 text-center text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-        Was unsere Nutzer sagen
+      <h2 className="mb-12 text-center text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
+        Was andere Schüler sagen
       </h2>
-      <p className="mx-auto mb-12 max-w-2xl text-center text-muted-foreground">
-        Erfahre, wie Student-App anderen Schülern bereits dabei hilft, ihren
-        Schulalltag zu meistern
-      </p>
 
       <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
         {testimonials.map((testimonial, index) => (
@@ -236,16 +272,76 @@ function PricingSection() {
     <section className="container py-24">
       <div className="mx-auto max-w-3xl space-y-4 text-center">
         <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-          Kostenlos während der Beta-Phase
+          Alles drin – und das kostenlos
         </h2>
         <p className="mx-auto max-w-[700px] text-gray-500 dark:text-gray-400 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-          Student-App befindet sich derzeit in der öffentlichen Beta-Phase und
-          ist komplett kostenlos nutzbar. Sei dabei und gestalte die Zukunft des
-          digitalen Lernens mit!
+          Nutze alle Features der App ohne Einschränkungen, komplett kostenlos.
+          Unterstütze die Weiterentwicklung mit einem einmaligen Betrag und
+          zeig, dass dir die App wichtig ist.
         </p>
-        <Button size="lg" asChild>
-          <Link href="/login">Jetzt kostenlos testen</Link>
-        </Button>
+      </div>
+
+      <div className="mx-auto mt-12 grid grid-cols-1 gap-8 md:grid-cols-2">
+        <Card className="relative max-w-lg overflow-hidden">
+          <CardHeader>
+            <CardTitle className="text-2xl">Kostenlos</CardTitle>
+            <div className="mt-4 text-4xl font-bold">0€</div>
+            <p className="text-sm text-muted-foreground">Für immer kostenlos</p>
+          </CardHeader>
+          <CardContent className="grid gap-4">
+            <div className="space-y-4">
+              <div className="flex items-center gap-2">
+                <Check className="h-5 w-5 text-indigo-500" />
+                <span>Alle Funktionen der App</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Check className="h-5 w-5 text-indigo-500" />
+                <span>Keine Werbung</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Check className="h-5 w-5 text-indigo-500" />
+                <span>Für immer kostenlos</span>
+              </div>
+            </div>
+            <Button size="lg" className="mt-4" asChild>
+              <Link href="/login">Kostenlos starten</Link>
+            </Button>
+          </CardContent>
+        </Card>
+        <Card className="relative max-w-lg overflow-hidden">
+          <CardHeader>
+            <CardTitle className="text-2xl">Supporter</CardTitle>
+
+            <div className="mt-4 text-4xl font-bold">30€</div>
+            <p className="text-sm text-muted-foreground">Einmalig</p>
+          </CardHeader>
+          <CardContent className="grid gap-4">
+            <div className="space-y-4">
+              <div className="flex items-center gap-2">
+                <Check className="h-5 w-5 text-indigo-500" />
+                <span>Alle Funktionen der App</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Check className="h-5 w-5 text-indigo-500" />
+                <span>Keine Werbung</span>
+              </div>
+              <div className="flex hidden items-center gap-2">
+                {/*HIDDEN UNTIL WE HAVE A EXCLUSIVE FEATURE*/}
+                <Check className="h-5 w-5 text-indigo-500" />
+                <span>Ein zusätzliches, exklusives Feature</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Check className="h-5 w-5 text-indigo-500" />
+                <span>
+                  Unterstütze die Entwicklung und bleib Teil der Community
+                </span>
+              </div>
+            </div>
+            <Button disabled size="lg" className="mt-4">
+              Kommt bald
+            </Button>
+          </CardContent>
+        </Card>
       </div>
     </section>
   );
@@ -254,6 +350,21 @@ function PricingSection() {
 function FAQSection() {
   const faqs = [
     {
+      question: "Ist die App wirklich kostenlos?",
+      answer:
+        "Ja, die App ist komplett kostenlos und enthält alle Funktionen, die du brauchst. Es gibt keine versteckten Kosten oder Abos.",
+    },
+    {
+      question: "Gibt es Werbung in der App?",
+      answer:
+        "Nein, keine nervige Werbung – höchstens ein kleiner Hinweis auf eine andere App, die dir ebenfalls nützlich sein könnte 😉.",
+    },
+    {
+      question: "Warum gibt es einen Supporter-Plan?",
+      answer:
+        "Der Supporter-Plan hilft, die Kosten für den Betrieb der App zu decken. Wenn du es dir leisten kannst, kannst du mit deinem Beitrag dafür sorgen, dass die App weiterhin kostenlos für alle verfügbar bleibt.",
+    },
+    {
       question: "Für welche Schulformen ist Student-App geeignet?",
       answer:
         "Student-App ist für alle weiterführenden Schulen konzipiert, einschließlich Gymnasien, Realschulen, Gesamtschulen und Berufsschulen.",
@@ -261,15 +372,15 @@ function FAQSection() {
     {
       question: "Welche Notensysteme werden unterstützt?",
       answer:
-        "Aktuell unterstützen wir das deutsche Notensystem (1-6) sowie das österreichische Notensystem (1-5). In Kürze werden wir auch das Schweizer Notensystem für Gymnasien und das deutsche 15-Punkte-System integrieren.",
+        "Aktuell unterstützen wir das deutsche Notensystem (1-6) sowie das österreichische Notensystem (1-5). In Kürze werden wir auch das Schweizer Notensystem für Gymnasien und das deutsche 15-Punkte-System hinzufügen.",
     },
     {
       question: "Werden Ferienzeiten berücksichtigt?",
       answer:
-        "Ja, wir unterstützen die Ferienkalender aller deutschen Bundesländer sowie Österreich.",
+        "Ja, wir unterstützen die Ferienkalender aller deutschen Bundesländer sowie Österreichs, bald auch Schweiz.",
     },
     {
-      question: "Kann ich Student-App auf mehreren Geräten nutzen?",
+      question: "Kann ich die App auf mehreren Geräten nutzen?",
       answer:
         "Ja, du kannst dich mit deinem Konto auf verschiedenen Geräten anmelden und hast überall Zugriff auf deine Daten.",
     },
@@ -277,16 +388,6 @@ function FAQSection() {
       question: "Gibt es eine mobile App?",
       answer:
         "Student-App ist eine Progressive Web App (PWA), die du auf deinem Smartphone wie eine native App installieren und nutzen kannst. Sie funktioniert auf allen modernen Smartphones und Tablets. Um die App zu installieren, öffne Student-App in deinem Browser und tippe auf 'Zum Startbildschirm hinzufügen' (iOS) oder 'Installieren' (Android).",
-    },
-    {
-      question: "Was bedeutet Public Beta?",
-      answer:
-        "Die Public Beta Phase bedeutet, dass Student-App bereits voll funktionsfähig ist, aber noch weiterentwickelt wird. Manchmal ist mit Abstürzen zu rechnen, dann einfach die Web-App schließen und erneut öffnen, auch die Performance kann manchmal etwas langsam sein. Daran wird noch gearbeitet. Du kannst die App kostenlos nutzen und durch dein Feedback zur Verbesserung beitragen. Neue Features werden regelmäßig hinzugefügt.",
-    },
-    {
-      question: "Kann ich mit anderen Schülern zusammenarbeiten?",
-      answer:
-        "Aktuell ist Student-App auf die individuelle Nutzung ausgerichtet. Kollaborative Funktionen sind für zukünftige Updates geplant.",
     },
   ];
 
@@ -316,14 +417,14 @@ function CTASection() {
     <section className="container py-24">
       <div className="mx-auto max-w-3xl space-y-4 text-center">
         <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-          Bereit, deine Schulleistung zu verbessern?
+          Dein Schulalltag, einfach organisiert
         </h2>
         <p className="mx-auto max-w-[700px] text-gray-500 dark:text-gray-400 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-          Starte jetzt mit Student-App und erlebe, wie einfach digitales Lernen
-          und Organisieren sein kann.
+          Starte jetzt mit Student-App und bring Hausaufgaben, Prüfungen und
+          Stundenplan unter Kontrolle.
         </p>
         <Button size="lg" asChild>
-          <Link href="/login">Kostenlos registrieren</Link>
+          <Link href="/login">Jetzt kostenlos starten</Link>
         </Button>
       </div>
     </section>
