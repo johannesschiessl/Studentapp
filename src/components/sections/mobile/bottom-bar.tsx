@@ -2,13 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import {
-  House,
-  CalendarDays,
-  FolderOpen,
-  ListChecks,
-  Blocks,
-} from "lucide-react";
+import { House, CalendarDays, FolderOpen, ListChecks } from "lucide-react";
 import { useTranslation } from "@/hooks/use-translation";
 
 export default function BottomBar() {
@@ -19,8 +13,7 @@ export default function BottomBar() {
     { name: t("home"), icon: House, href: "/home" },
     { name: t("calendar"), icon: CalendarDays, href: "/calendar" },
     { name: t("subjects"), icon: FolderOpen, href: "/subjects" },
-    { name: t("homeworks"), icon: ListChecks, href: "/homework" },
-    { name: t("flashcards"), icon: Blocks, href: "/flashcards" },
+    { name: t("homeworks.tasks"), icon: ListChecks, href: "/homework" },
   ];
 
   return (

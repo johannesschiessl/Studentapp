@@ -31,8 +31,6 @@ export async function deleteUserAccount() {
   const supabase = createAdminClient();
   const user = await getUser();
 
-  await supabase.from("flashcards").delete().eq("user_id", user.id);
-  await supabase.from("flashcard_decks").delete().eq("user_id", user.id);
   await supabase.from("exams").delete().eq("user_id", user.id);
   await supabase.from("exam_types").delete().eq("user_id", user.id);
   await supabase.from("exam_type_groups").delete().eq("user_id", user.id);

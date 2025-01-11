@@ -91,13 +91,6 @@ function FeaturesSection() {
       image:
         "https://utfs.io/f/TTYnsox52Rd10cYFk0W2haVAeobZzQ1rxtMg9KBs8CdGSI7m",
     },
-    {
-      title: "Digitale Karteikarten",
-      description:
-        "Lerne effektiv mit personalisierten Lernkarten für jedes Fach.",
-      image:
-        "https://utfs.io/f/TTYnsox52Rd15IQok4gY15DqbjQIJWC6duVXtT4kAmzOSgva",
-    },
   ];
 
   return (
