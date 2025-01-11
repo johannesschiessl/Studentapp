@@ -10,7 +10,6 @@ import {
   Calendar,
   GraduationCap,
   Monitor,
-  Boxes,
   CalendarClock,
 } from "lucide-react";
 import { useState } from "react";
@@ -62,14 +61,6 @@ export default function OnboardingPage() {
         "https://utfs.io/f/TTYnsox52Rd1NoDomM5yzLAxXt9O0mZvp8EMcriBW46wCSJa",
       icon: CalendarClock,
       iconColor: "bg-emerald-100 text-emerald-500",
-    },
-    {
-      title: t("onboarding.flashcards.title"),
-      description: t("onboarding.flashcards.description"),
-      image:
-        "https://utfs.io/f/TTYnsox52Rd1iQBYciO2peOy41vZ9gSlYxs8CQru7aq5ndTH",
-      icon: Boxes,
-      iconColor: "bg-pink-100 text-pink-500",
     },
     {
       title: t("onboarding.devices.title"),
