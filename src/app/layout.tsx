@@ -10,11 +10,11 @@ import { CSPostHogProvider } from "@/components/providers/posthog-provider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Student-App",
-  description: "Behalte deinen Schulalltag im Griff mit der Student-App.",
+  title: "Studentapp",
+  description: "Behalte deinen Schulalltag im Griff mit der Studentapp.",
   manifest: "./manifest.json",
   appleWebApp: {
-    title: "Student-App",
+    title: "Studentapp",
   },
 };
 

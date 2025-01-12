@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { BookCopy } from "lucide-react";
+import { AtSign, BookCopy, Instagram, Music2 } from "lucide-react";
 import Link from "next/link";
 
 export default function SiteLayout({
@@ -12,9 +12,12 @@ export default function SiteLayout({
     <div className="mx-auto flex min-h-screen w-full max-w-7xl flex-col px-4">
       <header className="sticky top-0 z-50 w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-14 items-center justify-between">
-          <Link href="/landing" className="flex items-center space-x-2 pl-2">
+          <Link
+            href="/landing"
+            className="flex items-center space-x-2 pl-2 text-indigo-500"
+          >
             <BookCopy className="h-6 w-6" />
-            <span className="font-bold">Student-App</span>
+            <span className="font-bold">Studentapp</span>
           </Link>
           <Button asChild className="ml-4">
             <Link href="/login">Jetzt starten</Link>
@@ -29,33 +32,28 @@ export default function SiteLayout({
               href="https://www.instagram.com/studentapp_"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-muted-foreground transition-colors hover:text-foreground"
+              className="flex items-center gap-1 text-muted-foreground transition-colors hover:text-foreground"
             >
+              <Instagram className="h-6 w-6" />
               Instagram
             </Link>
             <Link
               href="https://www.tiktok.com/@studentapp"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-muted-foreground transition-colors hover:text-foreground"
+              className="flex items-center gap-1 text-muted-foreground transition-colors hover:text-foreground"
             >
+              <Music2 className="h-6 w-6" />
               TikTok
             </Link>
             <Link
               href="https://www.threads.net/@studentapp_"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-muted-foreground transition-colors hover:text-foreground"
+              className="flex items-center gap-1 text-muted-foreground transition-colors hover:text-foreground"
             >
+              <AtSign className="h-6 w-6" />
               Threads
-            </Link>
-            <Link
-              href="https://discord.gg/jrzNEvTq"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-muted-foreground transition-colors hover:text-foreground"
-            >
-              Discord
             </Link>
           </div>
           <div className="flex items-center space-x-4">

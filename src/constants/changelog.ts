@@ -90,6 +90,6 @@ export const changelog: ChangelogEntry[] = [
     type: "new",
     title: "Public Beta gestartet",
     description:
-      "Die Student-App ist jetzt in der öffentlichen Beta verfügbar! Erstelle Schuljahre, füge Fächer hinzu, verwalte Prüfungen und Hausaufgaben und behalte deinen Stundenplan im Blick. Auch deine Noten werden direkt berechnet, und der Tagesplan ist auf der Startseite sichtbar.",
+      "Die Studentapp ist jetzt in der öffentlichen Beta verfügbar! Erstelle Schuljahre, füge Fächer hinzu, verwalte Prüfungen und Hausaufgaben und behalte deinen Stundenplan im Blick. Auch deine Noten werden direkt berechnet, und der Tagesplan ist auf der Startseite sichtbar.",
   },
 ];

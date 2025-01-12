@@ -319,7 +319,7 @@ export default function SettingsDrawer({
         </div>
 
         <DrawerFooter className="flex w-full flex-col items-center justify-between">
-          <p className="text-sm text-neutral-500">Student-App</p>
+          <p className="text-sm text-neutral-500">Studentapp</p>
           <p className="text-sm text-neutral-500">by Johannes Schießl</p>
           <Badge className="ml-1 mr-2 bg-indigo-100 text-indigo-500 hover:bg-indigo-100 hover:text-indigo-500">
             Public Beta

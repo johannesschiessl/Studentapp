@@ -16,7 +16,7 @@ export function CookieBanner() {
 
   const acceptCookies = () => {
     Cookies.set("cookie-consent", "true", {
-      expires: 365, // Days
+      expires: 365,
       path: "/",
       sameSite: "lax",
     });
@@ -29,8 +29,8 @@ export function CookieBanner() {
     <div className="fixed bottom-0 left-0 right-0 z-50 border-t bg-background p-4 shadow-lg">
       <div className="container mx-auto flex items-center justify-between gap-4">
         <p className="text-sm text-muted-foreground">
-          We use cookies to enhance your experience. By continuing to use this
-          website, you agree to our use of cookies.
+          Wir verwenden Cookies, um deine Erfahrung zu verbessern. Durch die
+          Nutzung dieser Website stimmst du unserer Verwendung von Cookies zu.
         </p>
         <Button onClick={acceptCookies} className="shrink-0">
           Okay

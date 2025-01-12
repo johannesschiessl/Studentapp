@@ -12,7 +12,7 @@ export default function TermsPage() {
         <div className="mb-8 pt-8 text-center">
           <h1 className="text-3xl font-bold">Nutzungsbedingungen</h1>
           <p className="mt-2 text-muted-foreground">
-            Zuletzt aktualisiert: 11.01.2025
+            Zuletzt aktualisiert: 12.01.2025
           </p>
         </div>
 
@@ -20,7 +20,7 @@ export default function TermsPage() {
           <AccordionItem value="acceptance">
             <AccordionTrigger>Annahme der Bedingungen</AccordionTrigger>
             <AccordionContent>
-              Durch den Zugriff auf oder die Nutzung von Student-App stimmen Sie
+              Durch den Zugriff auf oder die Nutzung von Studentapp stimmen Sie
               diesen Nutzungsbedingungen zu. Wenn Sie mit einem Teil der
               Bedingungen nicht einverstanden sind, dürfen Sie den Dienst nicht
               nutzen.
@@ -30,7 +30,7 @@ export default function TermsPage() {
           <AccordionItem value="description">
             <AccordionTrigger>Beschreibung des Dienstes</AccordionTrigger>
             <AccordionContent>
-              Student-App ist eine Webanwendung, die Schülern bei der Verwaltung
+              Studentapp ist eine Webanwendung, die Schülern bei der Verwaltung
               ihrer Hausaufgaben, Prüfungen, Stundenpläne und zugehörigen
               Informationen hilft. Wir behalten uns das Recht vor, den Dienst
               jederzeit ohne vorherige Ankündigung zu ändern oder einzustellen.

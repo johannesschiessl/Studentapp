@@ -69,7 +69,7 @@ function HeroSection() {
           <div className="relative aspect-[4/3] w-full">
             <Image
               src="https://ygokgtgl7r.ufs.sh/f/UZ4yvln5I9S5fvVgYVJ7YXwUdxpIk90Ka8oNFGW2Dj5hArBV"
-              alt="Student-App auf iPhone und iPad"
+              alt="Studentapp auf iPhone und iPad"
               fill
               className="object-cover"
               priority
@@ -227,7 +227,7 @@ function TestimonialSection() {
       name: "Johannes S.",
       role: "Entwickler, Schüler 10. Klasse",
       content:
-        "Ich habe Student-App entwickelt, um meine eigene Schulorganisation zu verbessern. Ich hoffe, dass auch andere Schüler davon profitieren.",
+        "Ich habe Studentapp entwickelt, um meine eigene Schulorganisation zu verbessern. Ich hoffe, dass auch andere Schüler davon profitieren.",
       avatar: "JS",
       color: "indigo",
     },
@@ -365,9 +365,9 @@ function FAQSection() {
         "Der Supporter-Plan hilft, die Kosten für den Betrieb der App zu decken. Wenn du es dir leisten kannst, kannst du mit deinem Beitrag dafür sorgen, dass die App weiterhin kostenlos für alle verfügbar bleibt.",
     },
     {
-      question: "Für welche Schulformen ist Student-App geeignet?",
+      question: "Für welche Schulformen ist Studentapp geeignet?",
       answer:
-        "Student-App ist für alle weiterführenden Schulen konzipiert, einschließlich Gymnasien, Realschulen, Gesamtschulen und Berufsschulen.",
+        "Studentapp ist für alle weiterführenden Schulen konzipiert, einschließlich Gymnasien, Realschulen, Gesamtschulen und Berufsschulen.",
     },
     {
       question: "Welche Notensysteme werden unterstützt?",
@@ -387,7 +387,7 @@ function FAQSection() {
     {
       question: "Gibt es eine mobile App?",
       answer:
-        "Student-App ist eine Progressive Web App (PWA), die du auf deinem Smartphone wie eine native App installieren und nutzen kannst. Sie funktioniert auf allen modernen Smartphones und Tablets. Um die App zu installieren, öffne Student-App in deinem Browser und tippe auf 'Zum Startbildschirm hinzufügen' (iOS) oder 'Installieren' (Android).",
+        "Studentapp ist eine Progressive Web App (PWA), die du auf deinem Smartphone wie eine native App installieren und nutzen kannst. Sie funktioniert auf allen modernen Smartphones und Tablets. Um die App zu installieren, öffne Studentapp in deinem Browser und tippe auf 'Zum Startbildschirm hinzufügen' (iOS) oder 'Installieren' (Android).",
     },
   ];
 
@@ -420,7 +420,7 @@ function CTASection() {
           Dein Schulalltag, einfach organisiert
         </h2>
         <p className="mx-auto max-w-[700px] text-gray-500 dark:text-gray-400 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-          Starte jetzt mit Student-App und bring Hausaufgaben, Prüfungen und
+          Starte jetzt mit Studentapp und bring Hausaufgaben, Prüfungen und
           Stundenplan unter Kontrolle.
         </p>
         <Button size="lg" asChild>
