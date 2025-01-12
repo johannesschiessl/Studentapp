@@ -34,14 +34,14 @@ const shareOptions = [
     icon: MessageCircle,
     color: "hover:bg-[#25D366]/10 text-[#25D366]",
     getUrl: (currentUrl: string) =>
-      `https://wa.me/?text=Hey, ich benutze gerade die Student-App und finde sie echt super! Probier sie doch auch mal aus: ${currentUrl}`,
+      `https://wa.me/?text=Hey, ich benutze gerade die Studentapp und finde sie echt super! Probier sie doch auch mal aus: ${currentUrl}`,
   },
   {
     name: "threads",
     icon: AtSign,
     color: "hover:bg-black/10 dark:hover:bg-white/10 text-foreground",
     getUrl: (currentUrl: string) =>
-      `https://threads.net/intent/post?text=Seit kurzem benutze ich die Student-App und finde sie echt super! Probiert sie doch auch mal aus: ${currentUrl}`,
+      `https://threads.net/intent/post?text=Seit kurzem benutze ich die Studentapp und finde sie echt super! Probiert sie doch auch mal aus: ${currentUrl}`,
   },
 ];
 

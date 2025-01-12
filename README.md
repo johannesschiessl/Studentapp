@@ -1,5 +1,5 @@
-![Student-App-Banner](/src/app/opengraph-image.png)
+![Studentapp-Banner](/src/app/opengraph-image.png)
 
-# Student-App
+# Studentapp
 
 An app for students to track their grades, homework, timetable, subjects and exams.

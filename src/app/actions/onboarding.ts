@@ -8,5 +8,6 @@ export async function completeOnboarding() {
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
     path: "/",
+    expires: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000),
   });
 }

@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { useState } from "react";
 import { handleEmailLogin, LoginFormData } from "../actions";
+import { BookCopy } from "lucide-react";
 
 export default function LoginEmailPage() {
   const [error, setError] = useState<string>("");
@@ -31,13 +32,19 @@ export default function LoginEmailPage() {
 
   return (
     <main className="flex max-h-screen min-h-screen flex-col items-center justify-center space-y-3 p-24">
+      <div className="absolute left-8 top-8">
+        <Link href="/" className="flex items-center space-x-2">
+          <BookCopy className="h-6 w-6 text-indigo-500" />
+          <span className="text-xl font-bold text-indigo-500">Studentapp</span>
+        </Link>
+      </div>
       <div className="w-full max-w-sm space-y-8">
         <div className="space-y-2 text-center">
           <h1 className="text-2xl font-semibold tracking-tight">
-            Login to your account
+            Melde dich an
           </h1>
           <p className="text-sm text-muted-foreground">
-            Enter your email below to login to your account
+            Melde dich mit deiner E-Mail an
           </p>
         </div>
 
@@ -60,7 +67,7 @@ export default function LoginEmailPage() {
           {error && <div className="text-sm text-red-500">{error}</div>}
 
           <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? "Signing in..." : "Sign in"}
+            {loading ? "Anmelden..." : "Anmelden"}
           </Button>
         </form>
 
@@ -69,20 +76,21 @@ export default function LoginEmailPage() {
             href="/login"
             className="text-muted-foreground underline hover:text-primary"
           >
-            Back to login options
+            Zurück zu den Anmeldemöglichkeiten
           </Link>
         </div>
       </div>
 
-      <footer className="fixed bottom-5 w-64 text-center text-xs text-neutral-600">
-        By signing in you agree to our{" "}
+      <footer className="fixed bottom-5 w-64 text-center text-sm text-neutral-600">
+        Mit der Anmeldung stimmen Sie unseren{" "}
         <Link className="underline" href="/terms">
-          Terms of Service
+          Nutzungsbedingungen
         </Link>{" "}
-        and{" "}
+        und{" "}
         <Link className="underline" href="/privacy">
-          Privacy Policy
-        </Link>
+          Datenschutzerklärung
+        </Link>{" "}
+        zu.
       </footer>
     </main>
   );

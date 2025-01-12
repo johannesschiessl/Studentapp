@@ -31,7 +31,7 @@ export async function transformTimetableToEvents(
         return {
           id: parseInt(item.subject_id),
           title: `${subject.name}`,
-          description: `Room: ${item.room || subject.room}, Teacher: ${subject.teacher}`,
+          description: `Raum: ${item.room || subject.room}, Lehrer: ${subject.teacher}`,
           room: item.room || subject.room,
           start,
           end,

@@ -12,7 +12,7 @@ export default function PrivacyPage() {
         <div className="mb-8 pt-8 text-center">
           <h1 className="text-3xl font-bold">Datenschutzerklärung</h1>
           <p className="mt-2 text-muted-foreground">
-            Zuletzt aktualisiert: 11.01.2025
+            Zuletzt aktualisiert: 12.01.2025
           </p>
         </div>
 
@@ -20,7 +20,7 @@ export default function PrivacyPage() {
           <AccordionItem value="overview">
             <AccordionTrigger>Überblick</AccordionTrigger>
             <AccordionContent>
-              Diese Datenschutzerklärung erläutert, wie Student-App
+              Diese Datenschutzerklärung erläutert, wie Studentapp
               (&ldquo;wir&rdquo;, &ldquo;uns&rdquo;, &ldquo;unser&rdquo;) Ihre
               personenbezogenen Daten erfasst, verwendet und schützt. Durch die
               Nutzung unseres Dienstes stimmen Sie der Erfassung und Verwendung

@@ -280,7 +280,7 @@ export default function WeekView({
                                 </div>
                                 {event.room && (
                                   <div className="text-xs">
-                                    Room: {event.room}
+                                    Raum: {event.room}
                                   </div>
                                 )}
                               </div>
