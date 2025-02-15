@@ -27,6 +27,7 @@ export default function LandingPage() {
         <BenefitsSection />
         <TestimonialSection />
         <PricingSection />
+        <OpenSourceSection />
         <FAQSection />
         <CTASection />
       </main>
@@ -276,72 +277,73 @@ function PricingSection() {
         </h2>
         <p className="mx-auto max-w-[700px] text-gray-500 dark:text-gray-400 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
           Nutze alle Features der App ohne Einschränkungen, komplett kostenlos.
-          Unterstütze die Weiterentwicklung mit einem einmaligen Betrag und
-          zeig, dass dir die App wichtig ist.
         </p>
       </div>
-
-      <div className="mx-auto mt-12 grid grid-cols-1 gap-8 md:grid-cols-2">
-        <Card className="relative max-w-lg overflow-hidden">
+      <div className="mx-auto mt-12 flex justify-center">
+        <Card className="relative w-full max-w-2xl overflow-hidden">
           <CardHeader>
             <CardTitle className="text-2xl">Kostenlos</CardTitle>
             <div className="mt-4 text-4xl font-bold">0€</div>
             <p className="text-sm text-muted-foreground">Für immer kostenlos</p>
           </CardHeader>
-          <CardContent className="grid gap-4">
+          <CardContent className="grid gap-6">
             <div className="space-y-4">
-              <div className="flex items-center gap-2">
-                <Check className="h-5 w-5 text-indigo-500" />
-                <span>Alle Funktionen der App</span>
+              <div className="flex items-center gap-3">
+                <Check className="h-6 w-6 text-indigo-500" />
+                <span className="text-lg">Alle Funktionen der App</span>
               </div>
-              <div className="flex items-center gap-2">
-                <Check className="h-5 w-5 text-indigo-500" />
-                <span>Keine Werbung</span>
+              <div className="flex items-center gap-3">
+                <Check className="h-6 w-6 text-indigo-500" />
+                <span className="text-lg">Keine Werbung</span>
               </div>
-              <div className="flex items-center gap-2">
-                <Check className="h-5 w-5 text-indigo-500" />
-                <span>Für immer kostenlos</span>
+              <div className="flex items-center gap-3">
+                <Check className="h-6 w-6 text-indigo-500" />
+                <span className="text-lg">Für immer kostenlos</span>
               </div>
             </div>
-            <Button size="lg" className="mt-4" asChild>
+            <Button size="lg" className="mt-4 w-full" asChild>
               <Link href="/login">Kostenlos starten</Link>
             </Button>
           </CardContent>
         </Card>
-        <Card className="relative max-w-lg overflow-hidden">
-          <CardHeader>
-            <CardTitle className="text-2xl">Supporter</CardTitle>
+      </div>
+    </section>
+  );
+}
 
-            <div className="mt-4 text-4xl font-bold">30€</div>
-            <p className="text-sm text-muted-foreground">Einmalig</p>
-          </CardHeader>
-          <CardContent className="grid gap-4">
-            <div className="space-y-4">
-              <div className="flex items-center gap-2">
-                <Check className="h-5 w-5 text-indigo-500" />
-                <span>Alle Funktionen der App</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Check className="h-5 w-5 text-indigo-500" />
-                <span>Keine Werbung</span>
-              </div>
-              <div className="flex hidden items-center gap-2">
-                {/*HIDDEN UNTIL WE HAVE A EXCLUSIVE FEATURE*/}
-                <Check className="h-5 w-5 text-indigo-500" />
-                <span>Ein zusätzliches, exklusives Feature</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Check className="h-5 w-5 text-indigo-500" />
-                <span>
-                  Unterstütze die Entwicklung und bleib Teil der Community
-                </span>
-              </div>
-            </div>
-            <Button disabled size="lg" className="mt-4">
-              Kommt bald
-            </Button>
-          </CardContent>
-        </Card>
+function OpenSourceSection() {
+  return (
+    <section className="container py-24">
+      <div className="mx-auto max-w-3xl space-y-4 text-center">
+        <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
+          Open Source & Transparent
+        </h2>
+        <p className="mx-auto max-w-[700px] text-gray-500 dark:text-gray-400 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+          Studentapp ist komplett Open Source. Der gesamte Code ist auf GitHub
+          verfügbar – für maximale Transparenz und Sicherheit.
+        </p>
+        <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+          <Button variant="outline" size="lg" className="gap-2" asChild>
+            <Link
+              href="https://github.com/johannesschiessl/Studentapp"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Image
+                className="dark:invert"
+                src="/github.svg"
+                alt="GitHub"
+                width={24}
+                height={24}
+              />
+              Auf GitHub ansehen
+            </Link>
+          </Button>
+        </div>
+        <p className="mt-4 text-sm text-muted-foreground">
+          Du kannst den Code einsehen, Verbesserungen vorschlagen oder sogar
+          selbst zur Entwicklung beitragen.
+        </p>
       </div>
     </section>
   );
@@ -358,11 +360,6 @@ function FAQSection() {
       question: "Gibt es Werbung in der App?",
       answer:
         "Nein, keine nervige Werbung – höchstens ein kleiner Hinweis auf eine andere App, die dir ebenfalls nützlich sein könnte 😉.",
-    },
-    {
-      question: "Warum gibt es einen Supporter-Plan?",
-      answer:
-        "Der Supporter-Plan hilft, die Kosten für den Betrieb der App zu decken. Wenn du es dir leisten kannst, kannst du mit deinem Beitrag dafür sorgen, dass die App weiterhin kostenlos für alle verfügbar bleibt.",
     },
     {
       question: "Für welche Schulformen ist Studentapp geeignet?",
