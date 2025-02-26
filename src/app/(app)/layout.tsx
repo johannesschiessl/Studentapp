@@ -5,7 +5,7 @@ import { SidebarProvider } from "@/contexts/sidebar-context";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { getCurrentSchoolYearId } from "@/app/actions/school-year";
-import { cookies } from "next/headers";
+//import { cookies } from "next/headers";
 
 export default async function AppLayout({
   children,
@@ -13,12 +13,14 @@ export default async function AppLayout({
   children: React.ReactNode;
 }) {
   const supabase = createClient();
-  const cookieStore = cookies();
-  const seenOnboarding = cookieStore.get("seenOnboarding")?.value === "true";
 
-  if (!seenOnboarding) {
-    return redirect("/onboarding");
-  }
+  // TODO: Fix the onboarding happening on every page load and reenable this
+  //const cookieStore = cookies();
+  // const seenOnboarding = cookieStore.get("seenOnboarding")?.value === "true";
+
+  // if (!seenOnboarding) {
+  //   return redirect("/onboarding");
+  // }
 
   const currentSchoolYearId = await getCurrentSchoolYearId();
 
