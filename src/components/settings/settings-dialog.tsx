@@ -297,7 +297,7 @@ export default function SettingsDialog({
             Studentapp by Johannes Schießl
           </p>
           <Badge className="ml-1 mr-2 bg-indigo-100 text-indigo-500 hover:bg-indigo-100 hover:text-indigo-500">
-            Public Beta
+            v1
           </Badge>
         </DialogFooter>
       </DialogContent>
