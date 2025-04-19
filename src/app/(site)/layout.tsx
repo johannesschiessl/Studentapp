@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { AtSign, BookCopy, Instagram, Music2 } from "lucide-react";
+import { BookCopy } from "lucide-react";
 import Link from "next/link";
 
 export default function SiteLayout({
