@@ -5,7 +5,6 @@ import { LanguageProvider } from "@/contexts/language-context";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { CookieBanner } from "@/components/cookie-banner";
-import { CSPostHogProvider } from "@/components/providers/posthog-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,20 +25,18 @@ export default function RootLayout({
   return (
     <html lang="de" suppressHydrationWarning>
       <body className={inter.className}>
-        <CSPostHogProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <LanguageProvider>
-              {children}
-              <Toaster position="top-center" expand={false} richColors />
-              <CookieBanner />
-            </LanguageProvider>
-          </ThemeProvider>
-        </CSPostHogProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <LanguageProvider>
+            {children}
+            <Toaster position="top-center" expand={false} richColors />
+            <CookieBanner />
+          </LanguageProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

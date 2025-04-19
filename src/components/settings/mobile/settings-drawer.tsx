@@ -322,7 +322,7 @@ export default function SettingsDrawer({
           <p className="text-sm text-neutral-500">Studentapp</p>
           <p className="text-sm text-neutral-500">by Johannes Schießl</p>
           <Badge className="ml-1 mr-2 bg-indigo-100 text-indigo-500 hover:bg-indigo-100 hover:text-indigo-500">
-            Public Beta
+            v1
           </Badge>
         </DrawerFooter>
       </DrawerContent>
