@@ -25,9 +25,9 @@ export default function GlobalError({
         </p>
         <a
           className="text-sm text-gray-500 hover:underline"
-          href="mailto:support@ignotum.dev"
+          href="mailto:contact.johannes@icloud.com"
         >
-          support@ignotum.dev
+          contact.johannes@icloud.com
         </a>
         <Button onClick={() => reset()}>{t("error.try_again")}</Button>
       </body>

@@ -104,10 +104,10 @@ export default function TermsPage() {
               Bei Fragen zu diesen Nutzungsbedingungen kontaktieren Sie uns
               bitte unter:{" "}
               <a
-                href="mailto:contact@ignotum.dev"
+                href="mailto:contact.johannes@icloud.com"
                 className="text-primary hover:underline"
               >
-                contact@ignotum.dev
+                contact.johannes@icloud.com
               </a>
             </AccordionContent>
           </AccordionItem>
